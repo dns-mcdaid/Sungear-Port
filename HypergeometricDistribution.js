@@ -68,7 +68,130 @@ function HypergeometricDistribution(rng, populationSize, numberOfSuccesses, samp
 	this.sampleSize = sampleSize;
 
 }
+function probability(x){
+	var ret;
 
+	var domain = getDomain(populationSize, numberOfSuccesses,sampleSize);
+
+	if(x < domain[0] || x > domain[1]){
+		ret = 0.0;
+	}
+	else{
+		var p = sampleSize/populationSize;
+		var q = (populationSize - sampleSize)/populationSize;
+		//var p1 = SaddlePointExpansion.logBinomialProbability(x, numberOfSuccesses, p, q);
+		//var p2 = SaddlePointExpansion.logBinomialProbability(sampleSize - x, populationSize - numberOfSuccesses, p, q);
+		//var p3 = SaddlePointExpansion.logBinomialProbability(sampleSize, populationSize, p, q);
+		//TODO: SaddlePointExpansion??
+
+		//ret = FastMath.exp(p1 + p2 - p3) 
+	}
+	return ret; 
+}
+//GETTERS
+function getNumberOfSuccesses(){
+	return numberOfSuccesses;
+}
+function getPopulationSize(){
+	return populationSize;
+}
+function getSampleSize(){
+	return sampleSize;
+}
+
+
+function getLowerDomain(n,m,k){
+	//return FastMath's .max(0,m-(n-k)) function
+}
+function getUpperDomain(m,k){
+	//return FastMath's .min(k,m) function
+}
+
+
+function getDomain(n, m, k){
+	var ret1 = getLowerDomain(n,m,k);
+	var ret2 = getUpperDomain(m,k);
+	return new Array(ret1, ret2);
+}
+
+
+
+function innerCumulativeProbability(x0,x1,dx){
+	var ret = probability(x0);
+	while(x0 != x1){
+		x0 += dx;
+		ret += probability(x0);
+	}
+	return ret; 
+}
+function cumulativeProbability(x){
+	var ret;
+
+	var domain = getDomain(populationSize, numberOfSuccesses, sampleSize);
+
+	if(x < domain[0]){
+		ret = 0.0;
+	}
+	else if(x >= domain[1]){
+		ret = 1.0;
+	}
+	else{
+		ret = innerCumulativeProbability(domain[0], x, 1);
+	}
+
+	return ret;
+
+}
+function upperCumulativeProbability(x){
+	    var ret;
+
+        var domain = getDomain(populationSize, numberOfSuccesses, sampleSize);
+        if (x <= domain[0]) {
+            ret = 1.0;
+        } else if (x > domain[1]) {
+            ret = 0.0;
+        } else {
+            ret = innerCumulativeProbability(domain[1], x, -1);
+        }
+
+        return ret;
+    }
+}
+
+function getNumericalMean(){
+	return (getSampleSize() * getNumberOfSuccesses())/getPopulationSize();
+}
+
+function calculateNumericalVariance(){
+	var N = getPopulationSize();
+	var m getNumberOfSuccesses();
+	var n = getSampleSize();
+	return (n * m * (N-n) * (N-m))/(N * N * (N - 1));
+}
+
+
+function getNumericalVariance(){
+	if(!numericalVarianceIsCalculated){
+		numericalVariance = calculateNumericalVariance();
+		numericalVarianceIsCalculated = true;
+	}
+	return numericalVariance;
+}
+
+
+function getSupportLowerBound(){
+	//return FastMath.max(0, getSampleSize() + getNumberOfSuccesses() - getPopulationSize());
+}
+
+
+function getSupportUpperBound(){
+	//return FastMath.min(getNumberOfSuccesses(), getSampleSize());
+}
+
+
+function isSupportConnected(){
+	return true; 
+}
 
 
 
