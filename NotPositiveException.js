@@ -13,14 +13,17 @@ Translated from Ilyas Mounaime's Java code
 
 var serialVersionUID = -2250556892093726375L;
 
-//constructor
-
-function NotPositiveException(value){
-	
-}
-
 //create inheritance via .prototype 
 NotPositiveException.prototype = new NumberIsTooSmallException();
 
 //corect the constructor pointer, because it points to NumberIsTooSmallException right now
 NotPositiveException.prototype.constructor = NotPositiveException;
+
+//create a parent property for NotPositiveException to call superClass methods,
+//rather than having to use NumberIsTooSmalLException.prototype.functionName.call() everytime
+NotPositiveException.prototype.parent = NumberIsTooSmallException.prototype;
+
+//constructor
+function NotPositiveException(value){
+	
+}

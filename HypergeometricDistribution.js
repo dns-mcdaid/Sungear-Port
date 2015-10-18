@@ -34,6 +34,16 @@ var numericalVariance = Number.NaN;
 //has numerical variance been calculated?
 var numericalVarianceIsCalculated = false; 
 
+//IMPLEMENT INHERITANCE
+HypergeometricDistribution.prototype = new AbstractIntegerDistribution();
+
+//corect the constructor pointer, because it points to AbstractIntegerDistribution right now
+HypergeometricDistribution.prototype.constructor = HypergeometricDistribution;
+
+//create a parent property for HypergeometridDistribution to call superClass methods,
+//rather than having to use AbstractIntegerDistribution.prototype.functionName.call() everytime
+HypergeometricDistribution.prototype.parent = AbstractIntegerDistribution.prototype;
+
 //constructor with specified population size, num of successes in population, and sample size
 //what does declaring a new Well19937 do?
 function HypergeometricDistribution(populationSize, numberOfSuccesses, sampleSize){
@@ -68,11 +78,6 @@ function HypergeometricDistribution(rng, populationSize, numberOfSuccesses, samp
 	this.sampleSize = sampleSize;
 
 }
-//IMPLEMENT INHERITANCE
-HypergeometricDistribution.prototype = new AbstractIntegerDistribution();
-
-//corect the constructor pointer, because it points to AbstractIntegerDistribution right now
-HypergeometricDistribution.prototype.constructor = HypergeometricDistribution;
 
 function probability(x){
 	var ret;
