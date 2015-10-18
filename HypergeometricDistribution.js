@@ -29,7 +29,7 @@ var populationSize;
 var sampleSize;
 
 //cached numerical variance
-var numericalVariance; //equals Double.NaN ?
+var numericalVariance = Number.NaN;
 
 //has numerical variance been calculated?
 var numericalVarianceIsCalculated = false; 
@@ -38,7 +38,7 @@ var numericalVarianceIsCalculated = false;
 //what does declaring a new Well19937 do?
 function HypergeometricDistribution(populationSize, numberOfSuccesses, sampleSize){
 	//TODO: can through all 3 exceptions listed above (if statements?)
-
+	
 	//TODO: creates new Well19937 object?
 	this.populationSize = populationSize;
 	this.numberOfSuccesses = numberOfSuccesses;
@@ -180,12 +180,12 @@ function getNumericalVariance(){
 
 
 function getSupportLowerBound(){
-	//return FastMath.max(0, getSampleSize() + getNumberOfSuccesses() - getPopulationSize());
+	//return FastMathMax(0, getSampleSize() + getNumberOfSuccesses() - getPopulationSize());
 }
 
 
 function getSupportUpperBound(){
-	//return FastMath.min(getNumberOfSuccesses(), getSampleSize());
+	//return FastMathMin(getNumberOfSuccesses(), getSampleSize());
 }
 
 
