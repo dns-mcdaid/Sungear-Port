@@ -68,6 +68,12 @@ function HypergeometricDistribution(rng, populationSize, numberOfSuccesses, samp
 	this.sampleSize = sampleSize;
 
 }
+//IMPLEMENT INHERITANCE
+HypergeometricDistribution.prototype = new AbstractIntegerDistribution();
+
+//corect the constructor pointer, because it points to AbstractIntegerDistribution right now
+HypergeometricDistribution.prototype.constructor = HypergeometricDistribution;
+
 function probability(x){
 	var ret;
 
