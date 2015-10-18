@@ -25,5 +25,10 @@ NotPositiveException.prototype.parent = NumberIsTooSmallException.prototype;
 
 //constructor
 function NotPositiveException(value){
+	this.parent.NumberIsTooSmallException.call(this, value, 0, true);
 	
+}
+
+function NotPositiveException(specific, value){
+	this.parent.NumberIsTooSmallException.call(this, specific, value, 0, true);
 }

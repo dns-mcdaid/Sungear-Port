@@ -79,6 +79,20 @@ function HypergeometricDistribution(rng, populationSize, numberOfSuccesses, samp
 
 }
 
+function getLowerDomain(n,m,k){
+	//return FastMath's .max(0,m-(n-k)) function
+}
+function getUpperDomain(m,k){
+	//return FastMath's .min(k,m) function
+}
+
+
+function getDomain(n, m, k){
+	var ret1 = getLowerDomain(n,m,k);
+	var ret2 = getUpperDomain(m,k);
+	return new Array(ret1, ret2);
+}
+
 function probability(x){
 	var ret;
 
@@ -109,22 +123,6 @@ function getPopulationSize(){
 function getSampleSize(){
 	return sampleSize;
 }
-
-
-function getLowerDomain(n,m,k){
-	//return FastMath's .max(0,m-(n-k)) function
-}
-function getUpperDomain(m,k){
-	//return FastMath's .min(k,m) function
-}
-
-
-function getDomain(n, m, k){
-	var ret1 = getLowerDomain(n,m,k);
-	var ret2 = getUpperDomain(m,k);
-	return new Array(ret1, ret2);
-}
-
 
 
 function innerCumulativeProbability(x0,x1,dx){
