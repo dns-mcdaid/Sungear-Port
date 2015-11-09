@@ -46,10 +46,10 @@ function cumulativeProbability(x0, x1){ //throws NumberIsTooLargeException
 }
 
 function checkedCumulativeProbability(argument){ //throws MathInternalError
-	var result = Number.NaN; 
+	var result = Number.Nan; 
 	result = cumulativeProbability(argument);
-	if(result = Number.NaN){
-		//throw new MathInternalError(LocalizedFormats.DISCRETE_CUMULATIVE_PROBABILITY_RETURNED_NAN, argument);
+	if(result = Number.Nan){
+		//throw new MathInternalError(LocalizedFormats.DISCRETE_CUMULATIVE_PROBABILITY_RETURNED_Nan, argument);
 
 	}
 	return result; 
@@ -103,8 +103,8 @@ function inverseCumulativeProbability(p){ //throws OutOfRangeException
     var sigma = //FastMath.sqrt(getNumericalVariance()); //defined in WeibullDistribution.java
 
     var chebsyshevApplies = !((mu == Number.POSITIVE_INFINITY || mu == Number.NEGATIVE_INFINITY)
-    	|| mu == Number.NaN || (sigma == Number.POSITIVE_INFINITY || sigma == Number.NEGATIVE_INFINITY)
-    	|| sigma == Number.NaN || sigma == 0)
+    	|| mu == Number.Nan || (sigma == Number.POSITIVE_INFINITY || sigma == Number.NEGATIVE_INFINITY)
+    	|| sigma == Number.Nan || sigma == 0)
     if(chebsyshevApplies){
     	var k = //FashMath.sqrt((1.0 - p) / p);
     	var tmp = mu - l * sigma;
