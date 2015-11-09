@@ -229,6 +229,14 @@ function logGamma1p(x){
 	return -FastMathLog1p(invGamma1pm1(x));
 }
 
+function lanczos(x){
+	var sum = 0.0;
+	for(i = LANCZOS.length - 1; i > 0; i--){
+		sum = sum + (LANCZOS[i] / (x + i));
+	}
+	
+	return sum + LANCZOS[0];	
+}
 
 function LogGamma(x){
 	var ret;
@@ -254,13 +262,4 @@ function LogGamma(x){
 	}
 
 	return ret;
-}
-
-function lanczos(x){
-	var sum = 0.0;
-	for(i = LANCZOS.length - 1; i > 0; i--){
-		sum = sum + (LANCZOS[i] / (x + i));
-	}
-	
-	return sum + LANCZOS[0];	
 }

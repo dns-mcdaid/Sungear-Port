@@ -25,8 +25,8 @@ function NotStrictlyPositiveException(value){
 	this.parent.NumberIsTooSmallException.call(this, value, 0, false);
 }
 
-//exception with a specific context 
-function NotStrictlyPositiveException(specific, value){
-	this.parent.NumberIsTooSmallException.call(this, specific, value, 0, false);
-}
+// //exception with a specific context 
+// function NotStrictlyPositiveException(specific, value){
+// 	this.parent.NumberIsTooSmallException.call(this, specific, value, 0, false);
+// }
 

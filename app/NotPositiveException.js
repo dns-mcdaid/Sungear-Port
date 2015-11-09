@@ -29,6 +29,6 @@ function NotPositiveException(value){
 	
 }
 
-function NotPositiveException(specific, value){
-	this.parent.NumberIsTooSmallException.call(this, specific, value, 0, true);
-}
+// function NotPositiveException(specific, value){
+// 	this.parent.NumberIsTooSmallException.call(this, specific, value, 0, true);
+// }

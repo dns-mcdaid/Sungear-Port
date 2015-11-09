@@ -24,14 +24,14 @@ NumberIsTooSmallException.prototype.constructor = NumberIsTooSmallException;
 //rather than having to use MathIllegalNumberException.prototype.functionName.call() everytime
 NumberIsTooSmallException.prototype.parent = MathIllegalNumberException.prototype;
 
-function NumberIsTooSmallException(wrong, min, boundIsAllowed){
-	   // this(boundIsAllowed ?
-    //          LocalizedFormats.NUMBER_TOO_SMALL :
-    //          LocalizedFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
-    //          wrong, min, boundIsAllowed);
-
-	//don't recorgnize this code style/format^^ ?
-}
+// function NumberIsTooSmallException(wrong, min, boundIsAllowed){
+// 	   // this(boundIsAllowed ?
+//     //          LocalizedFormats.NUMBER_TOO_SMALL :
+//     //          LocalizedFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
+//     //          wrong, min, boundIsAllowed);
+// 
+// 	//don't recorgnize this code style/format^^ ?
+// }
 
 function NumberIsTooSmallException(specific, wrong, min, boundIsAllowed){
 	this.parent.MathIllegalNumberException.call(this, specific, wrong, min);

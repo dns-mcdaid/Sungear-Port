@@ -31,7 +31,7 @@ var random
 //function AbstractIntegerDisctibution(RandomGenerator)
 
 //make RandomGenerator object rng
-var rng = RandomGenerator(); //RandomGenerator object //TODO: implement RandomInteger class/constructor
+//var rng = RandomGenerator(); //RandomGenerator object //TODO: implement RandomInteger class/constructor
 
 //CONSTRUCTOR
 function AbstractIntegerDisctribution(rng){

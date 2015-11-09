@@ -5,9 +5,9 @@ Porting Sungear from Java to Javascript,
 Translated from Ilyas Mounaime's Java code 
 
 */
-var FastMathPI = 105414357.0 / 33554432.0 + 1.984187159361080883e-9;
+var FastMathPI = (105414357.0 / 33554432.0) + 1.984187159361080883e-9;
 
-var FastMathE = 2850325.0 / 1048576.0 + 8.254840070411028747e-8;
+var FastMathE = (2850325.0 / 1048576.0) + 8.254840070411028747e-8;
 
 var RECOMPUTE_TABLES_AT_RUNTIME = false;
 
@@ -266,7 +266,7 @@ function FastMathLog(x, hiPrec){
 		} 
 	}
 	lnMant(); 
-	var lnm = LN_MANT[(int)((bits & 0x000ffc0000000000) >> 42)];
+	var lnm = LN_MANT[Math.round(((bits & 0x000ffc0000000000) >> 42))];
 	var epsilon = (bits & 0x3ffffffffff)/ (TWO_POWER_52 + (bits & 0x000ffc0000000000));
 	var lnza = 0.0;
 	var lnzb = 0.0; 
@@ -390,8 +390,7 @@ function FastMathLog1p(x){ //needed in Gamma.js
 	if(x == Number.POSITIVE_INFINITY){
 		return Number.POSITIVE_INFINITY;
 	}
-	if (x > 1e-6 ||
-		x < -1e-6) {
+	if (x > 1e-6 || x < -1e-6) {
 			var xpa = 1 + x;
 			var xpb = -(xpa - 1 - x);
 			
