@@ -29,10 +29,15 @@ var F_1_3 = 1/3;
 
 var HEX_40000000 = 0x40000000;
 
+var LN_2_A = 0.693147063255310059;
+
 var LN_2_B = 1.17304635250823482e-7;
 
 var LN_MANT;
 
+var EXP_INT_TABLE_A;
+
+var EXP_INT_TABLE_B;
 
 var LN_QUICK_COEF = [
 	[1.0, 5.669184079525E-24],
@@ -96,8 +101,8 @@ function ExpIntTable(){
 // 			}
 // 		}
 // 	}else{
-	    EXP_INT_TABLE_A = FastMathLiteralArraysLoadExpIntA();
-        EXP_INT_TABLE_B = FastMathLiteralArraysLoadExpIntB();
+	     EXP_INT_TABLE_A = FastMathLiteralArraysLoadExpIntA();
+         EXP_INT_TABLE_B = FastMathLiteralArraysLoadExpIntB();
 //	}
 
 
@@ -166,18 +171,14 @@ function FastMathExp(x, extra, hiPrec){
 			}
 			return Number.POSITIVE_INFINITY;
 		}
+		ExpIntTable();
 		intPartA = EXP_INT_TABLE_A[EXP_INT_TABLE_MAX_INDEX + intVal];
 		intPartB = EXP_INT_TABLE_B[EXP_INT_TABLE_MAX_INDEX + intVal]; 		
 		
 	}
 }
 
-// function FastMathExp(x){
-// 	return FastMathExp(x, 0.0, null);
-// 	
-// }
-
-function FastMathLog(x, hiPrec){
+ function FastMathLog(x, hiPrec){
 	if(x == 0) {return Number.NEGATIVE_INFINITY; }
 	
 	if(x <= 0.0 || isNaN(x)){
@@ -206,9 +207,9 @@ function FastMathLog(x, hiPrec){
 		}
 		return Number.POSITIVE_INFINITY;
 	}
-	var exp = (bits >> 52) - 1023; //get exponent 
-	
-	if((bits & 0x7ff0000000000000) == 0){
+ 	var exp = (bits >> 52) - 1023; //get exponent 
+ 	
+ 	if((bits & 0x7ff0000000000000) == 0){
 		if(x == 0){
 			if(hiPrec != null){
 				hiPrec[0] = Number.NEGATIVE_INFINITY;
@@ -216,14 +217,15 @@ function FastMathLog(x, hiPrec){
 			return Number.NEGATIVE_INFINITY;
 		}
 		
-		//normalize number
-		bits = bits << 1;
-		while((bits & 0x0010000000000000) == 0) {
-			--exp;
-			bits = bits << 1; 
-		}
+ 		//normalize number
+ 		bits = bits << 1;
+//   		while((bits & 0x0010000000000000) == 0) {
+//  			--exp;
+//  			bits = bits << 1; 
+// 		
+//  		}
 		
-	}
+ 	}
 	
 	if(exp == -1 || exp == 0){
 		if (x < 1.01 && x > 0.99 && hiPrec == null) {
@@ -257,12 +259,13 @@ function FastMathLog(x, hiPrec){
 			}
 			aa = ya * xa;
 			ab = ya * xb + yb * xa + yb * xb;
-			/* split, so now y = a */
+			
 			tmp = aa * HEX_40000000;
 			ya = aa + tmp - tmp;
 			yb = aa - ya + ab;
 
 			return ya + yb;
+			
 		} 
 	}
 	lnMant(); 
@@ -290,25 +293,25 @@ function FastMathLog(x, hiPrec){
 		var yb = lnCoef_last[1];
 		
 		for(i = LN_HI_PREC_COEF.length - 2; i >= 0; i--) {
-			/* Multiply a = y * x */
+		
 			aa = ya * xa;
 			ab = ya * xb + yb * xa + yb * xb;
-			/* split, so now y = a */
+			
 			tmp = aa * HEX_40000000;
 			ya = aa + tmp - tmp;
 			yb = aa - ya + ab;
 
-			/* Add  a = y + lnHiPrecCoef */
+			
 			var lnCoef_i = LN_HI_PREC_COEF[i];
 			aa = ya + lnCoef_i[0];
 			ab = yb + lnCoef_i[1];
-			/* Split y = a */
+		
 			tmp = aa * HEX_40000000;
 			ya = aa + tmp - tmp;
 			yb = aa - ya + ab;
 			
 		}
-		/* Multiply a = y * x */
+		
      	aa = ya * xa;
         ab = ya * xb + yb * xa + yb * xb;
 	
@@ -362,9 +365,6 @@ function FastMathLog(x, hiPrec){
 }
 
 
-// function FastMathLog(x){
-// 	return FastMathLog(x, null); 
-// }
 
 function FastMathAbs(x){
 	if(x < 0){return -x;}
@@ -408,6 +408,5 @@ function FastMathLog1p(x){ //needed in Gamma.js
 			return y * x;
 	}
 }
-
 
 

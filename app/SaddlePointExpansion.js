@@ -104,7 +104,7 @@ function logBinomialProbability(x, n, p, q){
 		ret = getStirlingError(n) - getStirlingError(x) -
 			  getStirlingError(n - x) - getDeviancePart(x, n * p) -
 			  getDeviancePart(n - x, n * q);
-		var f = (MathUtilsTWO_PI * x * (n - x)) / n;
+		var f = (TWO_PI * x * (n - x)) / n;
 		ret = -0.5 * FastMathLog(f, null) + ret;
 	}
 	return ret;

@@ -48,10 +48,31 @@ var numericalVarianceIsCalculated = false;
 // //what does declaring a new Well19937 do?
 function HypergeometricDistribution(populationSize, numberOfSuccesses, sampleSize){
 	 
-	//TODO: creates new Well19937 object?
+	//TODO: creates new Well19937 object?	
 	this.populationSize = populationSize;
 	this.numberOfSuccesses = numberOfSuccesses;
 	this.sampleSize = sampleSize;
+	
+	//now associate below functions with object
+	this.getNumericalMean = getNumericalMean;
+	this.getLowerDomain = getLowerDomain;
+	this.getUpperDomain = getUpperDomain;
+	this.getSampleSize = getSampleSize;
+	this.getNumberOfSuccesses = getNumberOfSuccesses;
+	this.getPopulationSize = getPopulationSize;
+	this.getSampleSize = getSampleSize;
+	this.probability = probability;
+	this.getDomain = getDomain;
+	this.innerCumulativeProbability = innerCumulativeProbability;
+	this.cumulativeProbability = cumulativeProbability;
+	this.upperCumulativeProbability = upperCumulativeProbability;
+	this.getNumericalMean = getNumericalMean;
+	this.calculateNumericalVariance = calculateNumericalVariance;
+	this.getNumericalVariance = getNumericalVariance;
+	this.getSupportLowerBound = getSupportLowerBound;
+	this.getSupportUpperBound = getSupportUpperBound;
+	this.isSupportConnected = isSupportConnected; 
+	
 	
 }
 
@@ -103,46 +124,47 @@ function getDomain(n, m, k){
 function probability(x){
 	var ret;
 
-	var domain = getDomain(populationSize, numberOfSuccesses,sampleSize);
+	var domain = this.getDomain(this.populationSize, this.numberOfSuccesses,this.sampleSize);
 
 	if(x < domain[0] || x > domain[1]){
 		ret = 0.0;
 	}
 	else{
-		var p = sampleSize/populationSize;
-		var q = (populationSize - sampleSize)/populationSize;
+		var p = this.sampleSize/this.populationSize;
+		var q = (this.populationSize - this.sampleSize)/this.populationSize;
 		//method from saddlepointexpansion
-		var p1 = logBinomialProbability(x, numberOfSuccesses, p, q); 
-		var p2 = logBinomialProbability(sampleSize - x, populationSize - numberOfSuccesses, p, q);
-		var p3 = logBinomialProbability(sampleSize, populationSize, p, q);
+		var p1 = logBinomialProbability(x, this.numberOfSuccesses, p, q); 
+		var p2 = logBinomialProbability(this.sampleSize - x, this.populationSize - this.numberOfSuccesses, p, q);
+		var p3 = logBinomialProbability(this.sampleSize, this.populationSize, p, q);
 		ret = FastMathExp((p1 + p2 - p3), 0.0, null); 
 	}
 	return ret; 
 }
+
 //GETTERS
 function getNumberOfSuccesses(){
-	return numberOfSuccesses;
+	return this.numberOfSuccesses;
 }
 function getPopulationSize(){
-	return populationSize;
+	return this.populationSize;
 }
 function getSampleSize(){
-	return sampleSize;
+	return this.sampleSize;
 }
 
 
 function innerCumulativeProbability(x0,x1,dx){
-	var ret = probability(x0);
+	var ret = this.probability(x0);
 	while(x0 != x1){
 		x0 += dx;
-		ret += probability(x0);
+		ret += this.probability(x0);
 	}
 	return ret; 
 }
 function cumulativeProbability(x){
 	var ret;
 
-	var domain = getDomain(populationSize, numberOfSuccesses, sampleSize);
+	var domain = this.getDomain(this.populationSize, this.numberOfSuccesses, this.sampleSize);
 
 	if(x < domain[0]){
 		ret = 0.0;
@@ -151,7 +173,7 @@ function cumulativeProbability(x){
 		ret = 1.0;
 	}
 	else{
-		ret = innerCumulativeProbability(domain[0], x, 1);
+		ret = this.innerCumulativeProbability(domain[0], x, 1);
 	}
 
 	return ret;
@@ -160,33 +182,33 @@ function cumulativeProbability(x){
 function upperCumulativeProbability(x){
 	    var ret;
 
-        var domain = getDomain(populationSize, numberOfSuccesses, sampleSize);
+        var domain = this.getDomain(this.populationSize, this.numberOfSuccesses, this.sampleSize);
         if (x <= domain[0]) {
             ret = 1.0;
         } else if (x > domain[1]) {
             ret = 0.0;
         } else {
-            ret = innerCumulativeProbability(domain[1], x, -1);
+            ret = this.innerCumulativeProbability(domain[1], x, -1);
         }
 
         return ret;
 }
 
 function getNumericalMean(){
-	return (getSampleSize() * getNumberOfSuccesses())/getPopulationSize();
+	return (this.getSampleSize() * this.getNumberOfSuccesses())/this.getPopulationSize();
 }
 
 function calculateNumericalVariance(){
-	var N = getPopulationSize();
-	var m =  getNumberOfSuccesses();
-	var n = getSampleSize();
+	var N = this.getPopulationSize();
+	var m =  this.getNumberOfSuccesses();
+	var n = this.getSampleSize();
 	return (n * m * (N-n) * (N-m))/(N * N * (N - 1));
 }
 
 
 function getNumericalVariance(){
 	if(!numericalVarianceIsCalculated){
-		numericalVariance = calculateNumericalVariance();
+		numericalVariance = this.calculateNumericalVariance();
 		numericalVarianceIsCalculated = true;
 	}
 	return numericalVariance;
@@ -194,12 +216,12 @@ function getNumericalVariance(){
 
 
 function getSupportLowerBound(){
-	return FastMathMax(0, getSampleSize() + getNumberOfSuccesses() - getPopulationSize());
+	return FastMathMax(0, this.getSampleSize() + this.getNumberOfSuccesses() - this.getPopulationSize());
 }
 
 
 function getSupportUpperBound(){
-	return FastMathMin(getNumberOfSuccesses(), getSampleSize());
+	return FastMathMin(this.getNumberOfSuccesses(), this.getSampleSize());
 }
 
 
