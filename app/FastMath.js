@@ -186,11 +186,12 @@ function FastMathExp(x, extra, hiPrec){
 			if (hiPrec != null){
 				hiPrec[0] = Number.Nan;
 			}
-			return Number.Nan
+			return Number.Nan;
 		}
 	}
 	
-	var bits = (x).toString(16); //hexadecimal 
+
+	var bits = x.toString(16); 
 	if((bits & 0x8000000000000000) != 0 || isNaN(x)){
 		if(x != 0.0){
 			if(hiPrec != null){
@@ -208,7 +209,7 @@ function FastMathExp(x, extra, hiPrec){
 		return Number.POSITIVE_INFINITY;
 	}
  	var exp = (bits >> 52) - 1023; //get exponent 
- 	
+
  	if((bits & 0x7ff0000000000000) == 0){
 		if(x == 0){
 			if(hiPrec != null){
@@ -218,12 +219,15 @@ function FastMathExp(x, extra, hiPrec){
 		}
 		
  		//normalize number
- 		bits = bits << 1;
+ 		bits <<= 1; 
+ 		
 //   		while((bits & 0x0010000000000000) == 0) {
+// 
 //  			--exp;
 //  			bits = bits << 1; 
+// 
 // 		
-//  		}
+//   		}
 		
  	}
 	
