@@ -27,12 +27,11 @@ HypergeometricDistribution.prototype = Object.create(AbstractIntegerDistribution
 //corect the constructor pointer, because it points to AbstractIntegerDistribution right now
 HypergeometricDistribution.prototype.constructor = HypergeometricDistribution;
 
-//constructor with specified population size, num of successes in population, and sample size
-function HypergeometricDistribution(populationSize, numberOfSuccesses, sampleSize){
-	 HypergeometricDistribution(new Well19937c(), populationSize, numberOfSuccesses, sampleSize);
-}
+function HypergeometricDistribution(populationSize, numberOfSuccesses, sampleSize, rng){
+	if(arguments.length < 4){
+		rng = new Well19937c();
+	}
 
-function HypergeometricDistribution(rng, populationSize, numberOfSuccesses, sampleSize){
 	//TODO: throws all 3 exceptions listed above
 	if (populationSize <= 0) {
 		//throw NotStrictlyPositiveException(LocalizedFormats.POPULATION_SIZE,populationSize);
