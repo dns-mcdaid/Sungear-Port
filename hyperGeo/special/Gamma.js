@@ -2,7 +2,7 @@
 Radhika Mattoo, November 2015 N.Y.
 
 Porting Sungear from Java to Javascript,
-Translated from Ilyas Mounaime's Java code 
+Translated from Ilyas Mounaime's Java code
 
 */
 var INV_GAMMA1P_M1_A0 = .611609510448141581788E-08;
@@ -112,7 +112,7 @@ var INV_GAMMA1P_M1_C12 = .113302723198169588237412962033074E-05;
 /** The constant {@code C13} defined in {@code DGAM1}. */
 var INV_GAMMA1P_M1_C13 = -.205633841697760710345015413002057E-06;
 
-var HALF_LOG_2_PI = 0.5 * FastMathLog((2.0 * FastMathPI), null);
+var HALF_LOG_2_PI = 0.5 * FastMath.Log((2.0 * FastMathPI), null);
 
 var DEFAULT_EPSILON = 10e-15;
 
@@ -226,7 +226,7 @@ function logGamma1p(x){
 	if(x > 1.5){
 		document.getElementById("output").innerHTML = "Throw Number is Too Large exception from logGamma1p function";
 	}
-	return -FastMathLog1p(invGamma1pm1(x));
+	return -FastMath.Log1p(invGamma1pm1(x));
 }
 
 function lanczos(x){
@@ -234,8 +234,8 @@ function lanczos(x){
 	for(i = LANCZOS.length - 1; i > 0; i--){
 		sum = sum + (LANCZOS[i] / (x + i));
 	}
-	
-	return sum + LANCZOS[0];	
+
+	return sum + LANCZOS[0];
 }
 
 function LogGamma(x){
@@ -244,21 +244,21 @@ function LogGamma(x){
 	if (Number.Nan(x) || (x <= 0.0)) {
 		ret = Number.Nan;
 	} else if (x < 0.5) {
-		return logGamma1p(x) - FastMathLog(x, null);
+		return logGamma1p(x) - FastMath.Log(x, null);
 	} else if (x <= 2.5) {
 		return logGamma1p((x - 0.5) - 0.5);
 	} else if (x <= 8.0) {
-		var n = FastMathFloor(x - 1.5);
+		var n = FastMath.Floor(x - 1.5);
 		var prod = 1.0;
 		for (i = 1; i <= n; i++) {
 			prod *= x - i;
 		}
-		return logGamma1p(x - (n + 1)) + FastMathLog(prod, null);
+		return logGamma1p(x - (n + 1)) + FastMath.Log(prod, null);
 	} else {
 		var sum = lanczos(x);
 		var tmp = x + LANCZOS_G + .5;
-		ret = ((x + .5) * FastMathLog(tmp, null)) - tmp +
-			HALF_LOG_2_PI + FastMathLog((sum / x), null);
+		ret = ((x + .5) * FastMath.Log(tmp, null)) - tmp +
+			HALF_LOG_2_PI + FastMath.Log((sum / x), null);
 	}
 
 	return ret;

@@ -2,10 +2,10 @@
 Radhika Mattoo, November 2015 N.Y.
 
 Porting Sungear from Java to Javascript,
-Translated from Ilyas Mounaime's Java code 
+Translated from Ilyas Mounaime's Java code
 
 */
-var HALF_LOG_2_PI = 0.5 * FastMathLog(TWO_PI, null); 
+var HALF_LOG_2_PI = 0.5 * FastMath.Log(TWO_PI, null);
 
 var EXACT_STIRLING_ERRORS = [0.0, /* 0.0 */
     0.1534264097200273452913848, /* 0.5 */
@@ -41,14 +41,14 @@ var EXACT_STIRLING_ERRORS = [0.0, /* 0.0 */
     ];
 
 function getStirlingError(z){
-	var ret; 
+	var ret;
 	if(z < 15.0){
 		var z2 = 2.0 * z;
-		if (FastMathFloor(z2) == z2){
+		if (FastMath.Floor(z2) == z2){
 			ret = EXACT_STIRLING_ERRORS[z2];
 		}else{
-			ret = LogGamma(z + 1.0) - (z + 0.5) * FastMathLog(z, null) + z - HALF_LOG_2_PI;
-		}	
+			ret = Gamma.LogGamma(z + 1.0) - (z + 0.5) * FastMath.Log(z, null) + z - HALF_LOG_2_PI;
+		}
 	}else{
 		var z2 = z * z;
 		ret = (0.083333333333333333333 -
@@ -58,32 +58,32 @@ function getStirlingError(z){
                                             0.0008417508417508417508417508 /
                                             z2) / z2) / z2) / z2) / z;
 	}
-	return ret; 
+	return ret;
 }
 
 function getDeviancePart(x, mu){
-	var ret; 
-	if (FastMathAbs(x - mu) < 0.1 * (x + mu)){
+	var ret;
+	if (FastMath.Abs(x - mu) < 0.1 * (x + mu)){
 		var d = x - mu;
 		var v = d/ (x + mu);
 		var s1 = v * d;
 		var s = Number.Nan;
-		var ej = 2.0 * x * v; 
-		
-		v = v * v; 
-		var j = 1; 
+		var ej = 2.0 * x * v;
+
+		v = v * v;
+		var j = 1;
 		while (s1 != s){
 			s = s1;
-			ej *= v; 
+			ej *= v;
 			s1 = s + ej / ((j * 2) + 1);
         	++j;
 		}
 		ret = s1;
 	}else{
-		ret = x * FastMathLog((x / mu), null) + mu - x;
+		ret = x * FastMath.Log((x / mu), null) + mu - x;
 	}
-	
-	return ret; 
+
+	return ret;
 }
 
 function logBinomialProbability(x, n, p, q){
@@ -92,31 +92,20 @@ function logBinomialProbability(x, n, p, q){
 		if (p < 0.1) {
 			ret = -getDeviancePart(n, n * q) - n * p;
 		} else {
-			ret = n * FastMathLog(q, null);
+			ret = n * FastMath.Log(q, null);
 		}
 	} else if (x == n) {
 		if (q < 0.1) {
 			ret = -getDeviancePart(n, n * p) - n * q;
 		} else {
-			ret = n * FastMathLog(p, null);
+			ret = n * FastMath.Log(p, null);
 		}
 	} else {
 		ret = getStirlingError(n) - getStirlingError(x) -
 			  getStirlingError(n - x) - getDeviancePart(x, n * p) -
 			  getDeviancePart(n - x, n * q);
 		var f = (TWO_PI * x * (n - x)) / n;
-		ret = -0.5 * FastMathLog(f, null) + ret;
+		ret = -0.5 * FastMath.Log(f, null) + ret;
 	}
 	return ret;
 }
-
-
-
-
-
-
-
-
-
-
-

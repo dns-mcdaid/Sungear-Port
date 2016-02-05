@@ -63,31 +63,31 @@ function HypergeometricDistribution(populationSize, numberOfSuccesses, sampleSiz
 }
 
 //GETTERS
-function getNumberOfSuccesses(){
+HypergeometricDistribution.prototype.getNumberOfSuccesses = function(){
 	return this.numberOfSuccesses;
 }
-function getPopulationSize(){
+HypergeometricDistribution.prototype.getPopulationSize = function(){
 	return this.populationSize;
 }
-function getSampleSize(){
+HypergeometricDistribution.prototype.getSampleSize = function(){
 	return this.sampleSize;
 }
 
-function getLowerDomain(n,m,k){
-	return FastMathMax(0,m-(n-k));
+HypergeometricDistribution.prototype.getLowerDomain = function(n,m,k){
+	return FastMath.Max(0,m-(n-k));
 }
-function getUpperDomain(m,k){
-	return FastMathMin(k,m);
+HypergeometricDistribution.prototype.getUpperDomain = function(m,k){
+	return FastMath.Min(k,m);
 }
 
 
-function getDomain(n, m, k){
+HypergeometricDistribution.prototype.getDomain = function(n, m, k){
 	var ret1 = getLowerDomain(n,m,k);
 	var ret2 = getUpperDomain(m,k);
 	return [ret1, ret2];
 }
 
-function probability(x){
+HypergeometricDistribution.prototype.probability = function(x){
 	var ret;
 
 	var domain = getDomain(getPopulationSize(), getNumberOfSuccesses(), getSampleSize());
@@ -98,15 +98,15 @@ function probability(x){
 		var p = getSampleSize()/getPopulationSize();
 		var q = (getPopulationSize() - getSampleSize())/getPopulationSize();
 		//method from saddlepointexpansion
-		var p1 = logBinomialProbability(x, getNumberOfSuccesses(), p, q);
-		var p2 = logBinomialProbability(getSampleSize() - x, getPopulationSize() - getNumberOfSuccesses(), p, q);
-		var p3 = logBinomialProbability(getSampleSize(), getPopulationSize(), p, q);
-		ret = FastMathExp((p1 + p2 - p3), 0.0, null);
+		var p1 = SaddlePointExpansion.logBinomialProbability(x, getNumberOfSuccesses(), p, q);
+		var p2 = SaddlePointExpansion.logBinomialProbability(getSampleSize() - x, getPopulationSize() - getNumberOfSuccesses(), p, q);
+		var p3 = SaddlePointExpansion.logBinomialProbability(getSampleSize(), getPopulationSize(), p, q);
+		ret = FastMath.Exp((p1 + p2 - p3), 0.0, null);
 	}
 	return ret;
 }
 
-function innerCumulativeProbability(x0,x1,dx){
+HypergeometricDistribution.prototype.innerCumulativeProbability = function(x0,x1,dx){
 	var ret = probability(x0);
 	while(x0 != x1){
 		x0 += dx;
@@ -115,7 +115,7 @@ function innerCumulativeProbability(x0,x1,dx){
 	return ret;
 }
 
-function cumulativeProbability(x){
+HypergeometricDistribution.prototype.cumulativeProbability = function(x){
 	var ret;
 
 	var domain = getDomain(getPopulationSize(), getNumberOfSuccesses(), getSampleSize());
@@ -131,7 +131,7 @@ function cumulativeProbability(x){
 	return ret;
 
 }
-function upperCumulativeProbability(x){
+HypergeometricDistribution.prototype.upperCumulativeProbability = function(x){
 	    var ret;
 
       var domain = getDomain(getPopulationSize(), getNumberOfSuccesses(), getSampleSize());
@@ -145,7 +145,7 @@ function upperCumulativeProbability(x){
       return ret;
 }
 
-function getNumericalMean(){
+HypergeometricDistribution.prototype.getNumericalMean = function(){
 	return (getSampleSize() * getNumberOfSuccesses())/getPopulationSize();
 }
 
@@ -157,7 +157,7 @@ function calculateNumericalVariance(){
 }
 
 
-function getNumericalVariance(){
+HypergeometricDistribution.prototype.getNumericalVariance = function(){
 	if(!numericalVarianceIsCalculated){
 		numericalVariance = calculateNumericalVariance();
 		numericalVarianceIsCalculated = true;
@@ -166,16 +166,16 @@ function getNumericalVariance(){
 }
 
 
-function getSupportLowerBound(){
-	return FastMathMax(0, getSampleSize() + getNumberOfSuccesses() - getPopulationSize());
+HypergeometricDistribution.prototype.getSupportLowerBound = function(){
+	return FastMath.Max(0, getSampleSize() + getNumberOfSuccesses() - getPopulationSize());
 }
 
 
-function getSupportUpperBound(){
-	return FastMathMin(getNumberOfSuccesses(), getSampleSize());
+HypergeometricDistribution.prototype.getSupportUpperBound = function(){
+	return FastMath.Min(getNumberOfSuccesses(), getSampleSize());
 }
 
 
-function isSupportConnected(){
+HypergeometricDistribution.prototype.isSupportConnected = function(){
 	return true;
 }

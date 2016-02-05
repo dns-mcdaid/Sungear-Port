@@ -139,4 +139,7 @@ function sample(sampleSize){
 function reseedRandomGenerator(seed){
 	//random.setSeed(seed);
 	//randomData.reSeed(seed);
+	this.random.setSeed(seed);
+	this.random.reSeed(seed);
+
 }
