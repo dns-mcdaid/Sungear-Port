@@ -16,18 +16,18 @@ Vessel.prototype = {
 
   toString:function(){
     var s = "";
-    for(var i = 0; i < this.anchor.length; i++) {
+    for(var i = 0; i < anchor.length; i++) {
       s += (i > 0 ? " | " : "") + this.anchor[i].name;
     }
     return s;
   },
   cleanup:function(){
-    this.genes = [];
+    genes = [];
   },
   addGene:function(g){
-    this.genes.push(g);
+    genes.push(g);
   },
   getFullCount:function(){
-    return this.genes.length;
+    return genes.length;
   }
 }

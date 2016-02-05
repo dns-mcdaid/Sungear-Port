@@ -15,21 +15,21 @@ Label.prototype = {
   constructor: Label,
 
   getName:function(){
-    return this.name;
+    return name;
   },
   equals:function(otherName){
-    return this.name == otherName;
+    return name == otherName;
   },
   isCool:function(){
-    return this.cool;
+    return cool;
   },
   toString:function(){
-    return this.name;
+    return name;
   },
   compare:function(otherLabel){
-    if(this.name < otherLabel.getName){
+    if(name < otherLabel.getName){
       return -1;
-    } else if (this.name > otherLabel.getName){
+    } else if (name > otherLabel.getName){
       return 1;
     } else {
       return 0;
