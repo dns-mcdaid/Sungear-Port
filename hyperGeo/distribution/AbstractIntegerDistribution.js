@@ -2,11 +2,11 @@
 Radhika Mattoo, October 2015 N.Y.
 
 Porting Sungear from Java to Javascript,
-Translated from Ilyas Mounaime's Java code 
+Translated from Ilyas Mounaime's Java code
 
 */
-// 
-// uses functions from: 
+//
+// uses functions from:
 //its own package, hyperGeo.distribution
 // java.io.Serializable;
 // exception.MathInternalError;
@@ -18,13 +18,13 @@ Translated from Ilyas Mounaime's Java code
 // random.RandomDataImpl;
 // util.FastMath;
 
-//implements IntegerDistribution, Serializable 
+//implements IntegerDistribution, Serializable
 
 var serialVersionUID = -1146319659338487221;
 
 //RandomDataImpl object is deprecated, skipping it using random isntance variable instead
 
-//RandomGenerator object used in constructor  
+//RandomGenerator object used in constructor
 var random;
 
 //AbstractIntegerDistribution function deprecated
@@ -35,24 +35,24 @@ var rng = RandomGenerator(); //RandomGenerator object //TODO: implement RandomIn
 
 //CONSTRUCTOR
 function AbstractIntegerDisctribution(rng){
-	this.random = rng; 
-}	
+	this.random = rng;
+}
 
 function cumulativeProbability(x0, x1){ //throws NumberIsTooLargeException
 	if(x1 < x0){
 		//throw NumberIsTooLargeException(LocalizedFormats.LOWER_ENDPOINT_ABOVE_UPPER_ENDPOINT, x0, x1, true);
 	}
-	return cumulativeProbability(x1)-cumulativeProbability(x0); //this function isn't defined in this file? 
+	return cumulativeProbability(x1)-cumulativeProbability(x0); //this function isn't defined in this file?
 }
 
 function checkedCumulativeProbability(argument){ //throws MathInternalError
-	var result = Number.Nan; 
+	var result = Number.Nan;
 	result = cumulativeProbability(argument);
 	if(result = Number.Nan){
 		//throw new MathInternalError(LocalizedFormats.DISCRETE_CUMULATIVE_PROBABILITY_RETURNED_Nan, argument);
 
 	}
-	return result; 
+	return result;
 }
 
 function solveInverseCumulativeProbability(p,  lower,  upper) {
@@ -77,10 +77,10 @@ function solveInverseCumulativeProbability(p,  lower,  upper) {
 function inverseCumulativeProbability(p){ //throws OutOfRangeException
 	if(p < 0.0 || p > 1.0){
 		//throw new OutOfRangeException(p,0,1)
-	} 
+	}
 	var lower = getSupportLowerBound(); //where is this function defined? WeibullDistribution.java
 	if(p == 0.0){
-		return lower; 
+		return lower;
 	}
 	if( lower == Number.MIN_VALUE){
 		if(checkedCumulativeProbability(lower) >= p){
@@ -94,7 +94,7 @@ function inverseCumulativeProbability(p){ //throws OutOfRangeException
 	var upper = getSupportUpperBound(); //where is this function defined? WeibullDistribution.java
 
 	if(p == 1.0){
-		return upper; 
+		return upper;
 	}
 
 	// use the one-sided Chebyshev inequality to narrow the bracket
@@ -133,20 +133,10 @@ function sample(sampleSize){
 	for(int i = 0; i < sampleSize; i++){
 		out[i] = sample(); //what is sample()?
 	}
-	return out; 
+	return out;
 }
 
 function reseedRandomGenerator(seed){
 	//random.setSeed(seed);
 	//randomData.reSeed(seed);
 }
-
-
-
-
-
-
-
-
-
-
