@@ -17,19 +17,19 @@ Gene.prototype = {
 	constructor: Gene,
 
 	getName:function(){
-		return this.name;
+		return name;
 	},
 	getValue:function(){
-		return this.value;
+		return value;
 	},
-	
+
 	/**
 		* compare two genes ascendingly according to their expression values
 		*/
 	 compare:function(otherGene){
-		if(this.value < otherGene.value){
+		if(value < otherGene.value){
 	 		return -1;
-	 	} else if (this.value > otherGene.value) {
+	 	} else if (value > otherGene.value) {
 	 		return 1;
 	 	} else {
 	 		return 0;
@@ -40,7 +40,7 @@ Gene.prototype = {
 	 	*  test whether two genes are equal according to their name
 		*/
 	 equals:function(other){
-		 if ( this.name == other.name ){
+		 if ( name == other.name ){
 			 return true;
 		 } else {
 			 return false;
