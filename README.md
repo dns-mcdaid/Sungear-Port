@@ -5,7 +5,7 @@
 Sungear enables rapid, visually interactive exploration of large sets of genomic data. It allows browsing of gene sets by experiment membership, gene annotation, and ontological term. The purpose of Sungear is to make otherwise complicated queries quick and visually intuitive.
 
 ## Guide and FAQ
-If you have questions about how to use Sungear, or if it isn't loading properly, check out the sungear [documentation](https://github.com/RajahBimmy/Sungear-Port/tree/master/docs).
+If you have questions about how to use Sungear, or if it isn't loading properly, check out the sungear [documentation](docs/).
 
 ## Quick Links
 
