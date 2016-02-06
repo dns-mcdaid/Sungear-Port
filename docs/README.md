@@ -254,21 +254,18 @@ The second step is to generate a new "species" by following the instructions abo
 
 ## Sungear HTTP Interface
 
-__This section is under construction, we plant to offer results in JSON format.__
+__This section is under construction, we plan to offer results in JSON format.__
 
 Sungear can both receive information from and send information to web-based applications. This information is in the form of name-value paris (NVPs) that are passed to and from Sungear.
 
 Input NVPs are taken from the query string used to open the Sungear application. Any attribute used by Sungear can be passed as a query string NVP. The most relevant ones for users are:
 
 * __data\_url__: If this NVP is present, Sungear will assume that `data_url` specifies the location (properly escaped) of the file it should open upon starting.
-
 * __species__: The species of the data file given by `data_url`, which must be a recognizable Sungear species.
-
 * __export\_url__: If this NVP is present, Sungear's data export functionality (from the groups list) will be enabled. All data will be sent to the URL specified by `export_url` as a form POST.
-
 * __export\_*__: Additional parameters to be sent back to the server with the form POST can be specified as query string NVPs starting with the string `export_`. These parameters will be stripped of the `export_` prefix as sent be to the server. For example, the query string NVP `export_cmd=addGroup` will be sent with the form post as `cmd=addGroup`.
 
-Output NVPs in the form post consist of a list of groups, a list of genes, and any extra NVPs supplied by the user with the prefix of `export\_`. For groups and gene data, the separator character is the pipe (`|`) character. The exact format of the group list and gene lists is as follows:
+Output NVPs in the form post consist of a list of groups, a list of genes, and any extra NVPs supplied by the user with the prefix of `export_`. For groups and gene data, the separator character is the pipe (`|`) character. The exact format of the group list and gene lists is as follows:
 
 * `groups=group1|group2| ... `: a pipe-separated list of the groups being sent.
 * `group1=gene1|gene2| ... `: a pipe-separated list of the genes belonging to a group. One such list is send for each of the groups in the `group` list.
@@ -276,7 +273,6 @@ Output NVPs in the form post consist of a list of groups, a list of genes, and a
 Sungear also expects a response to the form POST. The response can be an empty page, but there must be data available for Sungear to read. The response can also optionally contain the following NVPS:
 
 * __url__: If Sungear is being run as an application, it will display the contents of this URL after a form submission. By default, the application will be replaced by the new URL.
-
 * __target__: An optional tag that specifies the target browser frame for the url.
 
 An example form reply would look like this: `url=/sungear/done.html&target=status`. This would cause Sungear to display the local URL `sungear/done.html` in the window or frame named `status`.

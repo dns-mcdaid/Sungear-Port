@@ -1,0 +1,23 @@
+#controls {
+  background-color: #aaa;
+  padding: 5px;
+}
+
+#controls table {
+  background-color: #ddd;
+}
+
+#ctrlbtns {
+  list-style-type: none;
+  list-style: none;
+}
+
+#ctrlbtns li {
+  display: inline-block;
+  padding-left: 2.5px;
+  padding-right: 2.5px;
+}
+
+#ctrlBtm {
+  text-align: center;
+}
