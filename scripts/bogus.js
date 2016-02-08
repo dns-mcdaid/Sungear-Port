@@ -1,3 +1,8 @@
+/**
+ * Interactive generalization of a Venn diagram to many dimensions.
+ * @author crispy & RajahBimmy
+ */
+
 (function()
 {
 	/** Sungear display outer radius */

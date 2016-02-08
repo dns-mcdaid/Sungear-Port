@@ -75,3 +75,12 @@ List1 | List2 | gene
 1     | 1     | At1g03740
 1     | 1     | At1g03920
 ```
+
+## Dependencies
+
+In order to run on a modern web browser, Sungear requires the following dependencies, which are loaded at runtime:
+
+* [jQuery](https://jquery.com/): Necessary for Bootstrap and fluid controllers.
+* [Bootstrap](http://getbootstrap.com/): Grid System allowing clean formatting of Sungear Interface.
+* [d3](https://d3js.org/): Data visualizer for Sungear GUI and GeneLights description.
+* [RequireJS](http://requirejs.org/): Simplify Javascript dependencies.

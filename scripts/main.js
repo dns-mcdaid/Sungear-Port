@@ -1,8 +1,3 @@
-/**
- * Interactive generalization of a Venn diagram to many dimensions.
- * @author crispy & RajahBimmy
- */
-
 var WIDTH = 800;
 var HEIGHT = 600;
 var clicked = false;
