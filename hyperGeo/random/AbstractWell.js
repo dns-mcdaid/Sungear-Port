@@ -9,11 +9,11 @@ Translated from Ilyas Mounaime's Java code
 var serialVersionUID = -817701723016583596;
 
 //IMPLEMENT INHERITANCE
-AbstractWell.prototype = Object.create(BitStreamGenerator.prototype);
+AbstractWell.prototype = Object.create(BitsStreamGenerator.prototype);
 AbstractWell.prototype.constructor = AbstractWell;
 function AbstractWell(k, m1, m2, m3, seed){
   //superconstructor call
-  BitStreamGenerator.call(this);
+  BitsStreamGenerator.call(this);
 
   this.index;
   this.v;

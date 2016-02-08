@@ -91,6 +91,6 @@ BitsStreamGenerator.prototype.nextLong = function () {
   return high | low; //FIXME
 };
 
-BitsStreamGenerator.prototype.clear(){
+BitsStreamGenerator.prototype.clear = function(){
   this.nextGaussian = Number.Nan;
 }

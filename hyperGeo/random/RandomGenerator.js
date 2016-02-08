@@ -6,7 +6,8 @@ Translated from Ilyas Mounaime's Java code
 
 */
 
-//Interface 
+//Interface
+function RandomGenerator(){}
 RandomGenerator.prototype.setSeed = function () {};
 RandomGenerator.prototype.nextBytes = function () {};
 RandomGenerator.prototype.nextInt = function () {};

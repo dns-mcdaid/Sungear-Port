@@ -22,14 +22,15 @@ Translated from Ilyas Mounaime's Java code
 var serialVersionUID = -436928820673516179;
 
 //IMPLEMENT INHERITANCE
-HypergeometricDistribution.prototype = Object.create(AbstractIntegerDistribution.prototype);
-
-//corect the constructor pointer, because it points to AbstractIntegerDistribution right now
-HypergeometricDistribution.prototype.constructor = HypergeometricDistribution;
+// HypergeometricDistribution.prototype = Object.create(AbstractIntegerDistribution.prototype);
+//
+// //corect the constructor pointer, because it points to AbstractIntegerDistribution right now
+// HypergeometricDistribution.prototype.constructor = HypergeometricDistribution;
 
 function HypergeometricDistribution(populationSize, numberOfSuccesses, sampleSize, rng){
 	if(arguments.length < 4){
 		rng = new Well19937c();
+		// rng = null;
 	}
 
 	//TODO: throws all 3 exceptions listed above
@@ -62,55 +63,55 @@ function HypergeometricDistribution(populationSize, numberOfSuccesses, sampleSiz
 
 }
 
-//GETTERS
+//GETTERS AND HELPERS
 HypergeometricDistribution.prototype.getNumberOfSuccesses = function(){
 	return this.numberOfSuccesses;
 }
-HypergeometricDistribution.prototype.getPopulationSize = function(){
+HypergeometricDistribution.prototype.getPopulationSize= function(){
 	return this.populationSize;
 }
-HypergeometricDistribution.prototype.getSampleSize = function(){
+HypergeometricDistribution.prototype.getSampleSize= function(){
 	return this.sampleSize;
 }
 
 HypergeometricDistribution.prototype.getLowerDomain = function(n,m,k){
-	return FastMath.Max(0,m-(n-k));
+	return FastMathMax(0,m-(n-k));
 }
-HypergeometricDistribution.prototype.getUpperDomain = function(m,k){
-	return FastMath.Min(k,m);
+HypergeometricDistribution.prototype.getUpperDomain= function(m,k){
+	return FastMathMin(k,m);
 }
 
 
 HypergeometricDistribution.prototype.getDomain = function(n, m, k){
-	var ret1 = getLowerDomain(n,m,k);
-	var ret2 = getUpperDomain(m,k);
+	var ret1 = this.getLowerDomain(n,m,k);
+	var ret2 = this.getUpperDomain(m,k);
 	return [ret1, ret2];
 }
 
 HypergeometricDistribution.prototype.probability = function(x){
 	var ret;
 
-	var domain = getDomain(getPopulationSize(), getNumberOfSuccesses(), getSampleSize());
+	var domain = this.getDomain(this.getPopulationSize(), this.getNumberOfSuccesses(), this.getSampleSize());
 
 	if(x < domain[0] || x > domain[1]){
 		ret = 0.0;
 	}else{
-		var p = getSampleSize()/getPopulationSize();
-		var q = (getPopulationSize() - getSampleSize())/getPopulationSize();
+		var p = this.getSampleSize()/this.getPopulationSize();
+		var q = (this.getPopulationSize() - this.getSampleSize())/this.getPopulationSize();
 		//method from saddlepointexpansion
-		var p1 = SaddlePointExpansion.logBinomialProbability(x, getNumberOfSuccesses(), p, q);
-		var p2 = SaddlePointExpansion.logBinomialProbability(getSampleSize() - x, getPopulationSize() - getNumberOfSuccesses(), p, q);
-		var p3 = SaddlePointExpansion.logBinomialProbability(getSampleSize(), getPopulationSize(), p, q);
-		ret = FastMath.Exp((p1 + p2 - p3), 0.0, null);
+		var p1 = SaddlePointExpansionlogBinomialProbability(x, this.getNumberOfSuccesses(), p, q);
+		var p2 = SaddlePointExpansionlogBinomialProbability(this.getSampleSize() - x, this.getPopulationSize() - this.getNumberOfSuccesses(), p, q);
+		var p3 = SaddlePointExpansionlogBinomialProbability(this.getSampleSize(), this.getPopulationSize(), p, q);
+		ret = FastMathExp((p1 + p2 - p3), 0.0, null);
 	}
 	return ret;
 }
 
 HypergeometricDistribution.prototype.innerCumulativeProbability = function(x0,x1,dx){
-	var ret = probability(x0);
+	var ret = this.probability(x0);
 	while(x0 != x1){
 		x0 += dx;
-		ret += probability(x0);
+		ret += this.probability(x0);
 	}
 	return ret;
 }
@@ -118,14 +119,14 @@ HypergeometricDistribution.prototype.innerCumulativeProbability = function(x0,x1
 HypergeometricDistribution.prototype.cumulativeProbability = function(x){
 	var ret;
 
-	var domain = getDomain(getPopulationSize(), getNumberOfSuccesses(), getSampleSize());
+	var domain = this.getDomain(this.getPopulationSize(), this.getNumberOfSuccesses(), this.getSampleSize());
 
 	if(x < domain[0]){
 		ret = 0.0;
 	}else if(x >= domain[1]){
 		ret = 1.0;
 	}else{
-		ret = innerCumulativeProbability(domain[0], x, 1);
+		ret = this.innerCumulativeProbability(domain[0], x, 1);
 	}
 
 	return ret;
@@ -134,32 +135,32 @@ HypergeometricDistribution.prototype.cumulativeProbability = function(x){
 HypergeometricDistribution.prototype.upperCumulativeProbability = function(x){
 	    var ret;
 
-      var domain = getDomain(getPopulationSize(), getNumberOfSuccesses(), getSampleSize());
+      var domain = this.getDomain(this.getPopulationSize(), this.getNumberOfSuccesses(), this.getSampleSize());
       if (x <= domain[0]) {
           ret = 1.0;
       } else if (x > domain[1]) {
           ret = 0.0;
       } else {
-          ret = innerCumulativeProbability(domain[1], x, -1);
+          ret = this.innerCumulativeProbability(domain[1], x, -1);
       }
       return ret;
 }
 
 HypergeometricDistribution.prototype.getNumericalMean = function(){
-	return (getSampleSize() * getNumberOfSuccesses())/getPopulationSize();
+	return (this.getSampleSize() * this.getNumberOfSuccesses())/this.getPopulationSize();
 }
 
 function calculateNumericalVariance(){
-	var N = getPopulationSize();
-	var m =  getNumberOfSuccesses();
-	var n = getSampleSize();
+	var N = this.getPopulationSize();
+	var m =  this.getNumberOfSuccesses();
+	var n = this.getSampleSize();
 	return (n * m * (N-n) * (N-m))/(N * N * (N - 1));
 }
 
 
 HypergeometricDistribution.prototype.getNumericalVariance = function(){
 	if(!numericalVarianceIsCalculated){
-		numericalVariance = calculateNumericalVariance();
+		numericalVariance = this.calculateNumericalVariance();
 		numericalVarianceIsCalculated = true;
 	}
 	return numericalVariance;
@@ -167,12 +168,12 @@ HypergeometricDistribution.prototype.getNumericalVariance = function(){
 
 
 HypergeometricDistribution.prototype.getSupportLowerBound = function(){
-	return FastMath.Max(0, getSampleSize() + getNumberOfSuccesses() - getPopulationSize());
+	return FastMathMax(0, this.getSampleSize() + this.getNumberOfSuccesses() - this.getPopulationSize());
 }
 
 
 HypergeometricDistribution.prototype.getSupportUpperBound = function(){
-	return FastMath.Min(getNumberOfSuccesses(), getSampleSize());
+	return FastMathMin(this.getNumberOfSuccesses(), this.getSampleSize());
 }
 
 

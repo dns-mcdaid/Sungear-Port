@@ -5,9 +5,9 @@ Porting Sungear from Java to Javascript,
 Translated from Ilyas Mounaime's Java code
 
 */
-var PI = (105414357.0 / 33554432.0) + 1.984187159361080883e-9;
+var FastMathPI = (105414357.0 / 33554432.0) + 1.984187159361080883e-9;
 
-var E = (2850325.0 / 1048576.0) + 8.254840070411028747e-8;
+var FastMathE = (2850325.0 / 1048576.0) + 8.254840070411028747e-8;
 
 var RECOMPUTE_TABLES_AT_RUNTIME = false;
 
@@ -60,7 +60,6 @@ var LN_HI_PREC_COEF = [
 	[-0.16624879837036133, -2.6033824355191673E-8]
 ];
 
-
 function lnMant(){
 // 	if (RECOMPUTE_TABLES_AT_RUNTIME) {
 // 	LN_MANT = new double[FastMath.LN_MANT_LEN][];
@@ -107,20 +106,20 @@ function ExpIntTable(){
 
 
 }
-function Min(a, b){
+function FastMathMin(a, b){
 	if(a <= b){ return a;}
 	else return b;
 
 }
 
-function Max(a, b){
+function FastMathMax(a, b){
 	if(a <= b){ return b;}
 	else return a;
 
 }
 
 
-function Exp(x, extra, hiPrec){
+function FastMathExp(x, extra, hiPrec){
 	var intPartA;
 	var intPartB;
 	var intVal;
@@ -176,7 +175,8 @@ function Exp(x, extra, hiPrec){
 	}
 }
 
-function Log(x, hiPrec){
+function FastMathLog(x, hiPrec){
+	console.log("Inside Log");
 if(x == 0) {return Number.NEGATIVE_INFINITY; }
 
 if(x <= 0.0 || isNaN(x)){
@@ -184,6 +184,7 @@ if(x <= 0.0 || isNaN(x)){
 		if (hiPrec != null){
 			hiPrec[0] = Number.Nan;
 		}
+		console.log("Leaving Log1p");
 		return Number.Nan;
 	}
 }
@@ -222,14 +223,13 @@ console.log("After shift right" + bits);
 		console.log("After shift left " + bits);
 		//FIXME
 		if(bits != 0){
-		while((bits & 0x0010000000000000) == 0) {
+			while((bits & 0x0010000000000000) == 0) {
+				--exp;
+				bits = bits << 1;
 
-			--exp;
-			bits = bits << 1;
 
-
+			} //FIXME
 		}
-	}
 	}
 
 if(exp == -1 || exp == 0){
@@ -371,12 +371,12 @@ return a + b;
 
 
 
-function Abs(x){
+function FastMathAbs(x){
 	if(x < 0){return -x;}
 	return x;
 }
 
-function Floor(x){
+function FastMathFloor(x){
 	if(isNaN(x)){
 		return x;
 	}
@@ -388,7 +388,8 @@ function Floor(x){
 
 }
 
-function Log1p(x){ //needed in Gamma.js
+function FastMathLog1p(x){ //needed in Gamma.js
+	console.log("Inside Log1p");
 	if(x == -1){
 		return Number.NEGATIVE_INFINITY;
 	}
@@ -398,8 +399,8 @@ function Log1p(x){ //needed in Gamma.js
 	if (x > 1e-6 || x < -1e-6) {
 			var xpa = 1 + x;
 			var xpb = -(xpa - 1 - x);
-
-			hiPrec = new Array(2);
+			console.log("Leaving Log1p");
+			hiPrec = [];
 			var lores = FastMathLog(xpa, hiPrec);
 			if(!isFinite(lores)){
 				return lores;
