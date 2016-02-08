@@ -31,21 +31,27 @@ var random;
 //function AbstractIntegerDisctibution(RandomGenerator)
 
 //make RandomGenerator object rng
-var rng = RandomGenerator(); //RandomGenerator object //TODO: implement RandomInteger class/constructor
+var rng = new RandomGenerator(); //RandomGenerator object //TODO: implement RandomInteger class/constructor
+
+//IMPLEMENT INHERITANCE
+
+// AbstractIntegerDistribution.prototype = Object.create(IntegerDistribution.prototype);
+// AbstractIntegerDistribution.prototype.constructor = AbstractIntegerDisctribution;
+
 
 //CONSTRUCTOR
-function AbstractIntegerDisctribution(rng){
+function AbstractIntegerDistribution(rng){
 	this.random = rng;
 }
 
-function cumulativeProbability(x0, x1){ //throws NumberIsTooLargeException
+AbstractIntegerDistribution.prototype.cumulativeProbability = function(x0, x1){ //throws NumberIsTooLargeException
 	if(x1 < x0){
 		//throw NumberIsTooLargeException(LocalizedFormats.LOWER_ENDPOINT_ABOVE_UPPER_ENDPOINT, x0, x1, true);
 	}
 	return cumulativeProbability(x1)-cumulativeProbability(x0); //this function isn't defined in this file?
 }
 
-function checkedCumulativeProbability(argument){ //throws MathInternalError
+AbstractIntegerDistribution.prototype.checkedCumulativeProbability = function(argument){ //throws MathInternalError
 	var result = Number.Nan;
 	result = cumulativeProbability(argument);
 	if(result = Number.Nan){
@@ -55,7 +61,7 @@ function checkedCumulativeProbability(argument){ //throws MathInternalError
 	return result;
 }
 
-function solveInverseCumulativeProbability(p,  lower,  upper) {
+AbstractIntegerDistribution.prototype.solveInverseCumulativeProbability = function(p,  lower,  upper) {
 	while((lower + 1) < upper){
 		var xm = (lower+upper) / 2;
 		if(xm < lower || xm > upper){
@@ -74,7 +80,7 @@ function solveInverseCumulativeProbability(p,  lower,  upper) {
 }
 
 
-function inverseCumulativeProbability(p){ //throws OutOfRangeException
+AbstractIntegerDistribution.prototype.inverseCumulativeProbability = function(p){ //throws OutOfRangeException
 	if(p < 0.0 || p > 1.0){
 		//throw new OutOfRangeException(p,0,1)
 	}
@@ -121,13 +127,13 @@ function inverseCumulativeProbability(p){ //throws OutOfRangeException
     return solveInverseCumulativeProbability(p, lower, upper);
 }
 
-function sample(){
-	return inverseCumulativeProbability(random.nextDouble);
-}
-
-function sample(sampleSize){
+AbstractIntegerDistribution.prototype.sample = function(sampleSize){
+	if(arguments.length === 0){
+		return inverseCumulativeProbability(random.nextDouble);
+	}
 	if(sampleSize <= 0){
-		//throw new NotStrictlyPositiveException(LocalizedFormats.NUMBER_OF_SAMPLES, sampleSize);
+		// throw new NotStrictlyPositiveException(LocalizedFormats.NUMBER_OF_SAMPLES, sampleSize);
+			document.getElementById("output").innerHTML = "Throw Not Strictly Positive Exception (sampleSize <= 0) in AbstractIntegerDistribution";
 	}
 	var out = new Array(sampleSize);
 	for(int i = 0; i < sampleSize; i++){
@@ -136,7 +142,7 @@ function sample(sampleSize){
 	return out;
 }
 
-function reseedRandomGenerator(seed){
+AbstractIntegerDistribution.prototype.reseedRandomGenerator = function(seed){
 	//random.setSeed(seed);
 	//randomData.reSeed(seed);
 	this.random.setSeed(seed);

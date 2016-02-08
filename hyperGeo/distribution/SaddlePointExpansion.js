@@ -5,7 +5,7 @@ Porting Sungear from Java to Javascript,
 Translated from Ilyas Mounaime's Java code
 
 */
-var HALF_LOG_2_PI = 0.5 * FastMath.Log(TWO_PI, null);
+var HALF_LOG_2_PI = 0.5 * FastMathLog(TWO_PI, null);
 
 var EXACT_STIRLING_ERRORS = [0.0, /* 0.0 */
     0.1534264097200273452913848, /* 0.5 */
@@ -41,13 +41,14 @@ var EXACT_STIRLING_ERRORS = [0.0, /* 0.0 */
     ];
 
 function getStirlingError(z){
+  console.log("Inside getStirlingError");
 	var ret;
 	if(z < 15.0){
 		var z2 = 2.0 * z;
-		if (FastMath.Floor(z2) == z2){
+		if (FastMathFloor(z2) == z2){
 			ret = EXACT_STIRLING_ERRORS[z2];
 		}else{
-			ret = Gamma.LogGamma(z + 1.0) - (z + 0.5) * FastMath.Log(z, null) + z - HALF_LOG_2_PI;
+			ret = Gamma.LogGamma(z + 1.0) - (z + 0.5) * FastMathLog(z, null) + z - HALF_LOG_2_PI;
 		}
 	}else{
 		var z2 = z * z;
@@ -58,12 +59,14 @@ function getStirlingError(z){
                                             0.0008417508417508417508417508 /
                                             z2) / z2) / z2) / z2) / z;
 	}
+  console.log("Leaving getStirlingError");
 	return ret;
 }
 
 function getDeviancePart(x, mu){
+  console.log("Inside getDeviancePart");
 	var ret;
-	if (FastMath.Abs(x - mu) < 0.1 * (x + mu)){
+	if (FastMathAbs(x - mu) < 0.1 * (x + mu)){
 		var d = x - mu;
 		var v = d/ (x + mu);
 		var s1 = v * d;
@@ -80,32 +83,34 @@ function getDeviancePart(x, mu){
 		}
 		ret = s1;
 	}else{
-		ret = x * FastMath.Log((x / mu), null) + mu - x;
+		ret = x * FastMathLog((x / mu), null) + mu - x;
 	}
-
+console.log("Leaving getDeviancePart");
 	return ret;
 }
 
-function logBinomialProbability(x, n, p, q){
+function SaddlePointExpansionlogBinomialProbability(x, n, p, q){
+  console.log("Inside logBinomialProbability");
 	var ret;
 	if (x == 0) {
 		if (p < 0.1) {
 			ret = -getDeviancePart(n, n * q) - n * p;
 		} else {
-			ret = n * FastMath.Log(q, null);
+			ret = n * FastMathLog(q, null);
 		}
 	} else if (x == n) {
 		if (q < 0.1) {
 			ret = -getDeviancePart(n, n * p) - n * q;
 		} else {
-			ret = n * FastMath.Log(p, null);
+			ret = n * FastMathLog(p, null);
 		}
 	} else {
 		ret = getStirlingError(n) - getStirlingError(x) -
 			  getStirlingError(n - x) - getDeviancePart(x, n * p) -
 			  getDeviancePart(n - x, n * q);
 		var f = (TWO_PI * x * (n - x)) / n;
-		ret = -0.5 * FastMath.Log(f, null) + ret;
+		ret = -0.5 * FastMathLog(f, null) + ret;
 	}
+  console.log("Leaving logBinomialProbability");
 	return ret;
 }
