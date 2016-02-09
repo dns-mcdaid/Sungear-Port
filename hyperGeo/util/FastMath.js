@@ -120,251 +120,253 @@ function FastMathMax(a, b){
 
 
 function FastMathExp(x, extra, hiPrec){
-	var intPartA;
-	var intPartB;
-	var intVal;
-
-	if(x < 0.0){
-		intVal = -x;
-
-		if(intVal > 746){
-			if(hiPrec != null){
-				hiPrec[0] = 0.0;
-				hiPrec[1] = 0.0;
-			}
-			return 0.0;
-		}
-
-		if(intVal > 709){
-			var result = exp(x + 40.19140625, extra, hiPrec) / 285040095144011776.0;
-			if(hiPrec != null){
-				hiPrec[0] /= 285040095144011776.0;
-				hiPrec[1] /= 285040095144011776.0;
-
-			}
-			return result;
-		}
-		if(intVal == 709){
-			var result =  exp(x+1.494140625, extra, hiPrec) / 4.455505956692756620;
-			if(hiPrec != null){
-				hiPrec[0] /= 4.455505956692756620;
-				hiPrec[1] /= 4.455505956692756620;
-			}
-			return result;
-		}
-		intVal++;
-
-		ExpIntTable();
-		intPartA = EXP_INT_TABLE_A[EXP_INT_TABLE_MAX_INDEX-intVal];
-		intPartB = EXP_INT_TABLE_B[EXP_INT_TABLE_MAX_INDEX-intVal];
-
-		intVal = -intVal;
-	}else{
-		intVal = x;
-		if(intVal > 709){
-			if(hiPrec!= null){
-				hiPrec[0] = Number.POSITIVE_INFINITY;
-				hiPrec[1] = 0.0;
-			}
-			return Number.POSITIVE_INFINITY;
-		}
-		ExpIntTable();
-		intPartA = EXP_INT_TABLE_A[EXP_INT_TABLE_MAX_INDEX + intVal];
-		intPartB = EXP_INT_TABLE_B[EXP_INT_TABLE_MAX_INDEX + intVal];
-
-	}
+	return Math.exp(x);
+	// var intPartA;
+	// var intPartB;
+	// var intVal;
+	//
+	// if(x < 0.0){
+	// 	intVal = -x;
+	//
+	// 	if(intVal > 746){
+	// 		if(hiPrec != null){
+	// 			hiPrec[0] = 0.0;
+	// 			hiPrec[1] = 0.0;
+	// 		}
+	// 		return 0.0;
+	// 	}
+	//
+	// 	if(intVal > 709){
+	// 		var result = exp(x + 40.19140625, extra, hiPrec) / 285040095144011776.0;
+	// 		if(hiPrec != null){
+	// 			hiPrec[0] /= 285040095144011776.0;
+	// 			hiPrec[1] /= 285040095144011776.0;
+	//
+	// 		}
+	// 		return result;
+	// 	}
+	// 	if(intVal == 709){
+	// 		var result =  exp(x+1.494140625, extra, hiPrec) / 4.455505956692756620;
+	// 		if(hiPrec != null){
+	// 			hiPrec[0] /= 4.455505956692756620;
+	// 			hiPrec[1] /= 4.455505956692756620;
+	// 		}
+	// 		return result;
+	// 	}
+	// 	intVal++;
+	//
+	// 	ExpIntTable();
+	// 	intPartA = EXP_INT_TABLE_A[EXP_INT_TABLE_MAX_INDEX-intVal];
+	// 	intPartB = EXP_INT_TABLE_B[EXP_INT_TABLE_MAX_INDEX-intVal];
+	//
+	// 	intVal = -intVal;
+	// }else{
+	// 	intVal = x;
+	// 	if(intVal > 709){
+	// 		if(hiPrec!= null){
+	// 			hiPrec[0] = Number.POSITIVE_INFINITY;
+	// 			hiPrec[1] = 0.0;
+	// 		}
+	// 		return Number.POSITIVE_INFINITY;
+	// 	}
+	// 	ExpIntTable();
+	// 	intPartA = EXP_INT_TABLE_A[EXP_INT_TABLE_MAX_INDEX + intVal];
+	// 	intPartB = EXP_INT_TABLE_B[EXP_INT_TABLE_MAX_INDEX + intVal];
+	//
+	// }
 }
 
 function FastMathLog(x, hiPrec){
 	console.log("Inside Log");
-if(x == 0) {return Number.NEGATIVE_INFINITY; }
-
-if(x <= 0.0 || isNaN(x)){
-	if(x != 0.0){
-		if (hiPrec != null){
-			hiPrec[0] = Number.Nan;
-		}
-		console.log("Leaving Log1p");
-		return Number.Nan;
-	}
-}
-console.log("Before toString()" + x);
-var bits = x.toString(16);
-console.log("After toString()" + bits);
-if((bits & 0x8000000000000000) != 0 || isNaN(x)){
-	if(x != 0.0){
-		if(hiPrec != null){
-			hiPrec[0] = Number.Nan;
-		}
-		return Number.Nan;
-	}
-
-}
-
-if(x == Number.POSITIVE_INFINITY){
-	if (hiPrec != null){
-		hiPrec[0] = Number.POSITIVE_INFINITY;
-	}
-	return Number.POSITIVE_INFINITY;
-}
-	var exp = (bits >> 52) - 1023; //get exponent
-console.log("After shift right" + bits);
-	if((bits & 0x7ff0000000000000) == 0){
-	if(x == 0){
-		if(hiPrec != null){
-			hiPrec[0] = Number.NEGATIVE_INFINITY;
-		}
-		return Number.NEGATIVE_INFINITY;
-	}
-
-		//normalize number
-		console.log("Before shift left " + bits);
-		bits <<= 1;
-		console.log("After shift left " + bits);
-		//FIXME
-		if(bits != 0){
-			while((bits & 0x0010000000000000) == 0) {
-				--exp;
-				bits = bits << 1;
-
-
-			} //FIXME
-		}
-	}
-
-if(exp == -1 || exp == 0){
-	if (x < 1.01 && x > 0.99 && hiPrec == null) {
-		var xa = x - 1.0;
-		var xb = xa - x + 1.0;
-		var tmp = xa * HEX_40000000;
-		var aa = xa + temp - temp;
-		var ab = xa - aa;
-		xa = aa;
-		xb = ab;
-
-		var lnCoeg_last = LN_QUICK_COEF[LN_QUICK_COEF.length - 1];
-		var ya = lnCoef_lab[0];
-		var yb = lnCoef_lab[1];
-
-		for (i = LN_QUICK_COEF.length - 2; i >= 0; i--) {
-			aa = ya * xa;
-			ab = ya * xb + yb * xa + yb * xb;
-
-			tmp = aa * HEX_40000000;
-			ya = aa + tmp - tmp;
-			yb = aa - ya + ab;
-
-			var lnCoef_i = LN_QUICK_COEF[i];
-			aa = ya + lnCoef_i[0];
-			ab = yb + lnCoef_i[1];
-
-			tmp = aa * HEX_40000000;
-			ya = aa + tmp - tmp;
-			yb = aa - ya + ab;
-		}
-		aa = ya * xa;
-		ab = ya * xb + yb * xa + yb * xb;
-
-		tmp = aa * HEX_40000000;
-		ya = aa + tmp - tmp;
-		yb = aa - ya + ab;
-
-		return ya + yb;
-
-	}
-}
-lnMant();
-var lnm = LN_MANT[Math.round(((bits & 0x000ffc0000000000) >> 42))];
-var epsilon = (bits & 0x3ffffffffff)/ (TWO_POWER_52 + (bits & 0x000ffc0000000000));
-var lnza = 0.0;
-var lnzb = 0.0;
-
-if(hiPrec != null){
-	//split epsilon --> x
-	var tmp = epsilon * HEX_40000000;
-	var aa = epsilon + tmp - tmp;
-	var ab = epsilon - aa;
-	var xa = aa;
-	var xb = ab;
-
-	//Need a more accurate epsilon, so adjust the division
-	var numer = bits & 0x3ffffffffff;
-	var denom = TWO_POWER_52 + (bits & 0x000ffc0000000000);
-	aa = numer - xa*denom - xb * denom;
-      xb += aa / denom;
-
-      var lnCoef_last = LN_HI_PREC_COEF[LN_HI_PREC_COEF.length-1];
-	var ya = lnCoef_last[0];
-	var yb = lnCoef_last[1];
-
-	for(i = LN_HI_PREC_COEF.length - 2; i >= 0; i--) {
-
-		aa = ya * xa;
-		ab = ya * xb + yb * xa + yb * xb;
-
-		tmp = aa * HEX_40000000;
-		ya = aa + tmp - tmp;
-		yb = aa - ya + ab;
-
-
-		var lnCoef_i = LN_HI_PREC_COEF[i];
-		aa = ya + lnCoef_i[0];
-		ab = yb + lnCoef_i[1];
-
-		tmp = aa * HEX_40000000;
-		ya = aa + tmp - tmp;
-		yb = aa - ya + ab;
-
-	}
-
-   	aa = ya * xa;
-      ab = ya * xb + yb * xa + yb * xb;
-
-	lnza = aa + ab;
-	lnzb = -(lnza - aa - ab);
-}else{//high precision not required
-	lnza = -0.16624882440418567;
-	lnza = lnza * epsilon + 0.19999954120254515;
-	lnza = lnza * epsilon + -0.2499999997677497;
-	lnza = lnza * epsilon + 0.3333333333332802;
-	lnza = lnza * epsilon + -0.5;
-	lnza = lnza * epsilon + 1.0;
-	lnza = lnza * epsilon;
-
-}
-var a = LN_2_A*exp;
-var b = 0.0;
-var c = a+lnm[0];
-var d = -(c-a-lnm[0]);
-a = c;
-b = b + d;
-
-c = a + lnza;
-d = -(c - a - lnza);
-a = c;
-b = b + d;
-
-c = a + LN_2_B*exp;
-d = -(c - a - LN_2_B*exp);
-a = c;
-b = b + d;
-
-c = a + lnm[1];
-d = -(c - a - lnm[1]);
-a = c;
-b = b + d;
-
-c = a + lnzb;
-d = -(c - a - lnzb);
-a = c;
-b = b + d;
-
-if (hiPrec != null) {
-	hiPrec[0] = a;
-	hiPrec[1] = b;
-}
-
-return a + b;
+	return Math.log(x);
+// if(x == 0) {return Number.NEGATIVE_INFINITY; }
+//
+// if(x <= 0.0 || isNaN(x)){
+// 	if(x != 0.0){
+// 		if (hiPrec != null){
+// 			hiPrec[0] = Number.Nan;
+// 		}
+// 		return Number.Nan;
+// 	}
+// }
+// //FIXME
+// var bits = x.toString(2);
+// console.log(bits);
+//
+// if((bits & 0x8000000000000000) != 0 || isNaN(x)){
+// 	if(x != 0.0){
+// 		if(hiPrec != null){
+// 			hiPrec[0] = Number.Nan;
+// 		}
+// 		return Number.Nan;
+// 	}
+//
+// }
+//
+// if(x == Number.POSITIVE_INFINITY){
+// 	if (hiPrec != null){
+// 		hiPrec[0] = Number.POSITIVE_INFINITY;
+// 	}
+// 	return Number.POSITIVE_INFINITY;
+// }
+//
+// 	var exp = (bits >> 52) - 1023; //get exponent
+// 	console.log("Exponent is: " + exp);
+//
+// 	if((bits & 0x7ff0000000000000) == 0){
+// 	if(x == 0){
+// 		if(hiPrec != null){
+// 			hiPrec[0] = Number.NEGATIVE_INFINITY;
+// 		}
+// 		return Number.NEGATIVE_INFINITY;
+// 	}
+//
+// 		//normalize number
+// 		bits <<= 1;
+// 		//FIXME
+// 		if(bits != 0){
+// 			// while((bits & 0x0010000000000000) == 0) {
+// 			// 	--exp;
+// 			// 	bits = bits << 1;
+// 			//
+// 			//
+// 			// } //FIXME
+// 		}
+// 	}
+//
+// if(exp == -1 || exp == 0){
+// 	if (x < 1.01 && x > 0.99 && hiPrec == null) {
+// 		var xa = x - 1.0;
+// 		var xb = xa - x + 1.0;
+// 		var tmp = xa * HEX_40000000;
+// 		var aa = xa + temp - temp;
+// 		var ab = xa - aa;
+// 		xa = aa;
+// 		xb = ab;
+//
+// 		var lnCoeg_last = LN_QUICK_COEF[LN_QUICK_COEF.length - 1];
+// 		var ya = lnCoef_lab[0];
+// 		var yb = lnCoef_lab[1];
+//
+// 		for (i = LN_QUICK_COEF.length - 2; i >= 0; i--) {
+// 			aa = ya * xa;
+// 			ab = ya * xb + yb * xa + yb * xb;
+//
+// 			tmp = aa * HEX_40000000;
+// 			ya = aa + tmp - tmp;
+// 			yb = aa - ya + ab;
+//
+// 			var lnCoef_i = LN_QUICK_COEF[i];
+// 			aa = ya + lnCoef_i[0];
+// 			ab = yb + lnCoef_i[1];
+//
+// 			tmp = aa * HEX_40000000;
+// 			ya = aa + tmp - tmp;
+// 			yb = aa - ya + ab;
+// 		}
+// 		aa = ya * xa;
+// 		ab = ya * xb + yb * xa + yb * xb;
+//
+// 		tmp = aa * HEX_40000000;
+// 		ya = aa + tmp - tmp;
+// 		yb = aa - ya + ab;
+//
+// 		return ya + yb;
+//
+// 	}
+// }
+// lnMant();
+// var lnm = LN_MANT[Math.round(((bits & 0x000ffc0000000000) >> 42))];
+// var epsilon = (bits & 0x3ffffffffff)/ (TWO_POWER_52 + (bits & 0x000ffc0000000000));
+// var lnza = 0.0;
+// var lnzb = 0.0;
+//
+// if(hiPrec != null){
+// 	//split epsilon --> x
+// 	var tmp = epsilon * HEX_40000000;
+// 	var aa = epsilon + tmp - tmp;
+// 	var ab = epsilon - aa;
+// 	var xa = aa;
+// 	var xb = ab;
+//
+// 	//Need a more accurate epsilon, so adjust the division
+// 	var numer = bits & 0x3ffffffffff;
+// 	var denom = TWO_POWER_52 + (bits & 0x000ffc0000000000);
+// 	aa = numer - xa*denom - xb * denom;
+//       xb += aa / denom;
+//
+//       var lnCoef_last = LN_HI_PREC_COEF[LN_HI_PREC_COEF.length-1];
+// 	var ya = lnCoef_last[0];
+// 	var yb = lnCoef_last[1];
+//
+// 	for(i = LN_HI_PREC_COEF.length - 2; i >= 0; i--) {
+//
+// 		aa = ya * xa;
+// 		ab = ya * xb + yb * xa + yb * xb;
+//
+// 		tmp = aa * HEX_40000000;
+// 		ya = aa + tmp - tmp;
+// 		yb = aa - ya + ab;
+//
+//
+// 		var lnCoef_i = LN_HI_PREC_COEF[i];
+// 		aa = ya + lnCoef_i[0];
+// 		ab = yb + lnCoef_i[1];
+//
+// 		tmp = aa * HEX_40000000;
+// 		ya = aa + tmp - tmp;
+// 		yb = aa - ya + ab;
+//
+// 	}
+//
+//    	aa = ya * xa;
+//       ab = ya * xb + yb * xa + yb * xb;
+//
+// 	lnza = aa + ab;
+// 	lnzb = -(lnza - aa - ab);
+// }else{//high precision not required
+// 	lnza = -0.16624882440418567;
+// 	lnza = lnza * epsilon + 0.19999954120254515;
+// 	lnza = lnza * epsilon + -0.2499999997677497;
+// 	lnza = lnza * epsilon + 0.3333333333332802;
+// 	lnza = lnza * epsilon + -0.5;
+// 	lnza = lnza * epsilon + 1.0;
+// 	lnza = lnza * epsilon;
+//
+// }
+// var a = LN_2_A*exp;
+// var b = 0.0;
+// var c = a+lnm[0];
+// var d = -(c-a-lnm[0]);
+// a = c;
+// b = b + d;
+//
+// c = a + lnza;
+// d = -(c - a - lnza);
+// a = c;
+// b = b + d;
+//
+// c = a + LN_2_B*exp;
+// d = -(c - a - LN_2_B*exp);
+// a = c;
+// b = b + d;
+//
+// c = a + lnm[1];
+// d = -(c - a - lnm[1]);
+// a = c;
+// b = b + d;
+//
+// c = a + lnzb;
+// d = -(c - a - lnzb);
+// a = c;
+// b = b + d;
+//
+// if (hiPrec != null) {
+// 	hiPrec[0] = a;
+// 	hiPrec[1] = b;
+// }
+//
+// return a + b;
 
 
 }
@@ -389,7 +391,7 @@ function FastMathFloor(x){
 }
 
 function FastMathLog1p(x){ //needed in Gamma.js
-	console.log("Inside Log1p");
+	console.log("Inside Log1p with x:" + x);
 	if(x == -1){
 		return Number.NEGATIVE_INFINITY;
 	}

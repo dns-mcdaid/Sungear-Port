@@ -89,6 +89,7 @@ HypergeometricDistribution.prototype.getDomain = function(n, m, k){
 }
 
 HypergeometricDistribution.prototype.probability = function(x){
+	console.log("In probability");
 	var ret;
 
 	var domain = this.getDomain(this.getPopulationSize(), this.getNumberOfSuccesses(), this.getSampleSize());
