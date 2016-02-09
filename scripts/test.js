@@ -49,6 +49,9 @@ define(['jquery', 'd3'], function($, d3){
           cell2.innerHTML = geneDictionary[key];
         }
       }
+      $('#geneTbody tr').on('click', function(event) {
+          $(this).addClass('highlight').siblings().removeClass('highlight');
+      });
     },
 
     populateGoTerms: function(){
@@ -192,7 +195,6 @@ define(['jquery', 'd3'], function($, d3){
       }
     }
   };
-
 
   return Methods;
 });

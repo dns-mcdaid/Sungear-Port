@@ -5,7 +5,7 @@ define(['jquery', 'd3'], function(jq, d3){
       $(this).addClass('highlight').siblings().removeClass('highlight');
   });
 
-  $('#genes tbody tr').on('click', function(event) {
+  $('#geneTbody tr').on('click', function(event) {
       $(this).addClass('highlight').siblings().removeClass('highlight');
   });
 
