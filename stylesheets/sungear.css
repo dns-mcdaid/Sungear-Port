@@ -1,23 +1,127 @@
-#controls {
-  background-color: #aaa;
-  padding: 5px;
+body {
+	background-color: #F6F6E8;
+	color: #404040;
+	font-family: 'Noto Sans', sans-serif;
 }
 
-#controls table {
+h1 {
+	padding-left: 20px;
+}
+
+h3 {
+	color: #F6F6E8;
+	padding-left: 10px;
+}
+
+a {
+	color: #00ACE9;
+}
+
+.container {
+	padding-top: 20px;
+}
+
+.btn {
+	border: 0 none;
+	padding: 4px 6px;
+	font-size: 15px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+.btn-primary {
+	background-color: #6A9A1F;
+	border: 0 none;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
+	background-color: #00ACE9;
+}
+
+#genes {
+	background-color: #404040;
+  padding: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#sunMain {
+	background-color: #111;
+	height: 400px;
+	padding: 5px;
+	color: #F6F6E8;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#sunGui {
+	width: 100%;
+	height: 325px;
+}
+
+#controls {
+  background-color: #404040;
+  padding: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#ctrlTable, #geneTable {
   background-color: #ddd;
+	width: 100%;
+	height: 100px;
+	color: #404040;
+}
+
+tr {
+	width: 100%;
+}
+
+.table-striped tbody tr.highlight td {
+    background-color: #D43F3F;
+		color: #F6F6E8;
 }
 
 #ctrlbtns {
+	padding: 0;
   list-style-type: none;
   list-style: none;
+	text-align: center;
 }
 
 #ctrlbtns li {
   display: inline-block;
-  padding-left: 2.5px;
-  padding-right: 2.5px;
+  padding-left: 1px;
+  padding-right: 1px;
 }
 
-#ctrlBtm {
+#ctrlBtm, #goTop {
   text-align: center;
+}
+
+#goTerms {
+	background-color: #404040;
+  padding: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#goHierarchy {
+	background-color: #ddd;
+	margin-top: 10px;
+	height: 100px;
+	overflow: auto;
+}
+
+#goZscore {
+	background-color: #ddd;
+	margin-top: 10px;
+	height: 200px;
+	overflow: auto;
+	margin-bottom: 10px;
+}
+
+#goCount, #geneCount {
+	padding-top: 10px;
+	color: #F6F6E8;
 }

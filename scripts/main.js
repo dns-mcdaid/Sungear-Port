@@ -1,15 +1,26 @@
-/**
- * Interactive generalization of a Venn diagram to many dimensions.
- * @author crispy & RajahBimmy
- */
+define(['jquery', 'd3'], function(jq, d3){
 
-var WIDTH = 800;
-var HEIGHT = 600;
-var clicked = false;
+  // Control table highlighter
+  $('#controls tbody tr').on('click', function(event) {
+      $(this).addClass('highlight').siblings().removeClass('highlight');
+  });
 
-var canvas = document.getElementById("sungear_plot");
-var context = canvas.getContext("2d");
+  $('#genes tbody tr').on('click', function(event) {
+      $(this).addClass('highlight').siblings().removeClass('highlight');
+  });
 
-context.rect(0, 0, WIDTH, HEIGHT);
-context.fillStyle = "black";
-context.fill();
+  // HTML Canvas initialization
+
+  /**
+  var WIDTH = 300; // NO IDEA WHY BUT DON'T CHANGE IT
+  var HEIGHT = 325;
+  var clicked = false;
+
+  var canvas = document.getElementById("sunGui");
+  var context = canvas.getContext("2d");
+
+  context.rect(0, 0, WIDTH, HEIGHT);
+  context.fillStyle = "#000";
+  context.fill();
+  */
+});
