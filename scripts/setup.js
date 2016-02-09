@@ -28,8 +28,22 @@ requirejs.config({
       'http://d3js.org/d3.v3.min',
       'lib/d3.min'
     ],
+    keypress: 'lib/keypress-2.1.3.min'
     // With the external libraries out of the way, we can move onto grabbing real Sungear files.
-    gene: 'genes/gene'
+
+    // From the Genes folder
+    anchor: 'genes/anchor',
+    genesGene: 'genes/gene',
+    geneEvent: 'genes/geneEvent',
+    term: 'genes/term',
+    vessel: 'genes/vessel',
+    
+    // From the GeneLights folder
+    anchorList: 'geneLights/anchorList',
+    geneLightsGene: 'geneLights/gene',
+    geneLoc: 'geneLights/geneLoc',
+    label: 'geneLights/label',
+    parseData: 'geneLights/parseData'
   }
 });
 
