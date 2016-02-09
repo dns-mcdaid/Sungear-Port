@@ -41,7 +41,7 @@ var EXACT_STIRLING_ERRORS = [0.0, /* 0.0 */
     ];
 
 function getStirlingError(z){
-  console.log("Inside getStirlingError");
+  console.log("Inside getStirlingError with z: " + z);
 	var ret;
 	if(z < 15.0){
 		var z2 = 2.0 * z;
@@ -59,12 +59,12 @@ function getStirlingError(z){
                                             0.0008417508417508417508417508 /
                                             z2) / z2) / z2) / z2) / z;
 	}
-  console.log("Leaving getStirlingError");
+  console.log("Leaving getStirlingError with " + ret);
 	return ret;
 }
 
 function getDeviancePart(x, mu){
-  console.log("Inside getDeviancePart");
+  console.log("Inside getDeviancePart with x: " + x + " , and mu: " + mu);
 	var ret;
 	if (FastMathAbs(x - mu) < 0.1 * (x + mu)){
 		var d = x - mu;
@@ -85,12 +85,12 @@ function getDeviancePart(x, mu){
 	}else{
 		ret = x * FastMathLog((x / mu), null) + mu - x;
 	}
-console.log("Leaving getDeviancePart");
+console.log("Leaving getDeviancePart with" + ret);
 	return ret;
 }
 
 function SaddlePointExpansionlogBinomialProbability(x, n, p, q){
-  console.log("Inside logBinomialProbability");
+  console.log("Inside logBinomialProbability with x: " + x + " , n : " + n + " , p: " + p + " ,and q: " + q);
 	var ret;
 	if (x == 0) {
 		if (p < 0.1) {
@@ -111,6 +111,6 @@ function SaddlePointExpansionlogBinomialProbability(x, n, p, q){
 		var f = (TWO_PI * x * (n - x)) / n;
 		ret = -0.5 * FastMathLog(f, null) + ret;
 	}
-  console.log("Leaving logBinomialProbability");
+  console.log("Leaving logBinomialProbability with " + ret);
 	return ret;
 }
