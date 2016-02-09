@@ -18,74 +18,15 @@
         <div id="genes" class="img-rounded">
           <!-- Genes Dialog -->
           <h3>Genes</h3>
-          <table class="table table-striped img-rounded">
+          <table class="table table-striped img-rounded" id="geneTable">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Description</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>At1g01040</td>
-                <td>DEAD/DEAH</td>
-              </tr>
-              <tr>
-                <td>At1g01050</td>
-                <td>inorganic</td>
-              </tr>
-              <tr>
-                <td>At1g01060</td>
-                <td>myb family traits</td>
-              </tr>
-              <tr>
-                <td>At1g01090</td>
-                <td>pyruvate dehydration</td>
-              </tr>
-              <tr>
-                <td>At1g01100</td>
-                <td>60S acidic</td>
-              </tr>
-              <tr>
-                <td>At1g01120</td>
-                <td>fatty acid elongated</td>
-              </tr>
-              <tr>
-                <td>At1g01130</td>
-                <td>expressed protein</td>
-              </tr>
-              <tr>
-                <td>At1g01140</td>
-                <td>CBL-interactivity</td>
-              </tr>
-              <tr>
-                <td>At1g01150</td>
-                <td>expressed protein</td>
-              </tr>
-              <tr>
-                <td>At1g01160</td>
-                <td>SSXT protein-rich</td>
-              </tr>
-              <tr>
-                <td>At1g01170</td>
-                <td>ozone-responsive</td>
-              </tr>
-              <tr>
-                <td>At1g01220</td>
-                <td>GHMP kinasede</td>
-              </tr>
-              <tr>
-                <td>At1g01250</td>
-                <td>encodes a metosis</td>
-              </tr>
-              <tr>
-                <td>At1g01630</td>
-                <td>SEC14 cytososis</td>
-              </tr>
-              <tr>
-                <td>At1g01640</td>
-                <td>speckle type</td>
-              </tr>
+            <tbody id="geneTbody">
+
             </tbody>
           </table>
           <input type="text" name="geneSearch"> <a class="btn btn-primary" id="geneFind" role="button">Find</a>
@@ -118,7 +59,7 @@
             <li><a class="btn btn-primary" href="#" role="button">Intersect</a></li>
             <li><a class="btn btn-primary" href="#" role="button">Find Cool</a></li>
           </ul>
-          <table class="table table-striped img-rounded">
+          <table class="table table-striped img-rounded" id="ctrlTable">
             <thead>
               <tr>
                 <th>+/-</th>
@@ -178,28 +119,11 @@
           <div id="goHierarchy" class="img-rounded">
             <ul>
               <li>GO terms</li>
-              <ul>
-                <li>(-10;11231) biological_process</li>
-                <li>(-1;14082) cellular_component</li>
-                <li>(-9;13754) molecular_function</li>
-                <li>(-10;11231) biological_process</li>
-                <li>(-9;13754) molecular_function</li>
-              </ul>
+              <ul id="goDir"></ul>
             </ul>
           </div>
           <div id="goZscore" class="img-rounded">
-            <ul>
-              <li>(13;6301) biological_process</li>
-              <li>(5;494) response to stress</li>
-              <li>(5;893) transport</li>
-              <li>(5;969) transporter activity</li>
-              <li>(4;267) amino acid and derivative metabolism</li>
-              <li>(4;605) development</li>
-              <li>(4;541) hydrolase activity, acting on ester bonds</li>
-              <li>(4;210) intracellular transport</li>
-              <li>(4;304) lipid metabolism</li>
-              <li>(4;235) nitrogen compound metabolism</li>
-            </ul>
+            <ul id="goList"></ul>
           </div>
           <input type="text" name="zSearch"> <a class="btn btn-primary" id="zFind" role="button">Find</a>
           <p id="goCount">GO Terms: 2427</p>

@@ -66,7 +66,7 @@ a {
 	margin-bottom: 10px;
 }
 
-#controls table, #genes table {
+#ctrlTable, #geneTable {
   background-color: #ddd;
 	width: 100%;
 	height: 100px;
