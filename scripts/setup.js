@@ -28,7 +28,7 @@ requirejs.config({
       'http://d3js.org/d3.v3.min',
       'lib/d3.min'
     ],
-    keypress: 'lib/keypress-2.1.3.min'
+    keypress: 'lib/keypress-2.1.3.min',
     // With the external libraries out of the way, we can move onto grabbing real Sungear files.
 
     // From the Genes folder
@@ -37,7 +37,7 @@ requirejs.config({
     geneEvent: 'genes/geneEvent',
     term: 'genes/term',
     vessel: 'genes/vessel',
-    
+
     // From the GeneLights folder
     anchorList: 'geneLights/anchorList',
     geneLightsGene: 'geneLights/gene',
@@ -50,6 +50,7 @@ requirejs.config({
 // See 'test.js' for more info on how this function works.
 require(['test'], function(Y){
   Y.doSomething();
+  document.getElementById("ctrlRestart").addEventListener("click", Y.visualizeCircles);
 });
 
 // Give credit to your libraries.
