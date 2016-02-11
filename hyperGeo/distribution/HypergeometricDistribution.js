@@ -1,5 +1,5 @@
 /*
-Radhika Mattoo, October 2015 N.Y.
+Radhika Mattoo, February 2016  N.Y.
 
 Porting Sungear from Java to Javascript,
 Translated from Ilyas Mounaime's Java code
@@ -22,10 +22,8 @@ Translated from Ilyas Mounaime's Java code
 var serialVersionUID = -436928820673516179;
 
 //IMPLEMENT INHERITANCE
-// HypergeometricDistribution.prototype = Object.create(AbstractIntegerDistribution.prototype);
-//
-// //corect the constructor pointer, because it points to AbstractIntegerDistribution right now
-// HypergeometricDistribution.prototype.constructor = HypergeometricDistribution;
+HypergeometricDistribution.prototype = Object.create(AbstractIntegerDistribution.prototype);
+HypergeometricDistribution.prototype.constructor = HypergeometricDistribution;
 
 function HypergeometricDistribution(populationSize, numberOfSuccesses, sampleSize, rng){
 	if(arguments.length < 4){

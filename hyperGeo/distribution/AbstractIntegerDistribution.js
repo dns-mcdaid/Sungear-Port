@@ -1,42 +1,21 @@
 /*
-Radhika Mattoo, October 2015 N.Y.
+Radhika Mattoo, February 2016 N.Y.
 
 Porting Sungear from Java to Javascript,
 Translated from Ilyas Mounaime's Java code
 
 */
-//
-// uses functions from:
-//its own package, hyperGeo.distribution
-// java.io.Serializable;
-// exception.MathInternalError;
-// exception.NotStrictlyPositiveException;
-// exception.NumberIsTooLargeException;
-// exception.OutOfRangeException;
-// exception.util.LocalizedFormats;
-// random.RandomGenerator;
-// random.RandomDataImpl;
-// util.FastMath;
 
-//implements IntegerDistribution, Serializable
 
 var serialVersionUID = -1146319659338487221;
-
-//RandomDataImpl object is deprecated, skipping it using random isntance variable instead
-
-//RandomGenerator object used in constructor
 var random;
 
-//AbstractIntegerDistribution function deprecated
-//function AbstractIntegerDisctibution(RandomGenerator)
-
-//make RandomGenerator object rng
 var rng = new RandomGenerator(); //RandomGenerator object //TODO: implement RandomInteger class/constructor
 
 //IMPLEMENT INHERITANCE
 
-// AbstractIntegerDistribution.prototype = Object.create(IntegerDistribution.prototype);
-// AbstractIntegerDistribution.prototype.constructor = AbstractIntegerDisctribution;
+AbstractIntegerDistribution.prototype = Object.create(IntegerDistribution.prototype);
+AbstractIntegerDistribution.prototype.constructor = AbstractIntegerDisctribution;
 
 
 //CONSTRUCTOR
@@ -46,7 +25,7 @@ function AbstractIntegerDistribution(rng){
 
 AbstractIntegerDistribution.prototype.cumulativeProbability = function(x0, x1){ //throws NumberIsTooLargeException
 	if(x1 < x0){
-		//throw NumberIsTooLargeException(LocalizedFormats.LOWER_ENDPOINT_ABOVE_UPPER_ENDPOINT, x0, x1, true);
+		throw NumberIsTooLargeException(LocalizedFormats.LOWER_ENDPOINT_ABOVE_UPPER_ENDPOINT, x0, x1, true);
 	}
 	return cumulativeProbability(x1)-cumulativeProbability(x0); //this function isn't defined in this file?
 }
@@ -55,7 +34,7 @@ AbstractIntegerDistribution.prototype.checkedCumulativeProbability = function(ar
 	var result = Number.Nan;
 	result = cumulativeProbability(argument);
 	if(result = Number.Nan){
-		//throw new MathInternalError(LocalizedFormats.DISCRETE_CUMULATIVE_PROBABILITY_RETURNED_Nan, argument);
+		throw new MathInternalError(LocalizedFormats.DISCRETE_CUMULATIVE_PROBABILITY_RETURNED_Nan, argument);
 
 	}
 	return result;
@@ -82,7 +61,7 @@ AbstractIntegerDistribution.prototype.solveInverseCumulativeProbability = functi
 
 AbstractIntegerDistribution.prototype.inverseCumulativeProbability = function(p){ //throws OutOfRangeException
 	if(p < 0.0 || p > 1.0){
-		//throw new OutOfRangeException(p,0,1)
+		throw new OutOfRangeException(p,0,1)
 	}
 	var lower = getSupportLowerBound(); //where is this function defined? WeibullDistribution.java
 	if(p == 0.0){
@@ -104,7 +83,7 @@ AbstractIntegerDistribution.prototype.inverseCumulativeProbability = function(p)
 	}
 
 	// use the one-sided Chebyshev inequality to narrow the bracket
-    // cf. AbstractRealDistribution.inverseCumulativeProbability(double)
+// 	cf. AbstractRealDistribution.inverseCumulativeProbability(double)
     var mu = getNumericalMean(); // defined in WeibullDistribution.java
     var sigma = //FastMath.sqrt(getNumericalVariance()); //defined in WeibullDistribution.java
 
@@ -132,8 +111,8 @@ AbstractIntegerDistribution.prototype.sample = function(sampleSize){
 		return inverseCumulativeProbability(random.nextDouble);
 	}
 	if(sampleSize <= 0){
-		// throw new NotStrictlyPositiveException(LocalizedFormats.NUMBER_OF_SAMPLES, sampleSize);
-			document.getElementById("output").innerHTML = "Throw Not Strictly Positive Exception (sampleSize <= 0) in AbstractIntegerDistribution";
+		throw new NotStrictlyPositiveException(LocalizedFormats.NUMBER_OF_SAMPLES, sampleSize);
+		//document.getElementById("output").innerHTML = "Throw Not Strictly Positive Exception (sampleSize <= 0) in AbstractIntegerDistribution";
 	}
 	var out = new Array(sampleSize);
 	for(int i = 0; i < sampleSize; i++){
@@ -143,8 +122,6 @@ AbstractIntegerDistribution.prototype.sample = function(sampleSize){
 }
 
 AbstractIntegerDistribution.prototype.reseedRandomGenerator = function(seed){
-	//random.setSeed(seed);
-	//randomData.reSeed(seed);
 	this.random.setSeed(seed);
 	this.random.reSeed(seed);
 
