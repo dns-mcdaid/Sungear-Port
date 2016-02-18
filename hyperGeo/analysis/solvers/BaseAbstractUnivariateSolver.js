@@ -9,7 +9,6 @@ Translated from Ilyas Mounaime's Java code
 var DEFAULT_RELATIVE_ACCURACY = 1e-14;
 var DEFAULT_FUNCTION_VALUE_ACCURACY = 1e-15;
 var counterMax;
-var
 //implements BaseUnivariateSolver
 
 

@@ -16,7 +16,7 @@ function AbstractMultivariateRealDistribution(rng, n){
 }
 //overriding
 AbstractMultivariateRealDistribution.prototype.reseedRandomGenerator = function(seed){
-  this.random.setSeed(seed);
+  this.random.setSeed(seed); //FIXME: find online PRNG file
 }
 
 //overriding

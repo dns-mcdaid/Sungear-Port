@@ -83,7 +83,6 @@ AbstractIntegerDistribution.prototype.inverseCumulativeProbability = function(p)
 	}
 
 	// use the one-sided Chebyshev inequality to narrow the bracket
-// 	cf. AbstractRealDistribution.inverseCumulativeProbability(double)
     var mu = getNumericalMean(); // defined in WeibullDistribution.java
     var sigma = //FastMath.sqrt(getNumericalVariance()); //defined in WeibullDistribution.java
 
@@ -91,7 +90,7 @@ AbstractIntegerDistribution.prototype.inverseCumulativeProbability = function(p)
     	|| mu == Number.Nan || (sigma == Number.POSITIVE_INFINITY || sigma == Number.NEGATIVE_INFINITY)
     	|| sigma == Number.Nan || sigma == 0)
     if(chebsyshevApplies){
-    	var k = //FashMath.sqrt((1.0 - p) / p);
+    	var k = Math.sqrt((1.0 - p) / p);
     	var tmp = mu - l * sigma;
 
     	if(tmp > lower){
@@ -116,7 +115,7 @@ AbstractIntegerDistribution.prototype.sample = function(sampleSize){
 	}
 	var out = new Array(sampleSize);
 	for(int i = 0; i < sampleSize; i++){
-		out[i] = sample(); //what is sample()?
+		out[i] = sample();
 	}
 	return out;
 }

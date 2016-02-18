@@ -2,7 +2,7 @@
 Radhika Mattoo, October 2015 N.Y.
 
 Porting Sungear from Java to Javascript,
-Translated from Ilyas Mounaime's Java code 
+Translated from Ilyas Mounaime's Java code
 
 */
 
@@ -13,7 +13,7 @@ Translated from Ilyas Mounaime's Java code
 
 var serialVersionUID = -2250556892093726375L;
 
-//create inheritance via .prototype 
+//create inheritance via .prototype
 NotPositiveException.prototype = new NumberIsTooSmallException();
 
 //corect the constructor pointer, because it points to NumberIsTooSmallException right now
