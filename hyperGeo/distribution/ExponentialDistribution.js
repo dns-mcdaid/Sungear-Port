@@ -116,4 +116,4 @@ ExponentialDistribution.prototype.getSupportLowerBound = function(){ return 0; }
 ExponentialDistribution.prototype.getSupportUpperBound = function(){ return Number.POSITIVE_INFINITY; }
 ExponentialDistribution.prototype.isSupportLowerBoundInclusive = function(){ return true; }
 ExponentialDistribution.prototype.isSupportUpperBoundInclusive = function(){ return false; }
-ExponentialDistribution.prototype.isSupportConnected = function(){ return true; } 
+ExponentialDistribution.prototype.isSupportConnected = function(){ return true; }

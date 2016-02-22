@@ -170,3 +170,48 @@ function FastMathLog1p(x){ //needed in Gamma.js
 			return y * x;
 	}
 }
+
+
+//CODE TAKEN FROM
+//https://gist.github.com/Yaffle/4654250
+//I DO NOT OWN
+function FastMathNextUp(x) {
+    x = Number(x);
+    if (x !== x) {
+      return x;
+    }
+    if (x === -Number.POSITIVE_INFINITY) {
+      return -Number.MAX_VALUE;
+    }
+    if (x === Number.POSITIVE_INFINITY) {
+      return Number.POSITIVE_INFINITY;
+    }
+    if (x === +Number.MAX_VALUE) {
+      return Number.POSITIVE_INFINITY;
+    }
+    var y = x * (x < 0 ? 1 - Number.EPSILON / 2 : 1 + Number.EPSILON);
+    if (y === x) {
+      var MIN_VALUE = Number.MIN_VALUE;
+      if (MIN_VALUE === 0) {
+        MIN_VALUE = 2.2250738585072014e-308;
+      }
+      if (5e-324 !== 0 && 5e-324 < MIN_VALUE) {
+        MIN_VALUE = 5e-324;
+      }
+      y = x + MIN_VALUE;
+    }
+    if (y === Number.POSITIVE_INFINITY) {
+      y = Number.MAX_VALUE;
+    }
+    var b = x + (y - x) / 2;
+    if (x < b && b < y) {
+      y = b;
+    }
+    var c = (y + x) / 2;
+    if (x < c && c < y) {
+      y = c;
+    }
+    return y === 0 ? -0 : y;
+  };
+
+function FastMathULP(x) { x = Number(x); return x < 0 ? FastMathNextUp(x) - x : x - (-FastMathNextUp(-x)); };
