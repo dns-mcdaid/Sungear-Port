@@ -1,5 +1,6 @@
 
 require('javascript.util');
+var weak = require('weak');
 var TreeSet = javascript.util.TreeSet;
 
 var anchors; //hold anchordisplay obj
@@ -11,6 +12,8 @@ var R_OUTER = 1.2; /** Sungear display outer radius */
 /** Set true to run relaxation algorithm for vessel position after narrow, false for deterministic positioning */
 var relax;
 var rad_inner;
+var multi;
+var goTerm //WeakReference
 
 /** Total count of selected genes in highlighted items */
 var highCnt;
@@ -248,4 +251,24 @@ function binarySearch(array, desired){
   else if(array[mid] > desired && array.length > 1){
     return binarySearch(array.splice(0, mid), desired);
   }else{ return -1; }
+}
+
+function setMulti(b){
+  multi = b;
+  if(!b){
+    for(var i = 0; i < vessels.length; i++){
+      vessels[i].setSelect(false);
+    }
+    for(var i = 0; i < vessels.length; i++){
+      anchors[i].setSelect(false);
+    }
+  }
+
+}
+
+function setGo(GoTerm t) {
+  //make weak ref to GoTerm
+  goTerm = weak(t, function(){
+    console.log("GoTerm has been garbage collected");
+  })
 }
