@@ -13,10 +13,21 @@ var R_OUTER = 1.2; /** Sungear display outer radius */
 var relax;
 var rad_inner;
 var multi;
-var goTerm; //WeakReference
+var goTerm; //WeakReference to a GOTerm object
 
 /** Total count of selected genes in highlighted items */
 var highCnt;
+
+function order(n){
+  if(n != -1){
+    var v = orderedVessels.elementAt(n);
+    lastVessel = v;
+    highlightVessel(v);
+    updateCount();
+    repaint(); //FIXME
+  }else{ throw new Error("Invalid index n to order function");}
+}
+
 
 function setRelax(b) {
   relax = b;
@@ -75,9 +86,98 @@ function positionVesselsCartesian(){
   repaint();
 }
 
-function adjustCenters(){} //TODO
-function relaxCenters(){} //TODO
 
+function relaxStep(eta){
+  var rand = new Random(System.currentTimeMillis());
+// scaling factor to give extra space for vessels (and arrows)
+  var sf = 1.5;
+// random factor added to or subtracted from movement
+  var rf = 0.3;
+  for(var i = 0; i < vessels.length; i++) {
+      var v = vessels[i];
+      if(v.anchor.length === 0 || v.getActiveCount() === 0){
+          continue;
+      }
+      // weak attraction to center point
+      v.dx = 0.02 * (v.getStart().x - v.getCenter().x);
+      v.dy = 0.02 * (v.getStart().y - v.getCenter().y);
+      // strong repulsion from border
+      var md = Math.sqrt(v.getCenter().x*v.getCenter().x + v.getCenter().y*v.getCenter().y) + v.getRadOuter();
+      if(md > 1) {
+          v.dx -= (md-1) * v.getCenter().x;
+          v.dy -= (md-1) * v.getCenter().y;
+      }
+  }
+  // overlapping vessels repel
+  for(i = 0; i < vessels.length; i++) {
+      var v1 = vessels[i];
+      if(v1.getActiveCount() === 0) {continue;}
+      for(var j = i+1; j < vessels.length; j++) {
+          var v2 = vessels[j];
+          if(v2.getActiveCount() === 0){continue;}
+          // x & y distance b/t points, and total radius
+          var ax = v1.getCenter().x - v2.getCenter().x, ay = v1.getCenter().y - v2.getCenter().y;
+          var ar = sf * (v1.getRadOuter() + v2.getRadOuter());
+          // do vessels overlap?
+          if(ax*ax + ay*ay < ar*ar) {
+              // how much the overlap is
+              var adist = Math.sqrt(ax*ax + ay*ay);
+              var dr = ar - adist;
+              var dx, dy;
+              if(adist < 1e-12) {   // total overlap = vessel centers are the same
+                  var t = rand.nextDouble() * 2 * Math.PI;
+                  dx = sf * dr * Math.cos(t);
+                  dy = sf * dr * Math.sin(t);
+              } else {
+                  dx = 0.75 * (dr/adist) * (v2.getCenter().x - v1.getCenter().x);
+                  dy = 0.75 * (dr/adist) * (v2.getCenter().y - v1.getCenter().y);
+              }
+              var iv = vessels[i].anchor.length, jv = vessels[j].anchor.length;
+              v1.dx -= (jv/(iv+jv)) * dx * (1 + 2*rf*rand.nextDouble()-rf);
+              v1.dy -= (jv/(iv+jv)) * dy * (1 + 2*rf*rand.nextDouble()-rf);
+              v2.dx += (iv/(iv+jv)) * dx * (1 + 2*rf*rand.nextDouble()-rf);
+              v2.dy += (iv/(iv+jv)) * dy * (1 + 2*rf*rand.nextDouble()-rf);
+          }
+      }
+  }
+  var e = 0;
+  for(i = 0; i < vessels.length; i++) {
+      var v = vessels[i];
+      if(v.getActiveCount() !== 0) {
+          v.getCenter().x += eta * v.dx;
+          v.getCenter().y += eta * v.dy;
+          e += Math.sqrt(v.dx*v.dx + v.dy*v.dy);
+      }
+  }
+  return e;
+}
+
+
+
+
+
+
+
+
+function adjustCenters(){} //TODO
+function relaxCenters(){
+  var maxIter = 200;
+  var eta = 1.0;
+  var decay = 0.01;
+  var energy = vessels.length;
+  var cnt = 0;
+  do{
+    var e = relaxStep(eta); //TODO
+    energy = e;
+    eta *= (1-decay);
+    cnt += 1;
+  }while(cnt <10 || (energy*eta > 5e-5*vessels.length && cnt < maxIter));
+
+  for(var i = 0; i < vessels.length; i++){
+    vessels[i].updateCenter();
+  }
+
+}
 function getAnchor2D(p){
   for(var i = 0; i < anchors.length; i++){
     if(anchors[i].contains(p)){
@@ -265,9 +365,28 @@ function setMulti(b){
 
 }
 
-function setGo(GoTerm t) {
+function setGo(GoTerm t){
   //make weak ref to GoTerm
   goTerm = weak(t, function(){
     console.log("GoTerm has been garbage collected");
-  }); 
+  });
+}
+
+function getGeneTerms(g){ //g is a Gene object
+  if(goTerm === null || goTerm.get() === null){
+    return []; //return a new array
+  }else{
+    return goTerm.get().getCurrentTerms(g);
+  }
+}
+function getTerms(c){ //c is a Collection of Gene objects
+  var t = new TreeSet(); //new TreeSet of Term objects
+  for(var it = c.iterator(); it.hasNext();){
+    t.addAll(getGeneTerms(it.next()));
+  }
+  return t;
+}
+
+function getAssocGenes(){
+  return (goTerm === null || goTerm.get() === null) ? new TreeSet() : goTerm.get().assocGenes;
 }
