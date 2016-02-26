@@ -13,7 +13,7 @@ var R_OUTER = 1.2; /** Sungear display outer radius */
 var relax;
 var rad_inner;
 var multi;
-var goTerm //WeakReference
+var goTerm; //WeakReference
 
 /** Total count of selected genes in highlighted items */
 var highCnt;
@@ -31,7 +31,6 @@ function getAnchor(p) { //a 2D 'Sungear' coordinates
         }
     }
     return null;
-  }
 }
 
 
@@ -80,7 +79,7 @@ function adjustCenters(){} //TODO
 function relaxCenters(){} //TODO
 
 function getAnchor2D(p){
-  for(int i = 0; i < anchors.length; i++){
+  for(var i = 0; i < anchors.length; i++){
     if(anchors[i].contains(p)){
         return anchors[i];
     }
@@ -91,7 +90,7 @@ function getAnchor2D(p){
 function getVessel(p) {  //regular screen point
   try {
       var vt = makeTransform(getWidth(), getHeight()).createInverse();
-      var pp = (Point2D.Double)vt.transform(new Point2D.Double(p.x, p.y), null);
+      // var pp = (Point2D.Double)vt.transform(new Point2D.Double(p.x, p.y), null); //FIXME
       return getVessel2D(pp);
   } catch(e) {
       e.printStackTrace();
@@ -100,7 +99,7 @@ function getVessel(p) {  //regular screen point
 }
 
 function getVessel2D(p){ //2D 'sungear' point
-  for(int i = 0; i < vessels.length; i++){
+  for(var i = 0; i < vessels.length; i++){
   if(vessels[i].contains(p)){
       return vessels[i];
       }
@@ -113,7 +112,7 @@ function cleanup(){
     anchors[i].cleanup();
   }
   anchors = null;
-  for(var i = 0;  i < vessels.length; i++){
+  for(i = 0;  i < vessels.length; i++){
     vessels[i].cleanup();
   }
   vessels = null;
@@ -143,11 +142,11 @@ function checkHighlight(a, v){ //anchordisplay and vesseldisplay objects
         anchors[i].setShowLongDesc(anchors[i] == a);
       }
       for(var i = 0; i < vessels.length; i++) {
-        var b = (a != null && binarySearch(vessels[i].anchor, a) >= 0);
+        var b = (a !== null && binarySearch(vessels[i].anchor, a) >= 0);
         vessels[i].setHighlight(b);
       }
     }
-    if(a == null && v != lastVessel) {
+    if(a === null && v !== lastVessel) {
       chg = true;
       highlightVessel(v);
     }
@@ -159,9 +158,9 @@ function checkHighlight(a, v){ //anchordisplay and vesseldisplay objects
     }
   }else{// one screen point p
     var p = a;
-    var a = (p==null) ? null : (isInGear(p) ? null : getAnchor(p));
-    var v = (p==null) ? null : (a != null ? null : getVessel(p));
-    checkHighlight(a, v);
+    var x = (p===null) ? null : (isInGear(p) ? null : getAnchor(p));
+    var y = (p===null) ? null : (a !== null ? null : getVessel(p));
+    checkHighlight(x, y);
   }
 }
 
@@ -193,7 +192,7 @@ function updateHighlight() {
 function makeTransform(w, h){
   var M = Math.min(w, h);
   //declare new AffineTransform object
-  AffineTransform vt = new AffineTransform(); //TODO
+  var vt = new AffineTransform(); //TODO
   vt.translate(w/2, h/2);
   vt.scale(0.5*M/R_OUTER, 0.5*M/R_OUTER);
   return vt;
@@ -206,7 +205,7 @@ function getMultiSelection(operation){
   if(operation == MultiSelectable.INTERSECT){ //TODO
       s.addAll(genes.getActiveSet());
     }
-  for(int i = 0; i < vessels.length; i++){
+  for(var i = 0; i < vessels.length; i++){
       if(vessels[i].getSelect()) {
           cnt++;
           if(operation == MultiSelectable.UNION)
@@ -215,7 +214,7 @@ function getMultiSelection(operation){
               s.retainAll(vessels[i].selectedGenes);
       }
   }
-  for(int i = 0; i < anchors.length; i++){
+  for(var i = 0; i < anchors.length; i++){
       if(anchors[i].getSelect()) {
           cnt++;
           // find all of anchor's selected genes
@@ -270,5 +269,5 @@ function setGo(GoTerm t) {
   //make weak ref to GoTerm
   goTerm = weak(t, function(){
     console.log("GoTerm has been garbage collected");
-  })
+  }); 
 }
