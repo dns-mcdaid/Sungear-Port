@@ -24,10 +24,7 @@ requirejs.config({
       'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min',
       'lib/bootstrap.min'
     ],
-    d3: [
-      'http://d3js.org/d3.v3.min',
-      'lib/d3.min'
-    ],
+    p5: 'lib/p5',
     keypress: 'lib/keypress-2.1.3.min',
     // With the external libraries out of the way, we can move onto grabbing real Sungear files.
 
@@ -49,16 +46,11 @@ requirejs.config({
 
 // See 'test.js' for more info on how this function works.
 require(['test'], function(Y){
-  Y.doSomething();
+  //Y.doSomething();
   document.getElementById("ctrlRestart").addEventListener("click", Y.visualizeCircles);
   document.getElementById("geneQuery").addEventListener("click", Y.populateGenes);
   document.getElementById("expand").addEventListener("click", Y.populateGoTerms);
   document.getElementById("collapse").addEventListener("click", Y.removeGoTerms);
-});
-
-// Give credit to your libraries.
-require(["d3", "jquery", "bootstrap"], function(d3, jquery, bootstrap) {
-  d3.select("body").append("i").text("Powered by jQuery, Bootstrap, RequireJS and d3 " + d3.version);
 });
 
 // Call the main.js file to load the canvas and get rolling.
