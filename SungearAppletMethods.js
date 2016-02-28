@@ -1,31 +1,45 @@
 
 require('javascript.util');
 var weak = require('weak');
+var seedrandom = require('seedrandom');
+rng = seedrandom();
+console.log(rng());
 var TreeSet = javascript.util.TreeSet;
 
-var anchors; //hold anchordisplay obj
-var vessels; //hold vesseldisplay obj
-var genes; //geneList object
-var lastAnchor; //anchordisplay obj
-var lastVessel; //vesseldisplay obj
 var R_OUTER = 1.2; /** Sungear display outer radius */
+var R_CIRCLE = 1.0;
+var vRadMax = 0.1; /** Display size of largest vessel */
+var vMax; /** Item count of largest vessel */
+var vMin; /** Item count of smallest vessel */
 /** Set true to run relaxation algorithm for vessel position after narrow, false for deterministic positioning */
 var relax;
-var rad_inner;
-var multi;
+var polarPlot = false; //true for polar, false for default Cartesian
+var showArrows; //boolean, self-explanatory
+var minRad = [0.000, 0.005, 0.010, 0.015, 0.020 ];
+var genes; //GeneList object
 var goTerm; //WeakReference to a GOTerm object
-
+var anchors = []; //hold anchordisplay objs
+var vessels = [];//hold vesseldisplay objs
 /** Total count of selected genes in highlighted items */
 var highCnt;
+var lastAnchor; //anchordisplay obj
+var lastVessel; //vesseldisplay obj
+var orderedVessels = [];//originally a vector, making it a JS array here
+var vsort = [];
+var orderIdx, firstIdx, minRadIdx;
+var vsI, saI = []; //2D Icon arrays //TODO: NEEDED?
+
+/** Threshold for vessel membership for this plot, or NaN for default */
+var thresh, rad_inner, multi;
 
 function order(n){
   if(n != -1){
-    var v = orderedVessels.elementAt(n);
+    var v = orderedVessels[n];
     lastVessel = v;
     highlightVessel(v);
     updateCount();
-    repaint(); //FIXME
-  }else{ throw new Error("Invalid index n to order function");}
+    // repaint(); //FIXME
+  }else{console.log("NAH"); throw new Error("Invalid index n to order function");}
 }
 
 
@@ -35,6 +49,32 @@ function setRelax(b) {
 }
 function getRelax() { return relax; }
 function getVessels() { return vessels; }
+function setMinVesselSizeIdx(n){
+  minRadIdx = n;
+  var vs = vsI[n];
+  //TODO: in the java version there was button interaction here
+  if(vessels !== null){
+    for(var i = 0; i < vessels.length; i++){
+      vessels[i].setRadMin(minRad[n]);
+      positionVessels();
+    }
+  }
+
+}
+
+
+function setShowArrows(b){ //boolean b
+  showArrows = b;
+  sa = saI[b ? 0 : 1];
+  //TODO: in the java version there was button interaction here
+  if(vessels != null){
+    for(var i = 0; i < vessels.length; i++){
+      vessels[i].setShowArrows(b);
+    }
+    //repaint(); //TODO
+  }
+}
+
 function getAnchor(p) { //a 2D 'Sungear' coordinates
     for(var i = 0; i < anchors.length; i++){
         if(anchors[i].contains(p)){
@@ -67,9 +107,7 @@ function positionVesselsPolar(){
     		vessels[i].updateCenter();
 	    }
 	}
-//        if(relax)
-//            relaxCentersPolar();
-	repaint(); //TODO
+	// repaint();
 }
 function positionVesselsCartesian(){
   for(var i = 0; i < vessels.length; i++) {
@@ -83,12 +121,11 @@ function positionVesselsCartesian(){
   } else {
       adjustCenters(1.0);
   }
-  repaint();
+  // repaint(); //TODO
 }
 
 
 function relaxStep(eta){
-  var rand = new Random(System.currentTimeMillis());
 // scaling factor to give extra space for vessels (and arrows)
   var sf = 1.5;
 // random factor added to or subtracted from movement
@@ -125,7 +162,7 @@ function relaxStep(eta){
               var dr = ar - adist;
               var dx, dy;
               if(adist < 1e-12) {   // total overlap = vessel centers are the same
-                  var t = rand.nextDouble() * 2 * Math.PI;
+                  var t = rng() * 2 * Math.PI;
                   dx = sf * dr * Math.cos(t);
                   dy = sf * dr * Math.sin(t);
               } else {
@@ -133,10 +170,10 @@ function relaxStep(eta){
                   dy = 0.75 * (dr/adist) * (v2.getCenter().y - v1.getCenter().y);
               }
               var iv = vessels[i].anchor.length, jv = vessels[j].anchor.length;
-              v1.dx -= (jv/(iv+jv)) * dx * (1 + 2*rf*rand.nextDouble()-rf);
-              v1.dy -= (jv/(iv+jv)) * dy * (1 + 2*rf*rand.nextDouble()-rf);
-              v2.dx += (iv/(iv+jv)) * dx * (1 + 2*rf*rand.nextDouble()-rf);
-              v2.dy += (iv/(iv+jv)) * dy * (1 + 2*rf*rand.nextDouble()-rf);
+              v1.dx -= (jv/(iv+jv)) * dx * (1 + 2*rf*rng()-rf);
+              v1.dy -= (jv/(iv+jv)) * dy * (1 + 2*rf*rng()-rf);
+              v2.dx += (iv/(iv+jv)) * dx * (1 + 2*rf*rng()-rf);
+              v2.dy += (iv/(iv+jv)) * dy * (1 + 2*rf*rng()-rf);
           }
       }
   }
@@ -159,7 +196,35 @@ function relaxStep(eta){
 
 
 
-function adjustCenters(){} //TODO
+function adjustCenters(){
+  var l = [];
+  //default vector size in java is 10, so mimicking that
+  for(var i = 0; i < 10; i++){
+    l[i] = [];
+  }
+  for(i = 0; i < vessels.length; i++){
+    if(vessels[i].activeCount() === 0){ //TODO
+      continue;
+    }
+    p = vessels[i].getCenter(); //TODO
+    var added = false;
+    var v;
+    for(var j = 0; j < l.length && !added; j++){
+      v = l[j];
+      if(p.distance(v[0].getCenter()) < 0.0001){
+        v.push(vessels[i]);
+        added = true;
+      }
+    }
+    if(!added){
+      v = [];
+      v.push(vessels[i]);
+      l.push(v);
+    }
+  }
+
+}
+
 function relaxCenters(){
   var maxIter = 200;
   var eta = 1.0;
@@ -224,12 +289,14 @@ function cleanup(){
 function updateCount(){
   //create new treeset of Gene objects
   var c1 = new TreeSet();
+  console.log("Created new TreeSet");
   for(var i = 0; i < vessels.length; i++){
     if(vessels[i].getHighlight()){
       c1.addAll(vessels[i].selectedGenes);
     }
   }
   highCnt = c1.size();
+  console.log("TreeSet's size is " + highCnt);
 }
 
 function checkHighlight(a, v){ //anchordisplay and vesseldisplay objects
@@ -365,8 +432,8 @@ function setMulti(b){
 
 }
 
-function setGo(GoTerm t){
-  //make weak ref to GoTerm
+function setGo(t){
+  //make weak ref to GoTerm t
   goTerm = weak(t, function(){
     console.log("GoTerm has been garbage collected");
   });
