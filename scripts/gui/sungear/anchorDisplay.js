@@ -3,14 +3,14 @@
  * @author Rajah_Bimmy
  * Copyright Chris Poultney 2004.
  */
-define(['anchor', 'sunGear'], function(anchor, sunGear){
+define(['anchor', 'sunGear', 'vesselDisplay', 'p5'],
+function(anchor, sunGear, vesselDisplay, p5){
   var methods = {
     AnchorDisplay: AnchorDisplay
   }
 
   var NAME_SEPARATOR = ";";
   function AnchorDisplay(anchor) {
-    console.log(sunGear.R_CIRCLE);
     this.anchor = anchor;
     this.highlight = false;
     this.select = false;
@@ -30,7 +30,7 @@ define(['anchor', 'sunGear'], function(anchor, sunGear){
       x: null,
       y: null
     }
-    //this.vessels = new VesselDisplay();
+    this.vessels = [];
   }
 
   AnchorDisplay.prototype = {
@@ -53,7 +53,35 @@ define(['anchor', 'sunGear'], function(anchor, sunGear){
       this.angle = theta;
       this.position.x = sunGear.R_CIRCLE * Math.cos(theta);
       this.position.y = sunGear.R_CIRCLE * Math.sin(theta);
+    },
+
+    getAngle:function(){ return this.angle; },
+
+    setHighlight:function(b){ this.highlight = b; },
+    getHighlight:function(){ return this.highlight; },
+
+    highlightVessels:function(b){
+      for(var i = 0; i < this.vessels.length; i++){
+        this.vessels[i].setHighlight(b);
+      }
+    },
+
+    setSelect:function(b){ this.select = b; },
+    getSelect:function(){ return this.select; },
+
+    setShowLongDesc:function(b){ this.showLongDesc = b; },
+    isShowLongDesc:function(){ return this.showLongDesc; },
+    // MAY NOT BE NECESSARY
+    draw:function(){
+
+    },
+    contains:function(p){
+      return this.shape == null ? false : shape.contains(p); // TODO: Implement.
+    },
+    compare:function(a){
+      return this.anchor.compare(a.anchor);
     }
   }
+
   return methods;
 });
