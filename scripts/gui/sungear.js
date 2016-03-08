@@ -7,60 +7,89 @@ console.log(rng());
 var TreeSet = javascript.util.TreeSet;
 */
 
-define(['jquery', 'p5', 'genesGene'], function($, p5, genesGene){
-  var R_OUTER = 1.2; /** Sungear display outer radius */
-  var R_CIRCLE = 1.0;
-  /** Default text/graphics color */
-  var C_PLAIN = '#d0d0d0';
-  /** Highlighted text/graphics color */
-  var C_HIGHLIGHT = '#ffa0a0';
-  /** Selected text/graphics */
-  var C_SELECT = '#ffffa0';
-  /** Display size of largest vessel */
-  var vRadMax = 0.1; /** Display size of largest vessel */
-  var vMax; /** Item count of largest vessel */
-  var vMin; /** Item count of smallest vessel */
-  /** Set true to run relaxation algorithm for vessel position after narrow, false for deterministic positioning */
-  var relax;
-  var polarPlot = false; //true for polar, false for default Cartesian
-  var showArrows; //boolean, self-explanatory
-  var minRad = [0.000, 0.005, 0.010, 0.015, 0.020 ];
-  var genes; //GeneList object
-  var goTerm; //WeakReference to a GOTerm object
-  var anchors = []; //hold anchordisplay objs
-  var vessels = [];//hold vesseldisplay objs
-  /** Total count of selected genes in highlighted items */
-  var highCnt;
-  var lastAnchor; //anchordisplay obj
-  var lastVessel; //vesseldisplay obj
-  var orderedVessels = [];//originally a vector, making it a JS array here
-  var vsort = [];
-  var orderIdx, firstIdx, minRadIdx;
-  var vsI, saI = []; //2D Icon arrays //TODO: NEEDED?
+// UNSURE IF ANY OF THIS IS NECESSARY ANYMORE
 
-  /** Threshold for vessel membership for this plot, or NaN for default */
-  var thresh, rad_inner, multi;
+var R_OUTER = 1.2; /** Sungear display outer radius */
+var R_CIRCLE = 1.0;
+/** Default text/graphics color */
+var C_PLAIN = '#d0d0d0';
+/** Highlighted text/graphics color */
+var C_HIGHLIGHT = '#ffa0a0';
+/** Selected text/graphics */
+var C_SELECT = '#ffffa0';
+/** Display size of largest vessel */
+var vRadMax = 0.1; /** Display size of largest vessel */
+var vMax; /** Item count of largest vessel */
+var vMin; /** Item count of smallest vessel */
+/** Set true to run relaxation algorithm for vessel position after narrow, false for deterministic positioning */
+var relax;
+var polarPlot = false; //true for polar, false for default Cartesian
+var showArrows; //boolean, self-explanatory
+var minRad = [0.000, 0.005, 0.010, 0.015, 0.020 ];
+var genes; //GeneList object
+var goTerm; //WeakReference to a GOTerm object
+var anchors = []; //hold anchordisplay objs
+var vessels = [];//hold vesseldisplay objs
+/** Total count of selected genes in highlighted items */
+var highCnt;
+var lastAnchor; //anchordisplay obj
+var lastVessel; //vesseldisplay obj
+var orderedVessels = [];//originally a vector, making it a JS array here
+var vsort = [];
+var orderIdx, firstIdx, minRadIdx;
+var vsI, saI = []; //2D Icon arrays //TODO: NEEDED?
+/** Threshold for vessel membership for this plot, or NaN for default */
+var thresh, rad_inner, multi;
 
-  var methods = new p5(function(x){
-    x.setup = function() {
-      var HEIGHT = document.getElementById('sunGui').clientHeight;
-      var WIDTH = document.getElementById('sunGui').clientWidth;
-      var cnv = x.createCanvas(WIDTH,HEIGHT);
-    }
+// PLS IGNORE
 
-    x.draw = function() {
-      x.background(16,16,16);
-      x.fill(0);
+define(['genesGene'],function(genesGene){
+  var methods = {
+    R_OUTER: 1.2,
+    R_CIRCLE: 1.0,
+    /** Default text/graphics color */
+    C_PLAIN: '#d0d0d0',
+    /** Highlighted text/graphics color */
+    C_HIGHLIGHT: '#ffa0a0',
+    /** Selected text/graphics */
+    C_SELECT: '#ffffa0',
+    /** Display size of largest vessel */
+    vRadMax: 0.1, /** Display size of largest vessel */
+    vMax: 0, /** Item count of largest vessel */
+    vMin: 0, /** Item count of smallest vessel */
+    /** Set true to run relaxation algorithm for vessel position after narrow, false for deterministic positioning */
+    relax: false,
+    polarPlot: false, //true for polar, false for default Cartesian
+    showArrows: false, //boolean, self-explanatory
+    minRad: [
+      0.000,
+      0.005,
+      0.010,
+      0.015,
+      0.020
+    ],
+    genes, //GeneList object
+    goTerm, //WeakReference to a GOTerm object
+    anchors: [], //hold anchordisplay objs
+    vessels: [],//hold vesseldisplay objs
+    /** Total count of selected genes in highlighted items */
+    highCnt,
+    lastAnchor, //anchordisplay obj
+    lastVessel, //vesseldisplay obj
+    orderedVessels: [],//originally a vector, making it a JS array here
+    vsort: [],
+    orderIdx,
+    firstIdx,
+    minRadIdx,
+    vsI: [],
+    saI: [], //2D Icon arrays //TODO: NEEDED?
 
-      if (x.mouseIsPressed) {
-        x.fill(0);
-      } else {
-        x.fill(C_HIGHLIGHT);
-      }
-      x.ellipse(x.mouseX, x.mouseY, 80, 80);
-    }
+    /** Threshold for vessel membership for this plot, or NaN for default */
+    thresh,
+    rad_inner,
+    multi,
 
-    function order(n){
+    order:function(n){
       if(n != -1){
         var v = orderedVessels[n];
         lastVessel = v;
@@ -72,7 +101,7 @@ define(['jquery', 'p5', 'genesGene'], function($, p5, genesGene){
         throw new Error("Invalid index n to order function");
       }
     }
-
+    /*
     function setRelax(b) {
       relax = b;
       positionVessels();
@@ -487,6 +516,7 @@ define(['jquery', 'p5', 'genesGene'], function($, p5, genesGene){
     function getAssocGenes(){
       return (goTerm === null || goTerm.get() === null) ? new TreeSet() : goTerm.get().assocGenes;
     }
-
-  }, 'sunGui');
+    */
+  };
+  return methods;
 });

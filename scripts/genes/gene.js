@@ -27,10 +27,10 @@ Gene.prototype = {
   constructor: Gene,
 
   getName:function(){
-    return name;
+    return this.name;
   },
   getDesc:function(){
-    return desc;
+    return this.desc;
   },
   /**
    * Sets the expression values for this gene.
@@ -38,7 +38,7 @@ Gene.prototype = {
    */
   setExp:function(e){
     for(var i = 0; i < e.length; i++){
-      exp[i] = e[i];
+      this.exp[i] = e[i];
     }
   },
   /**
@@ -46,14 +46,14 @@ Gene.prototype = {
    * @return the expression values
    */
   getExp:function(){
-    return exp;
+    return this.exp;
   },
   compare:function(g){
-    var str1 = name.toLowerCase();
-    var str2 = g.name.toLowerCase();
+    var str1 = this.name.toLowerCase();
+    var str2 = g.getName().toLowerCase();
     return str1.localeCompare(str2);
   },
   toString:function(){
-    return name;
+    return this.name;
   }
 }

@@ -26,9 +26,11 @@ requirejs.config({
     p5: 'lib/p5',
     keypress: 'lib/keypress-2.1.3.min',
     // With the external libraries out of the way, we can move onto grabbing real Sungear files.
-    
-    // From the GUI folder
-    sungear: 'gui/sungear',
+
+    // From the gui folder
+    sunGear: 'gui/sunGear',
+      // From the sungear folder
+    anchorDisplay: 'gui/sungear/anchorDisplay',
     // From the Genes folder
     anchor: 'genes/anchor',
     genesGene: 'genes/gene',

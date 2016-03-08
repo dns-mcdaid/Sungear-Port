@@ -15,7 +15,7 @@ Anchor.prototype = {
   },
 
   compare:function(a){
-    var str1 = name.toLowerCase();
+    var str1 = this.name.toLowerCase();
     var str2 = a.name.toLowerCase();
     return str1.localeCompare(str2);
   }
