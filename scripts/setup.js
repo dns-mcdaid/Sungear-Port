@@ -1,8 +1,7 @@
-/**
-  * Setup file used to designate which resources will need to be loaded
-  * in order for Sungear Javascript edition to work properly.
-  */
-
+/*
+ * Setup file used to designate which resources will need to be loaded
+ * in order for Sungear Javascript edition to work properly.
+ */
 
 requirejs.config({
   baseUrl: 'scripts',
@@ -27,7 +26,9 @@ requirejs.config({
     p5: 'lib/p5',
     keypress: 'lib/keypress-2.1.3.min',
     // With the external libraries out of the way, we can move onto grabbing real Sungear files.
-
+    
+    // From the GUI folder
+    sungear: 'gui/sungear',
     // From the Genes folder
     anchor: 'genes/anchor',
     genesGene: 'genes/gene',
@@ -46,7 +47,6 @@ requirejs.config({
 
 // See 'test.js' for more info on how this function works.
 require(['test'], function(Y){
-  //Y.doSomething();
   document.getElementById("ctrlRestart").addEventListener("click", Y.visualizeCircles);
   document.getElementById("geneQuery").addEventListener("click", Y.populateGenes);
   document.getElementById("expand").addEventListener("click", Y.populateGoTerms);

@@ -9,7 +9,7 @@ define(['jquery', 'p5'], function($, p5){
 
   var genesPopulated = false;
   var goPopulated = false;
-
+  /*
   var myp5 = new p5(function( sketch ) {
       sketch.setup = function() {
         var HEIGHT = document.getElementById('sunGui').clientHeight;
@@ -29,12 +29,9 @@ define(['jquery', 'p5'], function($, p5){
         sketch.ellipse(sketch.mouseX, sketch.mouseY, 80, 80);
       }
     }, 'sunGui');
+    */
 
   var Methods = {
-
-    doSomething: function(){
-      $('#foo').text('I got hot sauce in my bag.');
-    },
 
     populateGenes: function(){
 

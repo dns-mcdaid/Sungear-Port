@@ -20,7 +20,7 @@ function Gene(name, desc){
   /** Gene description */
   this.desc = desc;
   /** Gene expression values */
-  var exp = null;
+  this.exp = [];
 }
 
 Gene.prototype = {
