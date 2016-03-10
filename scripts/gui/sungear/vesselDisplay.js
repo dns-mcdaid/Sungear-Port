@@ -1,5 +1,5 @@
-define(['anchor', 'genesGene', 'vessel', 'sunGear', 'anchorDisplay', 'p5'],
-function(anchor, gene, vessel, sunGear, p5){
+define(['anchor', 'genesGene', 'vessel', 'values', 'anchorDisplay', 'p5'],
+function(anchor, gene, vessel, values, p5){
   var methods = {
     VesselDisplay: VesselDisplay
   }
@@ -98,8 +98,8 @@ function(anchor, gene, vessel, sunGear, p5){
         if(this.anchor.length == 0) {
           console.log("OVER HERE");
           // BOTH VALUES SHOULD BE NEGATIVE
-          p.x = sunGear.R_CIRCLE;
-          p.y = sunGear.R_CIRCLE + 0.15;
+          p.x = -values.R_CIRCLE;
+          p.y = -values.R_CIRCLE + 0.15;
         } else {
           console.log("OVER THERE");
           for(var i = 0; i < this.anchor.length; i++) {

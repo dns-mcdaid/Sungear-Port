@@ -7,57 +7,11 @@ console.log(rng());
 var TreeSet = javascript.util.TreeSet;
 */
 
-define(['p5','dataSource','anchorDisplay','comp','icons','stats','vesselDisplay',
+define(['p5','values','dataSource','anchorDisplay','comp','icons','stats','vesselDisplay',
 'anchor','genesGene','geneEvent','geneList','geneListener','multiSelectable','term','vessel'],
-function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
+function(p5,values,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
   anchor,genesGene,geneEvent,geneList,geneListener,multiSelectable,term,vessel){
-  var values = {
-    R_OUTER : R_OUTER,
-    R_CIRCLE : R_CIRCLE,
-    C_PLAIN : C_PLAIN,
-    C_HIGHLIGHT : C_HIGHLIGHT,
-    C_SELECT : C_SELECT
-    /*
-    vRadMax : vRadMax,
-    vMax : vMax,
-    vMin : vMin,
-    relax : relax,
-    polarPlot : polarPlot,
-    showArrows : showArrows,
-    minRad : minRad,
-    genes : genes,
-    goTerm : goTerm,
-    anchors : anchors,
-    vessels : vessels,
-    highCnt : highCnt,
-    lastAnchor : lastAnchor,
-    lastVessel : lastVessel,
-    vSort : vSort,
-    orderIdx : orderIdx,
-    firstIdx : firstIdx,
-    minRadIdx : minRadIdx,
-    vsI : vsI,
-    saI : saI,
-    thresh : thresh,
-    rad_inner : rad_inner,
-    multi : multi,
-    statsF : statsF,
-    minSizeB : minSizeB,
-    showArrowB : showArrowB,
-    statsB : statsB,
-    stats : stats,
-    exterior : exterior,
-    moon : moon
-    */
-  };
-  var R_OUTER = 1.2; /** Sungear display outer radius */
-  var R_CIRCLE = 1.0;
-  /** Default text/graphics color */
-  var C_PLAIN = '#d0d0d0';
-  /** Highlighted text/graphics color */
-  var C_HIGHLIGHT = '#ffa0a0';
-  /** Selected text/graphics */
-  var C_SELECT = '#ffffa0';
+
   /** Display size of largest vessel */
   var vRadMax = 0.1; /** Display size of largest vessel */
   var vMax; /** Item count of largest vessel */
@@ -116,60 +70,118 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
     this.lastAnchor = null;
     this.lastVessel = null;
     this.exterior = {
-      x : -R_CIRCLE,
-      y : -R_CIRCLE,
+      x : -values.R_CIRCLE,
+      y : -values.R_CIRCLE,
       // unsure.
       width : 2*R_CIRCLE,
       height : 2*R_CIRCLE
     };
     this.setPreferredSize();
-
     // add event listeners from 200 - 255
+    this.setFocusable(true);
+    this.genes.addGeneListener(this);
+    this.genes.addMultiSelect(this);
+    this.anchors = null;
+    this.vessels = null;
+    this.multi = false;
+    this.relax = true;
   }
 
-  function order(n){
-    if(n != -1){
-      var v = orderedVessels[n];
-      lastVessel = v;
-      highlightVessel(v);
-      updateCount();
-      // repaint(); //FIXME
-    } else {
-      console.log("NAH");
-      throw new Error("Invalid index n to order function");
-    }
-  }
-  function setRelax(b) {
-    relax = b;
-    positionVessels();
-  }
-  function getRelax() { return relax; }
-  function getVessels() { return vessels; }
-  function setMinVesselSizeIdx(n){
-    minRadIdx = n;
-    var vs = vsI[n];
-    //TODO: in the java version there was button interaction here
-    if(vessels !== null){
-      for(var i = 0; i < vessels.length; i++){
-        vessels[i].setRadMin(minRad[n]);
-        positionVessels();
+  Sungear.prototype = {
+    constructor:Sungear,
+
+    cleanup:function() {
+      for(var i = 0; i < this.anchors.length; i++){
+        this.anchors[i].cleanup();
+      }
+      this.anchors = null;
+      for(i = 0;  i < this.vessels.length; i++){
+        this.vessels[i].cleanup();
+      }
+      this.vessels = null;
+      this.genes = null;
+      this.lastAnchor = null;
+      this.lastVessel = null;
+    },
+
+    function getVessels() { return vessels; },
+
+    // makeButton is probably unnecessary
+
+    order:function(n) {
+      if(n != -1){
+        var v = this.orderedVessels[n];
+        this.lastVessel = v;
+        this.highlightVessel(v);
+        this.updateCount();
+        // repaint(); //FIXME
+      } else {
+        console.log("NAH");
+        throw new Error("Invalid index n to order function");
+      }
+    },
+
+    set:function(src) {
+      // make the displayable components
+      var t = this.thresh;
+      console.log("thresh: " + this.thresh);
+      if(isNaN(t)) {
+        console.log("Check.");
+        t = 1.0;
+        // Implement try block.
+      }
+      console.log("t: " + t);
+      var v = [];
+      data.DataReader.setThreshold(t, geneGenes.getGenesSet(), src.getReader().anchors, v);
+      this.makeDisplay(src.getReader().anchors, v);
+      console.log("anchors: " + this.anchors.length + " vessels: " + this.vessels.length);
+    },
+
+    setGo:function(t) {
+      //make weak ref to GoTerm t
+      goTerm = weak(t, function(){
+        console.log("GoTerm has been garbage collected");
+      });
+    },
+
+    setRelax:function(b) {
+      this.relax = b;
+      this.positionVessels();
+    },
+
+    getRelax:function() { return relax; },
+
+    setMinVesselSizeIdx:function(n) {
+      this.minRadIdx = n;
+      var vs = vsI[n];
+      //TODO: in the java version there was button interaction here
+      if(this.vessels !== null){
+        for(var i = 0; i < this.vessels.length; i++){
+          this.vessels[i].setRadMin(minRad[n]);
+          this.positionVessels();
+        }
+      }
+    },
+
+    setShowArrows:function(b){ //boolean b
+      this.showArrows = b;
+      this.sa = this.saI[b ? 0 : 1];
+      //TODO: in the java version there was button interaction here
+      if(this.vessels != null){
+        for(var i = 0; i < vessels.length; i++){
+          this.vessels[i].setShowArrows(b);
+        }
+        //repaint(); //TODO
       }
     }
 
   }
 
 
-  function setShowArrows(b){ //boolean b
-    showArrows = b;
-    sa = saI[b ? 0 : 1];
-    //TODO: in the java version there was button interaction here
-    if(vessels != null){
-      for(var i = 0; i < vessels.length; i++){
-        vessels[i].setShowArrows(b);
-      }
-      //repaint(); //TODO
-    }
-  }
+  // RESUME HERE:
+
+
+
 
   function getAnchor(p) { //a 2D 'Sungear' coordinates
       for(var i = 0; i < anchors.length; i++){
@@ -368,19 +380,7 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
     return null;
   }
 
-  function cleanup(){
-    for(var i = 0; i < anchors.length; i++){
-      anchors[i].cleanup();
-    }
-    anchors = null;
-    for(i = 0;  i < vessels.length; i++){
-      vessels[i].cleanup();
-    }
-    vessels = null;
-    genes = null;
-    lastAnchor = null;
-    lastVessel = null;
-  }
+
 
   function updateCount(){
     //create new treeset of Gene objects
@@ -528,12 +528,7 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
 
   }
 
-  function setGo(t){
-    //make weak ref to GoTerm t
-    goTerm = weak(t, function(){
-      console.log("GoTerm has been garbage collected");
-    });
-  }
+
 
   function getGeneTerms(g){ //g is a Gene object
     if(goTerm === null || goTerm.get() === null){

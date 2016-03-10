@@ -3,8 +3,8 @@
  * @author Rajah_Bimmy
  * Copyright Chris Poultney 2004.
  */
-define(['anchor', 'sunGear', 'vesselDisplay', 'p5'],
-function(anchor, sunGear, vesselDisplay, p5){
+define(['anchor', 'values', 'vesselDisplay', 'p5'],
+function(anchor, values, vesselDisplay, p5){
   var methods = {
     AnchorDisplay: AnchorDisplay
   }
@@ -51,8 +51,8 @@ function(anchor, sunGear, vesselDisplay, p5){
 
     setAngle:function(theta){
       this.angle = theta;
-      this.position.x = sunGear.R_CIRCLE * Math.cos(theta);
-      this.position.y = sunGear.R_CIRCLE * Math.sin(theta);
+      this.position.x = values.R_CIRCLE * Math.cos(theta);
+      this.position.y = values.R_CIRCLE * Math.sin(theta);
     },
 
     getAngle:function(){ return this.angle; },
