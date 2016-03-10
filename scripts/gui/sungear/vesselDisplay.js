@@ -1,5 +1,5 @@
-define(['anchor', 'genesGene', 'vessel', 'values', 'anchorDisplay', 'p5'],
-function(anchor, gene, vessel, values, p5){
+define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay', 'p5'],
+function(anchor, gene, vessel, sungear, p5){
   var methods = {
     VesselDisplay: VesselDisplay
   }

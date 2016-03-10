@@ -3,7 +3,7 @@
  * @author Rajah_Bimmy
  * Copyright Chris Poultney 2004.
  */
-define(['anchor', 'values', 'vesselDisplay', 'p5'],
+define(['anchor', 'vesselDisplay', 'p5'],
 function(anchor, values, vesselDisplay, p5){
   var methods = {
     AnchorDisplay: AnchorDisplay

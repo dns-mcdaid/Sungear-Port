@@ -7,9 +7,9 @@ console.log(rng());
 var TreeSet = javascript.util.TreeSet;
 */
 
-define(['p5','values','dataSource','anchorDisplay','comp','icons','stats','vesselDisplay',
+define(['p5','dataSource','anchorDisplay','comp','icons','stats','vesselDisplay',
 'anchor','genesGene','geneEvent','geneList','geneListener','multiSelectable','term','vessel'],
-function(p5,values,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
+function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
   anchor,genesGene,geneEvent,geneList,geneListener,multiSelectable,term,vessel){
 
   /** Display size of largest vessel */
@@ -45,6 +45,19 @@ function(p5,values,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
   var showArrowB;
   var statsB;
   var stats;
+
+  var values = {
+    /** Sungear display outer radius */
+    R_OUTER : 1.2,
+    R_CIRCLE : 1.0,
+    /** Default text/graphics color */
+    C_PLAIN : '#d0d0d0',
+    /** Highlighted text/graphics color */
+    C_HIGHLIGHT : '#ffa0a0',
+    /** Selected text/graphics */
+    C_SELECT : '#ffffa0',
+    SunGear : SunGear
+  };
 
   function SunGear(genes,thresh,statsF) {
     this.genes = genes;
@@ -163,7 +176,7 @@ function(p5,values,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       }
     },
 
-    setShowArrows:function(b){ //boolean b
+    setShowArrows:function(b) { //boolean b
       this.showArrows = b;
       this.sa = this.saI[b ? 0 : 1];
       //TODO: in the java version there was button interaction here
@@ -173,14 +186,58 @@ function(p5,values,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
         }
         //repaint(); //TODO
       }
-    }
+    },
 
+    showStats:function() { this.statsF.setVisible(!this.statsF.isVisible()); },
+
+    getGeneTerms:function(g) { //g is a Gene object
+      if(this.goTerm === null || this.goTerm.get() === null) {
+        return []; //return a new array
+      } else {
+        return this.goTerm.get().getCurrentTerms(g);
+      }
+    },
+
+    getAssocGenes:function(){
+      return (this.goTerm === null || this.goTerm.get() === null) ? new TreeSet() : this.goTerm.get().assocGenes;
+    },
+
+    getTerms:function(c) { //c is a Collection of Gene objects
+      var t = new TreeSet(); //new TreeSet of Term objects
+      for(var it = c.iterator(); it.hasNext();) {
+        t.addAll(getGeneTerms(it.next()));
+      }
+      return t;
+    },
+
+    getCool:function(maxVessels, minScore, method) {
+      console.log("method: " + method);
+      // TODO: 375 - 451
+    },
+
+    getCoolThresh:function(maxVessels, minScore) {
+      // TODO: 453 - 487
+    },
+
+    makeDisplay:function(anch, ves) {
+      // find vessel min/max vals
+      this.vMax = 0;
+      this.vMin = MAX_VALUE;
+      for(var i = 0; i < ves.length; i++) {
+        var v = ves[i];
+        this.vMax = Math.max(this.vMax, v.getFullCount());
+        this.vMin = Math.min(this.vMin, v.getFullCount());
+      }
+      // init anchor display components
+      this.anchors = [];
+      var anchorConv = [];
+      // Implement doubles from line 500
+      // TODO: rest of code is from 501 - 543 [DENNIS]
+    }
   }
 
 
   // RESUME HERE:
-
-
 
 
   function getAnchor(p) { //a 2D 'Sungear' coordinates
@@ -529,24 +586,5 @@ function(p5,values,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
   }
 
 
-
-  function getGeneTerms(g){ //g is a Gene object
-    if(goTerm === null || goTerm.get() === null){
-      return []; //return a new array
-    }else{
-      return goTerm.get().getCurrentTerms(g);
-    }
-  }
-  function getTerms(c){ //c is a Collection of Gene objects
-    var t = new TreeSet(); //new TreeSet of Term objects
-    for(var it = c.iterator(); it.hasNext();){
-      t.addAll(getGeneTerms(it.next()));
-    }
-    return t;
-  }
-
-  function getAssocGenes(){
-    return (goTerm === null || goTerm.get() === null) ? new TreeSet() : goTerm.get().assocGenes;
-  }
   return values;
 });
