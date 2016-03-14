@@ -31,6 +31,7 @@ requirejs.config({
     sunGear: 'gui/sunGear',
       // From the sungear folder
     anchorDisplay: 'gui/sungear/anchorDisplay',
+    vesselDisplay: 'gui/sungear/vesselDisplay',
     // From the Genes folder
     anchor: 'genes/anchor',
     genesGene: 'genes/gene',
