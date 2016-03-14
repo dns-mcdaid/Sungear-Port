@@ -14,38 +14,42 @@
   */
 function AnchorList(name){
   this.name = name;
-  var oriGenes = [];
-  var effectiveGenes = [];
-  var sortedGenes = null;
+  this.oriGenes = [];
+  this.effectiveGenes = [];
+  this.sortedGenes = null;
 
   // UNSURE ABOUT THIS NEXT LINE:
-  var selectedGenes = null;
+  this.selectedGenes = null;
 }
 
 AnchorList.prototype = {
   constructor: AnchorList,
 
   getName:function(){
-    return name;
+    return this.name;
   },
   getOriGeneList:function(){
-    return oriGenes;
+    return this.oriGenes;
   },
 
   /**
    *  test whether a gene is in the original list by its name
    */
-  contains:function(geneID){
+  contains:function(gene){
     // here -99.0 is a random number, we don't care the gene's value
-    return oriGenes.indexOf(new Gene(geneID, "-99.0F")) > -1;
+    return this.oriGenes.indexOf(gene) > -1;
   },
 
   /**
    * ensure same gene will not be added twice
    */
   addGene:function(g){
-    if(!(oriGenes.indexOf(g) > -1)){
-      oriGenes.push(g);
+    var test = [];
+    test = this.oriGenes.filter(function(element){
+      return element.equals(g);
+    });
+    if(test.length === 0){
+      this.oriGenes.push(g);
     }
   },
   /**
@@ -53,17 +57,17 @@ AnchorList.prototype = {
    *  add a gene to the effective genes list
    */
   addEffectiveGene:function(g){
-    effectiveGenes.push(g);
+    this.effectiveGenes.push(g);
   },
 
   /**
    * Establish effective genes list with new values.
    */
   setEffectiveGenes:function(al){
-    effectiveGenes = al;
+    this.effectiveGenes = al;
   },
   getEffectiveGenes:function(){
-    return effectiveGenes;
+    return this.effectiveGenes;
   },
 
   /**
@@ -71,7 +75,7 @@ AnchorList.prototype = {
    *  and the ones from geneLights input
    */
   sizeOfEffectiveGenes:function(){
-    return effectiveGenes.length;
+    return this.effectiveGenes.length;
   },
 
   /**
@@ -80,28 +84,28 @@ AnchorList.prototype = {
    * @return sorted effective genes.  null if there is no effectiveGenes
    */
   sortEffectiveGenes:function(){
-    if(effectiveGenes.length != 0){
-      sortedGenes = this.effectiveGenes.sort();
-      return sortedGenes;
-    } else {
-      return null;
+    if(this.effectiveGenes.length !== 0){
+      var newSortedGenes = this.effectiveGenes.slice();
+      this.sortedGenes = newSortedGenes.sort(function(a, b){
+        return a.compare(b);
+      });
     }
   },
 
   /* should only be called after sortEffectiveGenes() is invoked */
   getSortedGenes:function(){
-    return sortedGenes;
+    return this.sortedGenes;
   },
 
   /**
    *  get the minimal expression value of the effective genes
    */
   getMinValue:function(){
-    if(sortedGenes != null){
+    if(this.sortedGenes !== null){
       var minGene = this.sortedGenes[0];
-      return minGene.getValue;
+      return minGene.getValue();
     } else {
-      return "-100.0f";
+      return -100;
     }
   },
 
@@ -109,11 +113,11 @@ AnchorList.prototype = {
    *  get the maximal expression value of the effective genes
    */
   getMaxValue:function(){
-    if(sortedGenes != null){
-      var maxGene = sortedGenes[this.sortedGenes.length - 1];
-      return maxGene.getValue;
+    if(this.sortedGenes !== null){
+      var maxGene = this.sortedGenes[this.sortedGenes.length - 1];
+      return maxGene.getValue();
     } else {
-      return "100.0F";
+      return 100.0;
     }
   },
 
@@ -121,9 +125,10 @@ AnchorList.prototype = {
    *  get the number of genes in this anchor
    */
   size:function(){
-    return oriGenes.length;
+    return this.oriGenes.length;
   },
   getSelectedGenes:function(){
-    return selectedGenes;
+    return this.selectedGenes;
   }
-}
+};
+module.exports = AnchorList;

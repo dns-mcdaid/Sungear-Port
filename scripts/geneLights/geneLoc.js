@@ -18,10 +18,12 @@ GeneLoc.prototype = {
 
   /* get gene location's anchor id */
   getListID:function(){
-    return listID;
+    return this.listID;
   },
   /* get the gene location's offset in an anchor */
   getOffset:function(){
-    return offset;
+    return this.offset;
   }
-}
+};
+
+module.exports = GeneLoc;
