@@ -7,6 +7,7 @@ Translated from Ilyas Mounaime's Java code
 */
 
 //IMPLEMENT INHERITANCE
+var MultivariateRealDistribution = require('./MultivariateRealDistribution');
 AbstractMultivariateRealDistribution.prototype = Object.create(MultivariateRealDistribution.prototype);
 AbstractMultivariateRealDistribution.prototype.constructor = AbstractMultivariateRealDistribution;
 
@@ -17,16 +18,16 @@ function AbstractMultivariateRealDistribution(rng, n){
 //overriding
 AbstractMultivariateRealDistribution.prototype.reseedRandomGenerator = function(seed){
   this.random.setSeed(seed); //FIXME: find online PRNG file
-}
+};
 
 //overriding
-AbstractMultivariateRealDistribution.prototype.getDimension(){
+AbstractMultivariateRealDistribution.prototype.getDimension = function(){
   return this.dimension;
-}
+};
 
 //overriding
-AbstractMultivariateRealDistribution.prototype.sample(sampleSize){
-  if(arguments.length == 0){
+AbstractMultivariateRealDistribution.prototype.sample = function(sampleSize){
+  if(arguments.length === 0){
     return null;
   }
   else{
@@ -40,4 +41,4 @@ AbstractMultivariateRealDistribution.prototype.sample(sampleSize){
     }
     return out;
   }
-}
+};

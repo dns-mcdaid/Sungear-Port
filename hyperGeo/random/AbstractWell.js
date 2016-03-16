@@ -7,7 +7,7 @@ Translated from Ilyas Mounaime's Java code
 */
 
 var serialVersionUID = -817701723016583596;
-
+var BitsStreamGenerator = require('./BitsStreamGenerator');
 //IMPLEMENT INHERITANCE
 AbstractWell.prototype = Object.create(BitsStreamGenerator.prototype);
 AbstractWell.prototype.constructor = AbstractWell;
@@ -61,9 +61,9 @@ AbstractWell.prototype.setSeed = function () {
   if(seed instanceof Number){
     seed = [seed];
   }
-  else if (seed == null){
+  else if (seed === null){
     //FIXME : hashcode problem
-    console.log("Hascode problem");
+    console.log("Hashcode problem");
     return;
   }
   var numCopies = Math.min(seed.length, v.length);
@@ -77,3 +77,4 @@ AbstractWell.prototype.setSeed = function () {
   this.index = 0;
   BitsStreamGenerator.prototype.clear.call(this);
 };
+module.exports = AbstractWell;

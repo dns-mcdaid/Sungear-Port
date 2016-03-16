@@ -39,7 +39,7 @@ function UniformRealDistribution(rng, lower, upper, inverseCumAccuracy){
 //TODO
 
 /** {@inheritDoc} */
-public double density(double x) {
+function density(x) {
     if (x < lower || x > upper) {
         return 0.0;
     }
@@ -47,7 +47,7 @@ public double density(double x) {
 }
 
 /** {@inheritDoc} */
-public double cumulativeProbability(double x)  {
+function cumulativeProbability(x)  {
     if (x <= lower) {
         return 0;
     }
@@ -58,8 +58,7 @@ public double cumulativeProbability(double x)  {
 }
 
 /** {@inheritDoc} */
-@Override
-protected double getSolverAbsoluteAccuracy() {
+function getSolverAbsoluteAccuracy() {
     return solverAbsoluteAccuracy;
 }
 
@@ -69,7 +68,7 @@ protected double getSolverAbsoluteAccuracy() {
  * For lower bound {@code lower} and upper bound {@code upper}, the mean is
  * {@code 0.5 * (lower + upper)}.
  */
-public double getNumericalMean() {
+function  getNumericalMean() {
     return 0.5 * (lower + upper);
 }
 
@@ -79,8 +78,8 @@ public double getNumericalMean() {
  * For lower bound {@code lower} and upper bound {@code upper}, the
  * variance is {@code (upper - lower)^2 / 12}.
  */
-public double getNumericalVariance() {
-    double ul = upper - lower;
+function getNumericalVariance() {
+    var ul = upper - lower;
     return ul * ul / 12;
 }
 
@@ -92,7 +91,7 @@ public double getNumericalVariance() {
  *
  * @return lower bound of the support
  */
-public double getSupportLowerBound() {
+function  getSupportLowerBound() {
     return lower;
 }
 
@@ -104,17 +103,17 @@ public double getSupportLowerBound() {
  *
  * @return upper bound of the support
  */
-public double getSupportUpperBound() {
+function getSupportUpperBound() {
     return upper;
 }
 
 /** {@inheritDoc} */
-public boolean isSupportLowerBoundInclusive() {
+function isSupportLowerBoundInclusive() {
     return true;
 }
 
 /** {@inheritDoc} */
-public boolean isSupportUpperBoundInclusive() {
+function isSupportUpperBoundInclusive() {
     return true;
 }
 
@@ -125,13 +124,12 @@ public boolean isSupportUpperBoundInclusive() {
  *
  * @return {@code true}
  */
-public boolean isSupportConnected() {
+function isSupportConnected() {
     return true;
 }
 
 /** {@inheritDoc} */
-@Override
-public double sample()  {
-    final double u = random.nextDouble();
+function sample()  {
+    var u = random.nextDouble();
     return u * upper + (1 - u) * lower;
 }

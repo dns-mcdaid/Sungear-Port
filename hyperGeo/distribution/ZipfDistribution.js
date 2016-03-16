@@ -5,14 +5,6 @@ Porting Sungear from Java to Javascript,
 Translated from Ilyas Mounaime's Java code
 
 */
-package hyperGeo.distribution;
-
-import hyperGeo.exception.NotStrictlyPositiveException;
-import hyperGeo.exception.util.LocalizedFormats;
-import hyperGeo.util.FastMath;
-import hyperGeo.random.RandomGenerator;
-import hyperGeo.random.Well19937c;
-
 /**
  * Implementation of the Zipf distribution.
  *

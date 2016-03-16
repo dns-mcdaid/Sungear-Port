@@ -24,7 +24,7 @@ LogNormalDistribution.prototype.density = function(x) {
   var x0 = Math.log(x) - scale;
   var x1 = x0 / this.shape;
   return Math.exp(-0.5 * x1 * x1) / (this.shape * SQRT2PI * x);
-}
+};
 
 
 
@@ -38,7 +38,7 @@ LogNormalDistribution.prototype.cumulativeProbability = function(x){
       else{ return 0.0; }
   }
   return 0.5 + 0.5 * Erf.erf(dev / (this.shape * SQRT2));
-}
+};
 
 
 
@@ -50,32 +50,32 @@ LogNormalDistribution.prototype.probability = function(x0, x1){
   var v0 = (Math.log(x0) - this.scale)/denom;
   var v1 = (Math.log(x1) - this.scale) / denom;
   return 0.5 * Erf.erc(v0, v1);
-}
+};
 
 LogNormalDistribution.prototype.getNumericalMean = function(){
   var s = this.shape;
   var ss = s * s;
-  return )Math.exp(ss) - 1)* Math.exp(2 * this.scale + ss);
-}
+  return (Math.exp(ss) - 1)* Math.exp(2 * this.scale + ss);
+};
 
 LogNormalDistribution.prototype.getNumericalVariance = function(){
   var s = this.shape;
   return math.exp(this.scale + (s * s/2));
-}
+};
 
 //@Override
 LogNormalDistribution.prototype.sample= function() {
   var n = this.random.nextGaussian();
   return Math.exp(this.scale + this.shape * n);
 
-}
+};
 
 
-LogNormalDistribution.prototype.getShape = function(){ return this.shape;}
-LogNormalDistribution.prototype.getScale = function(){ return this.scale;}
+LogNormalDistribution.prototype.getShape = function(){ return this.shape;};
+LogNormalDistribution.prototype.getScale = function(){ return this.scale;};
 //@Override
-LogNormalDistribution.prototype.getSolverAbsoluteAccuracy = function() {return solverAbsoluteAccuracy;}
-LogNormalDistribution.prototype.getSupportUpperBound = function () {return Double.POSITIVE_INFINITY;}
-LogNormalDistribution.prototype.isSupportLowerBoundInclusive = function() {return true;}
-LogNormalDistribution.prototype.isSupportUpperBoundInclusive = function() {return false;}
-LogNormalDistribution.prototype.isSupportConnected = function() {return true;}
+LogNormalDistribution.prototype.getSolverAbsoluteAccuracy = function() {return solverAbsoluteAccuracy;};
+LogNormalDistribution.prototype.getSupportUpperBound = function () {return Double.POSITIVE_INFINITY;};
+LogNormalDistribution.prototype.isSupportLowerBoundInclusive = function() {return true;};
+LogNormalDistribution.prototype.isSupportUpperBoundInclusive = function() {return false;};
+LogNormalDistribution.prototype.isSupportConnected = function() {return true;};

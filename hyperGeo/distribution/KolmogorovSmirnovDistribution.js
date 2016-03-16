@@ -6,7 +6,7 @@ Translated from Ilyas Mounaime's Java code
 
 */
 
-//TODO: FINISIH THIS FILE 
+//TODO: FINISIH THIS FILE
 
 function KolmogorovSmirnovDistribution(n){
   if(n <= 0 ){throw new NotStrictlyPositiveException(LocalizedFormats.NOT_POSITIVE_NUMBER_OF_SAMPLES, n);}
@@ -37,8 +37,8 @@ KolmogorovSmirnovDistribution.prototype.cdf = function(d, passedExact){
 
   if(exact) { return this.exactK(d);}
   else{ return this.roundedK(d);}
-}
+};
 
 
 
-KolmogorovSmirnovDistribution.prototype.cdfExact = function(){return this.cdf(d, true); }
+KolmogorovSmirnovDistribution.prototype.cdfExact = function(){return this.cdf(d, true); };

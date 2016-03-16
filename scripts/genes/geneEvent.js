@@ -41,26 +41,27 @@ GeneEvent.MULTI_START = 6;
 GeneEvent.MULTI_FINISH = 7;
 
 GeneEvent.prototype = {
-  constructor = GeneEvent,
+  constructor : GeneEvent,
   /**
    * Public get method for the event's gene list.
    * @return the gene list this event pertains to
    */
    getGeneList:function(){
-     return list;
+     return this.list;
    },
    /**
      * Public get method for the event's source object.
      * @return the object that generated this event
      */
   getSource:function(){
-    return source;
+    return this.source;
   },
   /**
    * Public get method for the event's type.
    * @return an integer describing the event type, chosen from the public final static ints declared above
    */
   getType:function(){
-    return type;
+    return this.type;
   }
-}
+};
+module.exports = GeneEvent;

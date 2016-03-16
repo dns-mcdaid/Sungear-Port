@@ -45,7 +45,7 @@ NormalDistribution.prototype.probability = function(x0,x1){
   var v0 = (x0 - this.mean) / denom;
   fvarv1 = (x1 - this.mean) / denom;
   return 0.5 * Erf.erf(v0, v1);
-}
+};
 
 NormalDistribution.prototype.cumulativeProbability = function(x)  {
     var dev = x - this.mean;
@@ -54,26 +54,26 @@ NormalDistribution.prototype.cumulativeProbability = function(x)  {
         else {return 1.0;}
     }
     return 0.5 * (1 + Erf.erf(dev / (this.standardDeviation * SQRT2)));
-}
+};
 
 
 NormalDistribution.prototype.density = function(x) {
     var x0 = x - mean;
-    fvar x1 = x0 / standardDeviation;
+    var x1 = x0 / standardDeviation;
     return Math.exp(-0.5 * x1 * x1) / (this.standardDeviation * SQRT2PI);
-}
+};
 
 NormalDistribution.prototype.getNumericalVariance = function() {
     var s = this.getStandardDeviation();
     return s * s;
-}
-NormalDistribution.prototype.getSolverAbsoluteAccuracy = function() {return solverAbsoluteAccuracy;}
-NormalDistribution.prototype.getNumericalMean = function() {return this.getMean();}
-NormalDistribution.prototype.getStandardDeviation = function() {return this.standardDeviation;}
-NormalDistribution.prototype.getMean = function() {return this.mean;}
-NormalDistribution.prototype.getSupportLowerBound = function() {return Number.NEGATIVE_INFINITY;}
-NormalDistribution.prototype.getSupportUpperBound = function () {return Number.POSITIVE_INFINITY;}
-NormalDistribution.prototype.isSupportLowerBoundInclusive = function() {return false;}
-NormalDistribution.prototype.isSupportUpperBoundInclusive = function() {return false;}
-NormalDistribution.prototype.isSupportConnected = function() {return true;}
-NormalDistribution.prototype.sample = function(){return this.standardDeviation * this.random.nextGaussian() + this.mean;}
+};
+NormalDistribution.prototype.getSolverAbsoluteAccuracy = function() {return solverAbsoluteAccuracy;};
+NormalDistribution.prototype.getNumericalMean = function() {return this.getMean();};
+NormalDistribution.prototype.getStandardDeviation = function() {return this.standardDeviation;};
+NormalDistribution.prototype.getMean = function() {return this.mean;};
+NormalDistribution.prototype.getSupportLowerBound = function() {return Number.NEGATIVE_INFINITY;};
+NormalDistribution.prototype.getSupportUpperBound = function () {return Number.POSITIVE_INFINITY;};
+NormalDistribution.prototype.isSupportLowerBoundInclusive = function() {return false;};
+NormalDistribution.prototype.isSupportUpperBoundInclusive = function() {return false;};
+NormalDistribution.prototype.isSupportConnected = function() {return true;};
+NormalDistribution.prototype.sample = function(){return this.standardDeviation * this.random.nextGaussian() + this.mean;};

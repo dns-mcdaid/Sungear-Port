@@ -30,17 +30,17 @@ function TriangularDistribution(rng, a, c, b){
   }
   AbstractRealDistribution.call(this, passedRNG);
   if(passedA >= passedB){ throw new NumberIsTooLargeException(LocalizedFormats.LOWER_BOUND_NOT_BELOW_UPPER_BOUND,a, b, false);}
-  if(passedC < passedA){ throw new NumberIsTooLargeException(LocalizedFormats.NUMBER_TOO_SMALL, c, a, true););}
-  if(passedC > passedB){ throw new NumberIsTooLargeException(LocalizedFormats.NUMBER_TOO_LARGE, c, b, true););}
+  if(passedC < passedA){ throw new NumberIsTooLargeException(LocalizedFormats.NUMBER_TOO_SMALL, c, a, true);}
+  if(passedC > passedB){ throw new NumberIsTooLargeException(LocalizedFormats.NUMBER_TOO_LARGE, c, b, true);}
   this.a =  passedA;
   this.c = passedC;
   this.b = passedB;
   solverAbsoluteAccuracy = Math.max(FastMathULP(a), FastMathULP(b));
 }
 
-TriangularDistribution.prototype.getMode = function(){ return this.c; }
+TriangularDistribution.prototype.getMode = function(){ return this.c; };
 //@Overrided
-TriangularDistribution.prototype.getSolverAbsoluteAccuracy = function(){ return solverAbsoluteAccuracy;}
+TriangularDistribution.prototype.getSolverAbsoluteAccuracy = function(){ return solverAbsoluteAccuracy;};
 
 
 
@@ -62,7 +62,7 @@ TriangularDistribution.prototype.density = function(x) {
       return divident / divisor;
   }
   return 0;
-}
+};
 
 TriangularDistribution.prototype.cumulativeProbability = function(x)  {
   if (x < this.a) {
@@ -82,32 +82,31 @@ TriangularDistribution.prototype.cumulativeProbability = function(x)  {
       return 1 - (divident / divisor);
   }
   return 1;
-}
+};
 
-TriangularDistribution.prototype.getNumericalMean = function() { return (this.a + this.b + this.c) / 3;}
+TriangularDistribution.prototype.getNumericalMean = function() { return (this.a + this.b + this.c) / 3;};
 TriangularDistribution.prototype.getNumericalVariance = function() {
   return (this.a * this.a + this.b * this.b + this.c * this.c - this.a * this.b - this.a * this.c - this.b * this.c) / 18;
-}
-TriangularDistribution.prototype.getSupportLowerBound = function() {return this.a;}
-TriangularDistribution.prototype.getSupportUpperBound = function() {return this.b;}
-TriangularDistribution.prototype.isSupportLowerBoundInclusive = function() {return true;}
-TriangularDistribution.prototype.isSupportUpperBoundInclusive = function() {return true;}
-TriangularDistribution.prototype.isSupportConnected = function() {return true;}
+};
+TriangularDistribution.prototype.getSupportLowerBound = function() {return this.a;};
+TriangularDistribution.prototype.getSupportUpperBound = function() {return this.b;};
+TriangularDistribution.prototype.isSupportLowerBoundInclusive = function() {return true;};
+TriangularDistribution.prototype.isSupportUpperBoundInclusive = function() {return true;};
+TriangularDistribution.prototype.isSupportConnected = function() {return true;};
 
 //@Override
 TriangularDistribution.prototype.inverseCumulativeProbability = function(p){
-        throws OutOfRangeException {
         if (p < 0 || p > 1) {
             throw new OutOfRangeException(p, 0, 1);
         }
-        if (p == 0) {
+        if (p === 0) {
             return a;
         }
-        if (p == 1) {
+        if (p === 1) {
             return b;
         }
         if (p < (c - a) / (b - a)) {
             return a + FastMath.sqrt(p * (b - a) * (c - a));
         }
         return b - FastMath.sqrt((1 - p) * (b - a) * (b - c));
-    }
+};

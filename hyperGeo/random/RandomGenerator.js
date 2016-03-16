@@ -7,8 +7,10 @@ Translated from Ilyas Mounaime's Java code
 */
 
 //Interface
-function RandomGenerator(){}
-RandomGenerator.prototype.setSeed = function () {};
+function RandomGenerator(){
+
+}
+RandomGenerator.prototype.setSeed = function () {console.log();};
 RandomGenerator.prototype.nextBytes = function () {};
 RandomGenerator.prototype.nextInt = function () {};
 RandomGenerator.prototype.nextLong = function () {};
@@ -16,3 +18,4 @@ RandomGenerator.prototype.nextBoolean = function () {};
 RandomGenerator.prototype.nextFloat = function () {};
 RandomGenerator.prototype.nextDouble = function () {};
 RandomGenerator.prototype.nextGaussian = function () {};
+module.exports = RandomGenerator;

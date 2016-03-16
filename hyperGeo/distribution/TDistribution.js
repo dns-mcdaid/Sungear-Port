@@ -33,7 +33,7 @@ function TDistribution(rng, degreeOfFreedom, inverseCumAccuracy){
   this.degreesOfFreedom = passedDOF;
 }
 
-TDistribution.prototype.getDegreesOfFreedom = function() {return degreesOfFreedom;}
+TDistribution.prototype.getDegreesOfFreedom = function() {return degreesOfFreedom;};
 
 TDistribution.prototype.density = function (x) {
   var n = this.degreesOfFreedom;
@@ -43,10 +43,10 @@ TDistribution.prototype.density = function (x) {
                              Math.log(n)) -
                       Gamma.logGamma(n / 2) -
                       nPlus1Over2 *  Math.log(1 + x * x / n));
-}
-TDistribution.prototype.cumulativeProbability(double x) {
+};
+TDistribution.prototype.cumulativeProbability = function(x) {
     var ret;
-    if (x == 0) {
+    if (x === 0) {
         ret = 0.5;
     } else {
         var t =
@@ -62,10 +62,10 @@ TDistribution.prototype.cumulativeProbability(double x) {
     }
 
     return ret;
-}
+};
 
 //@Override
-TDistribution.prototype.getSolverAbsoluteAccuracy = function() {return solverAbsoluteAccuracy;}
+TDistribution.prototype.getSolverAbsoluteAccuracy = function() {return solverAbsoluteAccuracy;};
 TDistribution.prototype.getNumericalMean = function() {
   var df = this.getDegreesOfFreedom();
 
@@ -74,7 +74,7 @@ TDistribution.prototype.getNumericalMean = function() {
   }
 
   return Number.NaN;
-}
+};
 
 TDistribution.prototype.getNumericalVariance = function() {
   var df = this.getDegreesOfFreedom();
@@ -88,10 +88,10 @@ TDistribution.prototype.getNumericalVariance = function() {
   }
 
   return Number.NaN;
-}
+};
 
-TDistribution.prototype.getSupportLowerBound = function() {return Double.NEGATIVE_INFINITY;}
-TDistribution.prototype.getSupportUpperBound = function(){ return Number.POSITIVE_INFINITY; }
-TDistribution.prototype.isSupportLowerBoundInclusive = function(){ return false; }
-TDistribution.prototype.isSupportUpperBoundInclusive = function(){ return false; }
-TDistribution.prototype.isSupportConnected = function(){ return true; }
+TDistribution.prototype.getSupportLowerBound = function() {return Double.NEGATIVE_INFINITY;};
+TDistribution.prototype.getSupportUpperBound = function(){ return Number.POSITIVE_INFINITY; };
+TDistribution.prototype.isSupportLowerBoundInclusive = function(){ return false; };
+TDistribution.prototype.isSupportUpperBoundInclusive = function(){ return false; };
+TDistribution.prototype.isSupportConnected = function(){ return true; };

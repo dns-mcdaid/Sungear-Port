@@ -21,6 +21,7 @@ function Gene(name, desc){
   this.desc = desc;
   /** Gene expression values */
   this.exp = [];
+
 }
 
 Gene.prototype = {
@@ -56,4 +57,5 @@ Gene.prototype = {
   toString:function(){
     return this.name;
   }
-}
+};
+module.exports = Gene;

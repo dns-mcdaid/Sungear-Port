@@ -11,15 +11,16 @@
  * appropriate.
  *
  * {@link #storedCount}, which is returned by {@link #getStoredCount()},
- * is an optimization for the calculation of z-scores.  Although
+ * is an optimization for the calculation of Hypergeometric-Distribution.  Although
  * it's called the stored count, it's only used to represent the size of the intersection
- * of {@link #allGenes} with the active set.  This count is used for calculating z-scores
- * after Narrow operations, and determining the fraction of genes selected for this term.
+ * of {@link #allGenes} with the active set.  This count is used for the Instantiation of
+ * HypergeometricDistribution class after Narrow operations, and determining the fraction
+ * of genes selected for this term.
  * This value is recalculated every time a narrow is performed, using the
  * functions {@link #resetStoredCount()} and {@link #updateStoredCount(SortedSet)}.  This
  * much more efficient than determining the intersection size dynamically each time it is
- * needed, primarily because the option to sort by z-score is provided in the interface,
- * which requires that all z-scores be available after a narrow for the sorting
+ * needed, primarily because the option to sort by Hyper-Geo Distribution is provided in the interface,
+ * which requires that all the probabilities be available after a narrow for the sorting
  * procedure.
  *
  * {@link #getIntersectCount(SortedSet)} is the dynamic version of {@link #getStoredCount()}
@@ -42,31 +43,37 @@
 * @param id the GO term ID
 * @param name the GO term name
 */
+
+var HypergeometricDistribution = require('../../hyperGeo/distribution/HypergeometricDistribution');
+
 function Term(id, name){
  /** GO term ID */
  this.id = id;
  /** GO term name */
  this.name = name;
  /** z-score calculation term */
- var p_t = 0;
+ this.p_t = 0;
  /** This term's parent nodes */
- var parents = [];
+ this.parents = [];
  /** This term's child nodes */
- var child = [];
+ this.children = [];
  /** The genes associated strictly with this node */
- var localGenes = [];
+ this.localGenes = [];
  /** All genes associated with this node and its descendents */
- var allGenes = null;
+ this.allGenes = [];
  /** Denotes whether any genes are associated with this term in the current experiment set */
- var active = false;
+ this.active = false;
+ this.selectedState = Term.STATE_UNKNOWN;
  /** The number of genes in {@link #allGenes} represented in some set, usually the active set */
- var storedCount = -1;
- var selectedState = STATE_UNKNOWN;
- /** z-score calculation term */
- var stdev = 0;
- /** z-score calculation term */
- var zScore = 0;
+ this.storedCount = -1;
+/** Total Number of genes in the Genome */
+ this.Total = -1;
 }
+
+/** HyperGeo Distribution H */
+var H;
+/** the value of the probability */
+var Hyp;
 
 /** Selected state flag: state undetermined */
 Term.STATE_UNKNOWN = 0;
@@ -78,10 +85,10 @@ Term.STATE_UNSELECTED = 2;
 Term.prototype = {
   constructor: Term,
   cleanup:function(){
-    children = [];
-    parents = [];
-    allGenes = [];
-    localGenes = [];
+    this.children = [];
+    this.parents = [];
+    this.allGenes = [];
+    this.localGenes = [];
   },
   /**
    * Sets the ratio of the number of genes associated with this term to
@@ -93,37 +100,38 @@ Term.prototype = {
     stdev = Math.sqrt(p_t * (1 - p_t));
   },
   addChild:function(c){
-    children.push(c);
+    this.children.push(c);
   },
   getChildren:function(){
-    return children;
+    return this.children;
   },
   addParent:function(p){
-    parents.push(p);
+    this.parents.push(p);
   },
   getParents:function(){
-    return parents;
+    return this.parents;
   },
   addGene:function(g){
-    localGenes.push(g);
+    this.localGenes.push(g);
+    this.allGenes.push(g);
   },
   isRoot:function(){
-    return parents.length < 1;
+    return this.parents.length < 1;
   },
   setActive:function(b){
-    active = b;
+    this.active = b;
   },
   isActive:function(){
-    return active;
+    return this.active;
   },
   getAllGenes:function(){
-    return allGenes;
+    return this.allGenes;
   },
   getId:function(){
-    return id;
+    return this.id;
   },
   getName:function(){
-    return name;
+    return this.name;
   },
   /**
    * Calculates the number of genes at this node and its descendents
@@ -135,13 +143,13 @@ Term.prototype = {
    * @return the number of selected genes
    */
   getIntersectCount:function(iSet){
-    if(allGenes == null){
+    if(this.allGenes === null){
       return 0;
     } else {
       var size = 0;
       // Looking for intersection of two arrays.
       for(var i = 0; i < iSet.length; i++){
-        if (allGenes.indexOf(iSet[i]) >= 0){
+        if (this.allGenes.indexOf(iSet[i]) >= 0){
           size++;
         }
       }
@@ -152,22 +160,23 @@ Term.prototype = {
    * Yields the default sort order, case-insensitive by term name.
    */
   compare:function(t){
-    var str1 = name.toLowerCase();
+    var str1 = this.name.toLowerCase();
     var str2 = t.name.toLowerCase();
     return str1.localeCompare(str2);
   },
   toString:function(){
     //var v = (isFinite(zScore) || isNaN(zScore)) ? zScore.toString() :
-    var v = zScore.toString();
-    return "(" + v + ";" + getStoredCount() + ")" + name;
+    var Dig = 100000;
+    Hyp = (Hyp * Dig)/Dig;
+    return "(" + Hyp + " ; " + this.getStoredCount() + " ) " + this.getName();
   },
   /**
-   * Gives this term's z-score.
-   * @return the current z-score value
+   * Gives this term's HyperGeometric Distribution.
+   * @return the current the upperCumulativeProbability value
    */
-  getScore:function(){
-    return zScore;
-  },
+   getHyp:function(){
+     return Hyp;
+   },
   /**
    * Returns the stored count of genes at this node
    * and its descendents as calculated by
@@ -176,14 +185,14 @@ Term.prototype = {
    * @return the stored gene count
    */
   getStoredCount:function(){
-    return storedCount;
+    return this.storedCount;
   },
   /**
    * Must be called for every term before {@link #updateStoredCount(SortedSet)}
    * is called for any term.
    */
   resetStoredCount:function(){
-    storedCount = -1;
+    this.storedCount = -1;
   },
   /**
    * Recursively updates the size of the intersection
@@ -196,7 +205,23 @@ Term.prototype = {
    * @param aSet the set to intersect with
    */
   updateStoredCount:function(aSet){
-    // TODO: Implement this function.
+    if(this.storedCount === -1){
+      var counter = 0;
+      while(counter < this.children.length -1){
+        this.children[counter].updateStoredCount(aSet);
+        counter++;
+      }
+      var s = [];
+      for(var i = 0; i < aSet.length; i++){
+        if(aSet.indexOf(s[i]) === -1){
+          s.splice(i, 1);
+        }
+      }
+
+      this.storedCount = s.length;
+      this.updateHyp(aSet.length);
+
+    }
   },
   /**
    * Must be called for every term before calling
@@ -204,7 +229,7 @@ Term.prototype = {
    * to reset set unions before updating.
    */
   initUnion:function(){
-    allGenes = null;
+    this.allGenes = null;
   },
   /**
    * Recursively finds the union of the genes represented
@@ -214,38 +239,66 @@ Term.prototype = {
    * Call {@link #initUnion} on all nodes before updating any nodes.
    */
   findUnion:function(global){
-    if(allGenes == null){
-      allGenes = [];
-      for(var i = 0; i < localGenes.length; i++){
-        allGenes.push(localGenes[i]);
+    if(this.allGenes === null){
+      this.allGenes = [];
+      for(var i = 0; i < this.localGenes.length; i++){
+        this.allGenes.push(this.localGenes[i]);
       }
-      // TODO: Implement recursive part of this function.
+      //mimicking an iterator
+      var counter = 0;
+      while(counter < this.children.length-1){
+        var ch = this.children[counter];
+        ch.findUnion(global);
+        for(i = 0; i < ch.allGenes.length; i++){
+          this.allGenes.push(ch.allGenes[i]);
+        }
+        counter++;
+      }
+
+      //remove all genes not in global collection from allGenes
+      for(i = 0; i < global.length; i++){
+        if(global.indexOf(this.allGenes[i]) === -1){
+          this.allGenes.splice(i, 1);
+        }
+      }
+
     }
   },
   /**
-   * Updates this term's z-score.
+   * Updates this term's Probability.
    * @param total number of represented genes
    */
-  updateScore:function(total){
-    zScore = calcScore(getStoredCount(), total);
-  },
-  /**
-   * Calculates the z-score of this term.
-   * @param count number of represented genes
-   * @param total total number of genes
-   * @return the z-score
-   */
-  clacScore:function(count, total){
-    var f_t = count / total;
-    // 100% of genes selected for term w/ 100% of genes associated ==> z-score = 0
-    return(f_t - p_t == 0 && stdev == 0) ? 0 : (f_t - p_t) * Math.sqrt(total) / stdev;
-  },
+   updateHyp:function(Q){
+     Hyp = this.calcHyp(this.getStoredCount(), Q);
+   },
+   /**
+    * set the Total Number of all Genes in the Genome.
+    * @param all genes in the genome
+    */
+   setTotal:function(t){
+     this.Total = t;
+   },
+   /**
+    * return the Total Number of Genes in the Genome
+    * @param all genes in the Genome
+    */
+   getTotal:function(){
+     return this.Total;
+   },
+
+   calcHyp:function(Q_t, Q){
+     var A = this.getTotal();
+     var A_t = this.p_t * A;
+     H = new HypergeometricDistribution(A, A_t, Q);
+     return H.upperCumulativeProbability(Q_t);
+   },
+
   /**
    * Must be called for every term before {@link #updateSelectedState(SortedSet)}
    * is called for any term.
    */
   initSelectedState:function(){
-    selectedState = STATE_UNKNOWN;
+    this.selectedState = Term.STATE_UNKNOWN;
   },
   /**
    * Recursively determines if any of the genes associated with
@@ -255,7 +308,34 @@ Term.prototype = {
    * @param s the set to intersect with
    */
   updateSelectedState:function(s){
+    if(!this.active){
+      this.selectedState = Term.STATE_UNSELECTED;
+    } else{
+      for(var i = 0; i < this.children.length; i++){
+        var item = this.children[i];
+        if(item.selectedState === Term.STATE_UNKNOWN && item.active){
+          item.updateSelectedState(s);
+        }
+        if(item.selectedState === Term.STATE_SELECTED){
+          this.selectedState = Term.STATE_SELECTED;
+        }
+      }
 
+      if(this.selectedState === Term.STATE_UNKNOWN){
+        var x = [];
+        for(i = 0; i < this.allGenes.length; i++){
+          x.push(this.allGenes[i]);
+        }
+
+        for(i = 0; i < s.length; i++){
+          if(s.indexOf(x[i]) === -1){
+            x.splice(i, 1);
+          }
+        }
+        this.selectedState = x.length === 0 ? Term.STATE_UNSELECTED : Term.STATE_SELECTED;
+
+      }
+    }
   },
   /**
    * Returns the selected state of this node as determined by
@@ -263,6 +343,7 @@ Term.prototype = {
    * @return the current selected state
    */
   getSelectedState:function(){
-    return selectedState;
+    return this.selectedState;
   }
-}
+};
+module.exports = Term;

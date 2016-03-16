@@ -13,7 +13,7 @@ AbstractRealDistribution.prototype.constructor = AbstractRealDistribution;
 
 var SOLVER_DEFAULT_ABSOLUTE_ACCURACY = 1e-6;
 function AbstractRealDistribution (rng){
-  if(arguments.length != 0){
+  if(arguments.length !== 0){
     this.random = rng; //random generator
   }
   else this.random = null;
@@ -21,7 +21,7 @@ function AbstractRealDistribution (rng){
 AbstractRealDistribution.prototype.cumulativeProbability = function(x0, x1){
   return this.probability(x0, x1);
 
-}
+};
 
 AbstractRealDistribution.prototype.probability = function (x0, x1){
   if(x0 > x1){
@@ -29,17 +29,17 @@ AbstractRealDistribution.prototype.probability = function (x0, x1){
                                                 x0, x1, true);
   }
   return this.cumulativeProbability(x1) - this.cumulativeProbability(x0);
-}
+};
 
-AbstractRealDistribution.prototype.inverseCumulativeProbability(p){
+AbstractRealDistribution.prototype.inverseCumulativeProbability = function(p){
   if (p < 0.0 || p > 1.0){
     throw new OutOfRangeException(p,0,1);
   }
   //FIXME: IMPLEMENT THE FUNCTIONS BELOW
   var lowerBound = this.getSupportLowerBound();
-  if(p == 0.0) return lowerBound;
+  if(p === 0.0) return lowerBound;
   var upperBound = this.getSupportUpperBound();
-  if(p == 1.0) return upperBound;
+  if(p === 1.0) return upperBound;
 
 
   var mu = this.getNumericalMean();
@@ -47,7 +47,7 @@ AbstractRealDistribution.prototype.inverseCumulativeProbability(p){
 
   var chebyshevApplies = isFinite(mu) || isFinite(sig) || !(isNan(mu) || isNan(sig));
 
-  if(lowerBound == Number.POSITIVE_INFINITY){
+  if(lowerBound === Number.POSITIVE_INFINITY){
     if(chebyshevApplies){
       upperBound = mu + sig * FastMathSqrt(p/(1-p));
     }else{
@@ -74,7 +74,7 @@ AbstractRealDistribution.prototype.inverseCumulativeProbability(p){
           if(this.cumulativeProbability(midPoint) < px){
             lowerBound = midPoint;
           }else{
-            upperBound = midPoint
+            upperBound = midPoint;
           }
         }
         return upperBound;
@@ -83,4 +83,5 @@ AbstractRealDistribution.prototype.inverseCumulativeProbability(p){
   }
   return x;
 
-}
+};
+module.exports = AbstractIntegerDistribution;

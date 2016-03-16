@@ -5,16 +5,6 @@ Porting Sungear from Java to Javascript,
 Translated from Ilyas Mounaime's Java code
 
 */
-package hyperGeo.distribution;
-
-import hyperGeo.exception.OutOfRangeException;
-import hyperGeo.exception.NotStrictlyPositiveException;
-import hyperGeo.exception.util.LocalizedFormats;
-import hyperGeo.special.Gamma;
-import hyperGeo.util.FastMath;
-import hyperGeo.random.RandomGenerator;
-import hyperGeo.random.Well19937c;
-
 /**
  * Implementation of the Weibull distribution. This implementation uses the
  * two parameter form of the distribution defined by
@@ -294,3 +284,4 @@ public class WeibullDistribution extends AbstractRealDistribution {
         return true;
     }
 }
+module.exports = WeibullDistribution; 

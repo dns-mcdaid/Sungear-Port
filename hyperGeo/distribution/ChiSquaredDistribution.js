@@ -1,4 +1,4 @@
-/*
+;/*
 Radhika Mattoo, February 2016 N.Y.
 
 Porting Sungear from Java to Javascript,
@@ -33,26 +33,26 @@ function ChiSquaredDistribution(rng, degreesOfFreedom, inverseCumAccuracy){
 }
 
 
-ChiSquaredDistribution.prototype.getDegreesOfFreedom = function() { return gamma.getShape() * 2.0;}
+ChiSquaredDistribution.prototype.getDegreesOfFreedom = function() { return gamma.getShape() * 2.0;};
 
-ChiSquaredDistribution.prototype.density = function(x) { return gamma.density(x);}
+ChiSquaredDistribution.prototype.density = function(x) { return gamma.density(x);};
 
-ChiSquaredDistribution.prototype.cumulativeProbability = function(x)  { return gamma.cumulativeProbability(x);}
+ChiSquaredDistribution.prototype.cumulativeProbability = function(x)  { return gamma.cumulativeProbability(x);};
 
 
 //@Override
-ChiSquaredDistribution.prototype.getSolverAbsoluteAccuracy = function() { return solverAbsoluteAccuracy;}
+ChiSquaredDistribution.prototype.getSolverAbsoluteAccuracy = function() { return solverAbsoluteAccuracy;};
 
-ChiSquaredDistribution.prototype.getNumericalMean = function() { return this.getDegreesOfFreedom();}
+ChiSquaredDistribution.prototype.getNumericalMean = function() { return this.getDegreesOfFreedom();};
 
-ChiSquaredDistribution.prototype.getNumericalVariance = function() { return 2 * this.getDegreesOfFreedom();}
+ChiSquaredDistribution.prototype.getNumericalVariance = function() { return 2 * this.getDegreesOfFreedom();};
 
-ChiSquaredDistribution.prototype.getSupportLowerBound = function() {return 0;}
+ChiSquaredDistribution.prototype.getSupportLowerBound = function() {return 0;};
 
-ChiSquaredDistribution.prototype.getSupportUpperBound = function() {return Double.POSITIVE_INFINITY;}
+ChiSquaredDistribution.prototype.getSupportUpperBound = function() {return Double.POSITIVE_INFINITY;};
 
-ChiSquaredDistribution.prototype.isSupportLowerBoundInclusive = function() {return true;}
+ChiSquaredDistribution.prototype.isSupportLowerBoundInclusive = function() {return true;};
 
-ChiSquaredDistribution.prototype.isSupportUpperBoundInclusive = function() {return false;}
+ChiSquaredDistribution.prototype.isSupportUpperBoundInclusive = function() {return false;};
 
-ChiSquaredDistribution.prototype.isSupportConnected = function() {return true;}
+ChiSquaredDistribution.prototype.isSupportConnected = function() {return true;};

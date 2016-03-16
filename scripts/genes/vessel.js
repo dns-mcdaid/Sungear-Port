@@ -8,7 +8,7 @@ function Vessel(anchor){
   this.anchor = anchor.sort();
   // Look into this guy's implementation of a Javascript TreeSet
   // http://bjornharrtell.github.io/javascript.util/doc/javascript.util.TreeSet.html
-  genes = [];
+  this.genes = [];
 }
 
 Vessel.prototype = {
@@ -16,18 +16,20 @@ Vessel.prototype = {
 
   toString:function(){
     var s = "";
-    for(var i = 0; i < anchor.length; i++) {
+    for(var i = 0; i < this.anchor.length; i++) {
       s += (i > 0 ? " | " : "") + this.anchor[i].name;
     }
     return s;
   },
   cleanup:function(){
-    genes = [];
+    this.genes = [];
   },
   addGene:function(g){
-    genes.push(g);
+    console.log("Adding gene " + g.name);
+    this.genes.push(g);
   },
   getFullCount:function(){
-    return genes.length;
+    return this.genes.length;
   }
-}
+};
+module.exports = Vessel;

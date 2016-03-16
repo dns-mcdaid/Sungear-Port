@@ -8,6 +8,7 @@ Translated from Ilyas Mounaime's Java code
 GammaDistribution.prototype = Object.create(AbstractRealDistribution.prototype);
 GammaDistribution.prototype.constructor = GammaDistribution;
 
+
 function GammaDistribution(rng, shape, scale, inverseCumAccuracy){
   var passedRNG;
   var passedShape;
@@ -39,7 +40,7 @@ function GammaDistribution(rng, shape, scale, inverseCumAccuracy){
   this.solverAbsoluteAccuracy = passedAccuracy;
   this.shiftedShape = this.shape + Gamma.LANCZOS_G + 0.5;
   var aux = FastMath.E / (2.0 * FastMath.PI * this.shiftedShape);
-  this.densityPrefactor2 = this.shape * FastMathSqrt(this.aux)/Gamma.lanczos(this.shape);
+  this.densityPrefactor2 = this.shape * Math.sqrt(this.aux)/Gamma.lanczos(this.shape);
   this.densityPrefactor1 = this.densityPrefactor2/ this.scale * Math.power(this.shiftedShape, -this.shape) * Math.exp(this.shape + Gamma.LANCZOS_G);
   this.minY = this.shape + Gamma.LANCZOS_G - Math.log(Number.MAX_VALUE);
   this.maxLogY = Math.log(Number.MAX_VALUE) / (this.shape - 1.0);
@@ -67,7 +68,7 @@ GammaDistribution.prototype.density = function(x){
    */
   return densityPrefactor1  * Math.exp(-y) *
           Math.pow(y, shape - 1);
-}
+};
 
 GammaDistribution.prototype.cumulativeProbability = function(x) {
   var ret;
@@ -78,19 +79,19 @@ GammaDistribution.prototype.cumulativeProbability = function(x) {
   }
 
   return ret;
-}
+};
 
-GammaDistribution.prototype.getShape = function(){ return this.shape;}
-GammaDistribution.prototype.getScale = function(){ return this.scale;}
-GammaDistribution.prototype.getSolverAbsoluteAccuracy = function() {return this.solverAbsoluteAccuracy;}
-GammaDistribution.prototype.getNumericalMean = function() {return this.shape * this.scale;}
-GammaDistribution.prototype.getNumericalVariance = function() {return this.shape * this.scale * this.scale;}
-GammaDistribution.prototype.getSupportLowerBound = function() {return 0;}
-GammaDistribution.prototype.getSupportUpperBound = function () {return Number.POSITIVE_INFINITY;}
-GammaDistribution.prototype.isSupportLowerBoundInclusive = function() {return true;}
-GammaDistribution.prototype.isSupportUpperBoundInclusive = function() {return false;}
-GammaDistribution.prototype.isSupportConnected = function() {return true;}
-GammaDistribution.prototype.sample() = function {
+GammaDistribution.prototype.getShape = function(){ return this.shape;};
+GammaDistribution.prototype.getScale = function(){ return this.scale;};
+GammaDistribution.prototype.getSolverAbsoluteAccuracy = function() {return this.solverAbsoluteAccuracy;};
+GammaDistribution.prototype.getNumericalMean = function() {return this.shape * this.scale;};
+GammaDistribution.prototype.getNumericalVariance = function() {return this.shape * this.scale * this.scale;};
+GammaDistribution.prototype.getSupportLowerBound = function() {return 0;};
+GammaDistribution.prototype.getSupportUpperBound = function () {return Number.POSITIVE_INFINITY;};
+GammaDistribution.prototype.isSupportLowerBoundInclusive = function() {return true;};
+GammaDistribution.prototype.isSupportUpperBoundInclusive = function() {return false;};
+GammaDistribution.prototype.isSupportConnected = function() {return true;};
+GammaDistribution.prototype.sample = function(){
   if (shape < 1) {
       // [1]: p. 228, Algorithm GS
       while (true) {
@@ -112,7 +113,7 @@ GammaDistribution.prototype.sample() = function {
               }
           } else {
               // Step 3:
-              var  x = -1 * Math.log((bGS - p) / this.shape);
+              var x = -1 * Math.log((bGS - p) / this.shape);
               var u2 = this.random.nextDouble();
 
               if (u2 > Math.pow(x, this.shape - 1)) {
@@ -128,7 +129,7 @@ GammaDistribution.prototype.sample() = function {
   var d = shape - 0.333333333333333333;
   var c = 1 / (3 * Math.sqrt(d));
 
-  while (true) {
+  while(true) {
       var x = this.random.nextGaussian();
       var v = (1 + c * x) * (1 + c * x) * (1 + c * x);
 
@@ -147,4 +148,5 @@ GammaDistribution.prototype.sample() = function {
           return this.scale * d * v;
       }
   }
-}
+};
+module.exports = GammaDistribution;

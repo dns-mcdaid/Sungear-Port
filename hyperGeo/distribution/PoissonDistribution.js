@@ -36,7 +36,7 @@ function is_int(mixed_var) {
   return mixed_var === +mixed_var && isFinite(mixed_var) && !(mixed_var % 1);
 }
 
-var PoissonDistribution(rng, p, epsilon, maxIterations){
+function PoissonDistribution(rng, p, epsilon, maxIterations){
   var passedRNG;
   var passedP;
   if(arguments.length == 1){//(p)
@@ -79,14 +79,14 @@ var PoissonDistribution(rng, p, epsilon, maxIterations){
 
 
 
-PoissonDistribution.prototype.getMean = function() {return mean;}
+PoissonDistribution.prototype.getMean = function() {return mean;};
 
 
 PoissonDistribution.prototype.probability = function(x) {
   var ret;
   if (x < 0 || x == Number.MAX_VALUE) {
       ret = 0.0;
-  } else if (x == 0) {
+  } else if (x === 0) {
       ret = Math.exp(-mean);
   } else {
       ret = Math.exp(-SaddlePointExpansion.getStirlingError(x) -
@@ -94,7 +94,7 @@ PoissonDistribution.prototype.probability = function(x) {
             Math.sqrt(MathUtils.TWO_PI * x);
   }
   return ret;
-}
+};
 
 PoissonDistribution.prototype.cumulativeProbability = function(x) {
   if (x < 0) {
@@ -103,20 +103,19 @@ PoissonDistribution.prototype.cumulativeProbability = function(x) {
   if (x == Number.MAX_VALUE) {
       return 1;
   }
-  return Gamma.regularizedGammaQ((double) x + 1, mean, this.epsilon,
-                                 this.maxIterations);
-}
-PoissonDistribution.prototype.normalApproximateProbability = function (x)  {return normal.cumulativeProbability(x + 0.5);}
-PoissonDistribution.prototype.getNumericalMean = function() {return this.getMean();}
-PoissonDistribution.prototype.getNumericalVariance = function() {return this.getMean();}
-PoissonDistribution.prototype.getSupportLowerBound = function() {return 0;}
-PoissonDistribution.prototype.getSupportUpperBound = function() {return Number.MAX_VALUE;}
-PoissonDistribution.prototype.isSupportConnected = function() {return true;}
+  return Gamma.regularizedGammaQ(x + 1, mean, this.epsilon, this.maxIterations);
+};
+PoissonDistribution.prototype.normalApproximateProbability = function (x)  {return normal.cumulativeProbability(x + 0.5);};
+PoissonDistribution.prototype.getNumericalMean = function() {return this.getMean();};
+PoissonDistribution.prototype.getNumericalVariance = function() {return this.getMean();};
+PoissonDistribution.prototype.getSupportLowerBound = function() {return 0;};
+PoissonDistribution.prototype.getSupportUpperBound = function() {return Number.MAX_VALUE;};
+PoissonDistribution.prototype.isSupportConnected = function() {return true;};
 //@Override
 PoissonDistribution.prototype.sample = function() {
   return Math.min(this.nextPoisson(this.mean), Number.MAX_VALUE);
 
-}
+};
 
 PoissonDistribution.prototype.nextPoisson = function(meanPoisson) {
   var pivot = 40.0;
@@ -140,7 +139,7 @@ PoissonDistribution.prototype.nextPoisson = function(meanPoisson) {
       var lambda = Math.floor(meanPoisson);
       var lambdaFractional = meanPoisson - lambda;
       var logLambda = Math.log(lambda);
-      var logLambdaFactorial = ArithmeticUtils.factorialLog((int) lambda);
+      var logLambdaFactorial = ArithmeticUtils.factorialLog(lambda);
       var y2;
       if(lambdaFractional < Number.MIN_VALUE){
           y2 = 0;
@@ -192,7 +191,7 @@ PoissonDistribution.prototype.nextPoisson = function(meanPoisson) {
           if(x < 0){ a = 1;}
           else{ a = 0;}
           t = y * (y + 1) / (2 * lambda);
-          if (v < -t && a == 0) {
+          if (v < -t && a === 0) {
               y = lambda + y;
               break;
           }
@@ -212,4 +211,4 @@ PoissonDistribution.prototype.nextPoisson = function(meanPoisson) {
       }
       return y2 + y;
   }
-}
+};

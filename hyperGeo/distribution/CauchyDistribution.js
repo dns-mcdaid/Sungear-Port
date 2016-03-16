@@ -13,7 +13,7 @@ CauchyDistribution.prototype.constructor = CauchyDistribution;
 
 function CauchyDistribution(rng, median, scale, inverseCumAccuracy){
   var passedRNG;
-  if(arguments.length == 0){ //(median = 0, scale = 1)
+  if(arguments.length === 0){ //(median = 0, scale = 1)
     passedRNG = new Well19937c();
     this.median = 0;
     this.scale = 1;
@@ -41,35 +41,35 @@ function CauchyDistribution(rng, median, scale, inverseCumAccuracy){
 }
 
 //GETTERS
-CauchyDistribution.prototype.getMedian = function(){return this.median;}
-CauchyDistribution.prototype..getScale = function(){return this.scale;}
+CauchyDistribution.prototype.getMedian = function(){ return this.median;};
+CauchyDistribution.prototype..getScale = function(){ return this.scale; };
 
 CauchyDistribution.prototype.density = function(x){
   var dev = x - this.median;
   return (1/FastMathPI) * (this.scale/(dev * dev + this.scal * this.scale));
-}
+};
 
 //@Override
-CauchyDistribution.prototype.inverseCumulativeProbability(p){
+CauchyDistribution.prototype.inverseCumulativeProbability = function(p){
   var ret;
   if(p < 0 || p > 1){ throw new OutOfRangeException(p,0,1);}
-  else if(p == 0){ ret = Number.NEGATIVE_INFINITY; }
-  else if(p == 1){ ret = Number.POSITIVE_INFINITY; }
+  else if(p === 0){ ret = Number.NEGATIVE_INFINITY; }
+  else if(p === 1){ ret = Number.POSITIVE_INFINITY; }
   else{
     ret = this.median + this.scale * Math.tan(FastMathPI * (p - 0.5));
   }
   return ret;
-}
+};
 
 CauchyDistribution.prototype.cumulativeProbability = function(x){
   return 0.5 * (Math.atan((x - this.median)/this.scale)/ FastMathPI);
-}
+};
 
 //override
-CauchyDistribution.prototype.getSolverAbsoluteAccuracy = function(){ return solverAbsoluteAccuracy; }
-CauchyDistribution.prototype.getNumericalMean = function(){ return Number.NaN;}
-CauchyDistribution.prototype.getSupportLowerBound = function(){ return Number.NEGATIVE_INFINITY;}
-CauchyDistribution.prototype.getSupportUpperBound = function(){ return Number.POSITIVE_INFINITY;}
-CauchyDistribution.prototype.isSupportLowerBoundInclusive = function(){ return false;}
-CauchyDistribution.prototype.isSupportUpperBoundInclusive = function(){ return false;}
-CauchyDistribution.prototype.isSupportConnected = function(){ return true;}
+CauchyDistribution.prototype.getSolverAbsoluteAccuracy = function(){ return solverAbsoluteAccuracy; };
+CauchyDistribution.prototype.getNumericalMean = function(){ return Number.NaN;};
+CauchyDistribution.prototype.getSupportLowerBound = function(){ return Number.NEGATIVE_INFINITY;};
+CauchyDistribution.prototype.getSupportUpperBound = function(){ return Number.POSITIVE_INFINITY;};
+CauchyDistribution.prototype.isSupportLowerBoundInclusive = function(){ return false;};
+CauchyDistribution.prototype.isSupportUpperBoundInclusive = function(){ return false;};
+CauchyDistribution.prototype.isSupportConnected = function(){ return true;};

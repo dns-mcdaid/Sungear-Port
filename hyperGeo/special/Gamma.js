@@ -113,7 +113,7 @@ var INV_GAMMA1P_M1_C12 = 0.113302723198169588237412962033074E-05;
 /** The constant {@code C13} defined in {@code DGAM1}. */
 var INV_GAMMA1P_M1_C13 = -0.205633841697760710345015413002057E-06;
 
-var HALF_LOG_2_PI = 0.5 * FastMathLog((2.0 * FastMathPI), null);
+var HALF_LOG_2_PI = 0.5 * Math.log((2.0 * Math.PI), null);
 
 var DEFAULT_EPSILON = 10e-15;
 
@@ -142,10 +142,10 @@ var LANCZOS = [
 function invGamma1pm1(x) {
   console.log("Inside invGamma1pm1");
 	if (x < -0.5) {
-		document.getElementById("output").innerHTML = "Throw Number is Too Small exception from invGamma1pm1 function";
+		console.log("Throw Number is Too Small exception from invGamma1pm1 function");
 	}
 	if (x > 1.5) {
-		document.getElementById("output").innerHTML = "Throw Number is Too Large exception from invGamma1pm1 function";
+		console.log("Throw Number is Too Large exception from invGamma1pm1 function");
 	}
 
 	var ret;

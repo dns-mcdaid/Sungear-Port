@@ -31,7 +31,7 @@ UniformIntegerDistribution.prototype.probability = function(x){
     return 0;
   }
   return 1.0 / (this.upper - this.lower + 1);
-}
+};
 UniformIntegerDistribution.prototype.cumulativeProbability = function(x){
   if (x < this.lower) {
     return 0;
@@ -40,17 +40,17 @@ UniformIntegerDistribution.prototype.cumulativeProbability = function(x){
       return 1;
   }
   return (x - this.lower + 1.0) / (this.upper - this.lower + 1.0);
-}
-UniformIntegerDistribution.prototype.getNumericalMean = function(){ return 0.5*(this.lower + this.upper);}
+};
+UniformIntegerDistribution.prototype.getNumericalMean = function(){ return 0.5*(this.lower + this.upper);};
 UniformIntegerDistribution.prototype.getNumericalVariance = function(){
   var n = this.upper - this.lower + 1;
   return (n * n - 1) / 12.0;
-}
-UniformIntegerDistribution.prototype.getSupportLowerBound = function(){ return this.lower;}
-UniformIntegerDistribution.prototype.getSupportUpperBound = function(){ return this.upper;}
-UniformIntegerDistribution.prototype.isSupportConnected = function(){ return true;}
+};
+UniformIntegerDistribution.prototype.getSupportLowerBound = function(){ return this.lower;};
+UniformIntegerDistribution.prototype.getSupportUpperBound = function(){ return this.upper;};
+UniformIntegerDistribution.prototype.isSupportConnected = function(){ return true;};
 UniformIntegerDistribution.prototype.sample = function(){
   var r = this.random.nextDouble();
   var scale = r * this.upper + (1-r) * this.lower + r;
   return Math.floor(scaled);
-}
+};

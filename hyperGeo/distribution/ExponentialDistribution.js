@@ -13,7 +13,7 @@ var solverAbsoluteAccuracy;
 
 
 /*Initialize Tables when file is loaded */
-VAR LN2 = Math.log(2);
+var LN2 = Math.log(2);
 var qi = 0.0;
 var i = 1;
 
@@ -48,18 +48,18 @@ function ExponentialDistribution(rng, mean, inverseCumAccuracy){
   this.mean = passedMean;
 }
 
-ExponentialDistribution.prototype.getMean = function(){ return this.mean;}
+ExponentialDistribution.prototype.getMean = function(){ return this.mean;};
 ExponentialDistribution.prototype.density = function(x){
   if(x < 0) return 0;
   return Math.exp(-x/this.mean)/this.mean;
-}
+};
 
 ExponentialDistribution.prototype.cumulativeProbability = function(x){
   var ret;
   if(x <= 0.0){ ret = 0.0; }
   else{ ret = 1.0 - Math.exp(-x/this.mean); }
   return ret;
-}
+};
 
 ExponentialDistribution.prototype.inverseCumulativeProbability = function(p){
   var ret;
@@ -69,7 +69,7 @@ ExponentialDistribution.prototype.inverseCumulativeProbability = function(p){
     ret = -this.mean * Math.log(1.0-p);
   }
   return ret;
-}
+};
 
 /*@Override
 * This implementation uses the
@@ -101,19 +101,19 @@ ExponentialDistribution.prototype.sample = function(){
    }while(u > EXPONENTIAL_SA_QI[0]);
 
    return this.mean * (a + umin * EXPONENTIAL_SA_QI[0]);
-}
+};
 
 
 
 //@Override
-ExponentialDistribution.prototype.getSolverAbsoluteAccuracy = function(){ return solverAbsoluteAccuracy; }
-ExponentialDistribution.prototype.getNumericalMean = function(){ return this.getMean(); }
+ExponentialDistribution.prototype.getSolverAbsoluteAccuracy = function(){ return solverAbsoluteAccuracy; };
+ExponentialDistribution.prototype.getNumericalMean = function(){ return this.getMean(); };
 ExponentialDistribution.prototype.getNumericalVariance = function(){
   var m = this.getMean();
   return m*m;
-}
-ExponentialDistribution.prototype.getSupportLowerBound = function(){ return 0; }
-ExponentialDistribution.prototype.getSupportUpperBound = function(){ return Number.POSITIVE_INFINITY; }
-ExponentialDistribution.prototype.isSupportLowerBoundInclusive = function(){ return true; }
-ExponentialDistribution.prototype.isSupportUpperBoundInclusive = function(){ return false; }
-ExponentialDistribution.prototype.isSupportConnected = function(){ return true; }
+};
+ExponentialDistribution.prototype.getSupportLowerBound = function(){ return 0; };
+ExponentialDistribution.prototype.getSupportUpperBound = function(){ return Number.POSITIVE_INFINITY; };
+ExponentialDistribution.prototype.isSupportLowerBoundInclusive = function(){ return true; };
+ExponentialDistribution.prototype.isSupportUpperBoundInclusive = function(){ return false; };
+ExponentialDistribution.prototype.isSupportConnected = function(){ return true; };

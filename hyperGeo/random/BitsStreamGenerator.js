@@ -8,10 +8,12 @@ Translated from Ilyas Mounaime's Java code
 //ABSTRACT CLASS
 
 //IMPLEMENT INHERITANCE
+var RandomGenerator = require('./RandomGenerator');
 BitsStreamGenerator.prototype = Object.create(RandomGenerator.prototype);
 BitsStreamGenerator.prototype.constructor = BitsStreamGenerator;
 
 function BitsStreamGenerator(){
+  RandomGenerator.call(this);
   this.nextGaussian = Number.Nan;
 }
 //Overridden methods from RandomGenerator
@@ -23,7 +25,7 @@ BitsStreamGenerator.prototype.nextBytes = function (bytes) {
   var i = 0;
   var iEnd = bytes.length - 3;
   while(i < iEnd){
-    var i = next(32);
+    var i = this.next(32);
     bytes[i] = random & 0xff; //FIXME
     bytes[i+1] = (random >> 8) & 0xff;//FIXME
     bytes[i+2] = (random >> 16) & 0xff;//FIXME
@@ -41,7 +43,7 @@ BitsStreamGenerator.prototype.nextDouble = function(){
   var low = next(26);
   var returnVal = (high | low) * (2.220446049250313E-16); //FIXME
   return returnVal;
-}
+};
 
 BitsStreamGenerator.prototype.nextFloat = function () {
   return next(23) * 1.1920929E-7;
@@ -93,4 +95,5 @@ BitsStreamGenerator.prototype.nextLong = function () {
 
 BitsStreamGenerator.prototype.clear = function(){
   this.nextGaussian = Number.Nan;
-}
+};
+module.exports = BitsStreamGenerator;

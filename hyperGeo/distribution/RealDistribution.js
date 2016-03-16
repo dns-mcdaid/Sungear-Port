@@ -20,3 +20,4 @@ RealDistribution.prototype.getSupportUpperBound = function(){};
 RealDistribution.prototype.isSupportConnected = function(){};
 RealDistribution.prototype.reseedRandomGenerator = function(seed){};
 RealDistribution.prototype.sample = function(sampleSize){};
+module.exports = RealDistribution;

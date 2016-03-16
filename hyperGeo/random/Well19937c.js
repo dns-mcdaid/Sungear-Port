@@ -7,6 +7,7 @@ Translated from Ilyas Mounaime's Java code
 */
 var serialVersionUID = -7203498180754925124;
 //IMPLEMENT INHERITANCE
+var AbstractWell = require('./AbstractWell');
 Well19937c.prototype = Object.create(AbstractWell.prototype);
 Well19937c.prototype.constructor = Well19937c;
 
@@ -58,4 +59,5 @@ Well19937c.prototype.next = function (bits){
   z4 = z4 ^ ((z4 << 15) & 0x9b868000);
 
   return z4 >>> (32 - bits);
-}
+};
+module.exports = Well19937c;

@@ -34,7 +34,7 @@ function FDistribution(rng, numeratorDegreesOfFreedom, denominatorDegreesOfFreed
   if(passedNum <= 0){ throw new NotStrictlyPositiveException(LocalizedFormats.DEGREES_OF_FREEDOM, numeratorDegreesOfFreedom);}
   if(passedDenom <= 0){ throw new NotStrictlyPositiveException(LocalizedFormats.DEGREES_OF_FREEDOM, denominatorDegreesOfFreedom);}
   this.numeratorDegreesOfFreedom = passedNum;
-  this.denominatorDegreesOfFreedom = passedDenom; 
+  this.denominatorDegreesOfFreedom = passedDenom;
 }
 
 FDistribution.prototype.density = function(x) {
@@ -48,7 +48,7 @@ FDistribution.prototype.density = function(x) {
         return Math.exp(nhalf * logn + nhalf * logx - logx +
                             mhalf * logm - nhalf * lognxm - mhalf * lognxm -
                             Beta.logBeta(nhalf, mhalf));
-    }
+    };;
 
 
 
@@ -66,14 +66,14 @@ FDistribution.prototype.cumulativeProbability = function( x)  {
                 0.5 * m);
         }
         return ret;
-    }
+    };
 
-FDistribution.prototype.getNumeratorDegreesOfFreedom = function() {return numeratorDegreesOfFreedom;}
+FDistribution.prototype.getNumeratorDegreesOfFreedom = function() {return numeratorDegreesOfFreedom;};
 
 
-FDistribution.prototype.getDenominatorDegreesOfFreedom = function(){ return this.denominatorDegreesOfFreedom;}
+FDistribution.prototype.getDenominatorDegreesOfFreedom = function(){ return this.denominatorDegreesOfFreedom;};
 
-FDistribution.prototype.getSolverAbsoluteAccuracy = function(){ return this.solverAbsoluteAccuracy;}
+FDistribution.prototype.getSolverAbsoluteAccuracy = function(){ return this.solverAbsoluteAccuracy;};
 
 FDistribution.prototype.getNumericalMean = function() {
         var denominatorDF = getDenominatorDegreesOfFreedom();
@@ -83,7 +83,7 @@ FDistribution.prototype.getNumericalMean = function() {
         }
 
         return Number.NaN;
-    }
+    };
 
 FDistribution.prototype.getNumericalVariance = function() {
         if (!this.numericalVarianceIsCalculated) {
@@ -91,27 +91,27 @@ FDistribution.prototype.getNumericalVariance = function() {
             this.numericalVarianceIsCalculated = true;
         }
         return this.numericalVariance;
-    }
+    };
 
 
 FDistribution.prototype.calculateNumericalVariance = function () {
-        final double denominatorDF = getDenominatorDegreesOfFreedom();
+        var denominatorDF = getDenominatorDegreesOfFreedom();
 
         if (denominatorDF > 4) {
-            final double numeratorDF = getNumeratorDegreesOfFreedom();
-            final double denomDFMinusTwo = denominatorDF - 2;
+            var numeratorDF = getNumeratorDegreesOfFreedom();
+            var denomDFMinusTwo = denominatorDF - 2;
 
             return ( 2 * (denominatorDF * denominatorDF) * (numeratorDF + denominatorDF - 2) ) /
                    ( (numeratorDF * (denomDFMinusTwo * denomDFMinusTwo) * (denominatorDF - 4)) );
         }
 
         return Double.NaN;
-    }
+    };
 
 
 
-FDistribution.prototype.getSupportLowerBound = function(){ return 0; }
-FDistribution.prototype.getSupportUpperBound = function(){ return Number.POSITIVE_INFINITY; }
-FDistribution.prototype.isSupportLowerBoundInclusive = function(){ return false; }
-FDistribution.prototype.isSupportUpperBoundInclusive = function(){ return false; }
-FDistribution.prototype.isSupportConnected = function(){ return true; }
+FDistribution.prototype.getSupportLowerBound = function(){ return 0; };
+FDistribution.prototype.getSupportUpperBound = function(){ return Number.POSITIVE_INFINITY; };
+FDistribution.prototype.isSupportLowerBoundInclusive = function(){ return false; };
+FDistribution.prototype.isSupportUpperBoundInclusive = function(){ return false; };
+FDistribution.prototype.isSupportConnected = function(){ return true; };

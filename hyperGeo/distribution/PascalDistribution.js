@@ -12,9 +12,9 @@ var numberOfSuccesses;
 var probabilityOfSuccess;
 
 function PascalDistribution(rng, r, p){
-  passedRNG;
-  passedR;
-  passedP;
+  var passedRNG;
+  var passedR;
+  var p;assedP;
   if(arguments.length == 2){
     passedRNG = new Well19937c();
     passedR = rng;
@@ -31,8 +31,8 @@ function PascalDistribution(rng, r, p){
   probabilityOfSuccess = p;
 }
 
-PascalDistribution.prototype.getNumberOfSuccesses = function() {return numberOfSuccesses;}
-PascalDistribution.prototype.getProbabilityOfSuccess = function() {return probabilityOfSuccess;}
+PascalDistribution.prototype.getNumberOfSuccesses = function() {return numberOfSuccesses;};
+PascalDistribution.prototype.getProbabilityOfSuccess = function() {return probabilityOfSuccess;};
 PascalDistribution.prototype.probability = function(x) {
   var ret;
   if (x < 0) {
@@ -44,7 +44,7 @@ PascalDistribution.prototype.probability = function(x) {
             Math.pow(1.0 - this.probabilityOfSuccess, x);
   }
   return ret;
-}
+};
 
 PascalDistribution.prototype.cumulativeProbability = function(x) {
   var ret;
@@ -55,19 +55,19 @@ PascalDistribution.prototype.cumulativeProbability = function(x) {
         this.numberOfSuccesses, x + 1.0);
   }
   return ret;
-}
+};
 
 PascalDistribution.prototype.getNumericalMean = function() {
   var p = this.getProbabilityOfSuccess();
   var r = this.getNumberOfSuccesses();
   return (r * (1 - p)) / p;
-}
+};
 
 PascalDistribution.prototype.getNumericalVariance = function() {
   var p = getProbabilityOfSuccess();
   var r = getNumberOfSuccesses();
   return r * (1 - p) / (p * p);
-}
-PascalDistribution.prototype.getSupportLowerBound = function() {return 0;}
-PascalDistribution.prototype.getSupportUpperBound = function() {return Number.MAX_VALUE;}
-PascalDistribution.prototype.isSupportConnected = function() {return true;}
+};
+PascalDistribution.prototype.getSupportLowerBound = function() {return 0;};
+PascalDistribution.prototype.getSupportUpperBound = function() {return Number.MAX_VALUE;};
+PascalDistribution.prototype.isSupportConnected = function() {return true;};

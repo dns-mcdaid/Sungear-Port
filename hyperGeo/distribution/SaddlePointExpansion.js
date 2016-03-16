@@ -5,7 +5,9 @@ Porting Sungear from Java to Javascript,
 Translated from Ilyas Mounaime's Java code
 
 */
-var HALF_LOG_2_PI = 0.5 * FastMathLog(TWO_PI, null);
+var HALF_LOG_2_PI = 0.5 * Math.log(TWO_PI, null);
+var Gamma = require('../special/Gamma');
+var TWO_PI = require('../util/MathUtils');
 
 var EXACT_STIRLING_ERRORS = [0.0, /* 0.0 */
     0.1534264097200273452913848, /* 0.5 */
@@ -39,16 +41,16 @@ var EXACT_STIRLING_ERRORS = [0.0, /* 0.0 */
     0.005746216513010115682023589, /* 14.5 */
     0.005554733551962801371038690 /* 15.0 */
     ];
-
-function getStirlingError(z){
+var SaddlePointExpansion = {
+ getStirlingError: function(z){
   console.log("Inside getStirlingError with z: " + z);
 	var ret;
 	if(z < 15.0){
 		var z2 = 2.0 * z;
-		if (FastMathFloor(z2) == z2){
+		if (Math.floor(z2) == z2){
 			ret = EXACT_STIRLING_ERRORS[z2];
 		}else{
-			ret = Gamma.LogGamma(z + 1.0) - (z + 0.5) * FastMathLog(z, null) + z - HALF_LOG_2_PI;
+			ret = Gamma.LogGamma(z + 1.0) - (z + 0.5) * Math.log(z, null) + z - HALF_LOG_2_PI;
 		}
 	}else{
 		var z2 = z * z;
@@ -61,12 +63,12 @@ function getStirlingError(z){
 	}
   console.log("Leaving getStirlingError with " + ret);
 	return ret;
-}
+},
 
-function getDeviancePart(x, mu){
+ getDeviancePart: function(x, mu){
   console.log("Inside getDeviancePart with x: " + x + " , and mu: " + mu);
 	var ret;
-	if (FastMathAbs(x - mu) < 0.1 * (x + mu)){
+	if (Math.abs(x - mu) < 0.1 * (x + mu)){
 		var d = x - mu;
 		var v = d/ (x + mu);
 		var s1 = v * d;
@@ -83,34 +85,36 @@ function getDeviancePart(x, mu){
 		}
 		ret = s1;
 	}else{
-		ret = x * FastMathLog((x / mu), null) + mu - x;
+		ret = x * Math.log((x / mu), null) + mu - x;
 	}
 console.log("Leaving getDeviancePart with" + ret);
 	return ret;
-}
+},
 
-function SaddlePointExpansionlogBinomialProbability(x, n, p, q){
+ logBinomialProbability: function(x, n, p, q){
   console.log("Inside logBinomialProbability with x: " + x + " , n : " + n + " , p: " + p + " ,and q: " + q);
 	var ret;
-	if (x == 0) {
+	if (x === 0) {
 		if (p < 0.1) {
-			ret = -getDeviancePart(n, n * q) - n * p;
+			ret = -SaddlePointExpansion.getDeviancePart(n, n * q) - n * p;
 		} else {
-			ret = n * FastMathLog(q, null);
+			ret = n * Math.log(q, null);
 		}
 	} else if (x == n) {
 		if (q < 0.1) {
-			ret = -getDeviancePart(n, n * p) - n * q;
+			ret = -SaddlePointExpansion.getDeviancePart(n, n * p) - n * q;
 		} else {
-			ret = n * FastMathLog(p, null);
+			ret = n * Math.log(p, null);
 		}
 	} else {
-		ret = getStirlingError(n) - getStirlingError(x) -
-			  getStirlingError(n - x) - getDeviancePart(x, n * p) -
-			  getDeviancePart(n - x, n * q);
+		ret = SaddlePointExpansion.getStirlingError(n) - SaddlePointExpansion.getStirlingError(x) -
+			  SaddlePointExpansion.getStirlingError(n - x) - SaddlePointExpansion.getDeviancePart(x, n * p) -
+			  SaddlePointExpansion.getDeviancePart(n - x, n * q);
 		var f = (TWO_PI * x * (n - x)) / n;
-		ret = -0.5 * FastMathLog(f, null) + ret;
+		ret = -0.5 * Math.log(f, null) + ret;
 	}
   console.log("Leaving logBinomialProbability with " + ret);
 	return ret;
 }
+};
+module.exports = SaddlePointExpansion;
