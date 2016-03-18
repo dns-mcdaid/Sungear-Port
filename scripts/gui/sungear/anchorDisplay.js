@@ -7,7 +7,7 @@ define(['anchor', 'vesselDisplay', 'p5'],
 function(anchor, values, vesselDisplay, p5){
   var methods = {
     AnchorDisplay: AnchorDisplay
-  }
+  };
 
   var NAME_SEPARATOR = ";";
   function AnchorDisplay(anchor) {
@@ -29,7 +29,7 @@ function(anchor, values, vesselDisplay, p5){
     this.position = {
       x: null,
       y: null
-    }
+    };
     this.vessels = [];
   }
 
@@ -76,12 +76,12 @@ function(anchor, values, vesselDisplay, p5){
 
     },
     contains:function(p){
-      return this.shape == null ? false : shape.contains(p); // TODO: Implement.
+      return this.shape === null ? false : shape.contains(p); // TODO: Implement.
     },
     compare:function(a){
       return this.anchor.compare(a.anchor);
     }
-  }
+  };
 
   return methods;
 });

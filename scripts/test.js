@@ -41,7 +41,7 @@ define(['jquery', 'p5'], function($, p5){
 
       genesPopulated = true;
       var geneDictionary = {};
-      geneDictionary["At1g01040"] = "DEAD/DEAH";
+      geneDictionary['At1g01040'] = "DEAD/DEAH";
       geneDictionary["At1g01050"] = "inorganic";
       geneDictionary["At1g01060"] = "myb family traits";
       geneDictionary["At1g01090"] = "pyruvate dehydration";

@@ -2,7 +2,7 @@ define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay', 'p5'],
 function(anchor, gene, vessel, sungear, p5){
   var methods = {
     VesselDisplay: VesselDisplay
-  }
+  };
   var ARROW_LINE = 0.7;
   var ARROW_END = 0.2;
 
@@ -90,12 +90,13 @@ function(anchor, gene, vessel, sungear, p5){
     },
     getActiveCount:function(){ return this.activeGenes.length; },
     makeShape:function(rad_inner){
-      if(this.start == null){
+      if(this.start === null){
         var p = {
           x: null,
           y: null
         };
-        if(this.anchor.length == 0) {
+
+        if(this.anchor.length === 0) {
           console.log("OVER HERE");
           // BOTH VALUES SHOULD BE NEGATIVE
           p.x = -values.R_CIRCLE;
@@ -111,12 +112,12 @@ function(anchor, gene, vessel, sungear, p5){
         this.start = p;
         //this.setCenter(p, this.rad_inner);
         //this.selectAllGenes();
+        this.shape.x = p.x*10; // SHOULD NOT BE MULTIPLIED BY 10
+        this.shape.y = p.y*10;
       }
       // area 0 - vMax ==> 0 - 0.1
       //this.radOuter = this.getShapeRad(this.getActiveCount, this.vMax);
       //this.shape.x = this.center.x-this.radOuter;
-      this.shape.x = p.x*10; // SHOULD NOT BE MULTIPLIED BY 10
-      this.shape.y = p.y*10;
       this.shape.height = (this.radOuter+10)*2; // SHOULD NOT ADD 10
       this.shape.width = (this.radOuter+10)*2;
       return this.shape;
@@ -176,12 +177,12 @@ function(anchor, gene, vessel, sungear, p5){
 
     // THESE LAST TWO FUNCTIONS MAY NOT NEED TO BE IMPLEMENTED THANKS TO p5.
     draw:function(g2){
-      if(this.getActiveCount() == 0){ return; }
+      if(this.getActiveCount() === 0){ return; }
 
     },
     drawArrow:function(g2, theta){
 
     }
-  }
+  };
   return methods;
 });

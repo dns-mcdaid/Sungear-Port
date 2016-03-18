@@ -56,10 +56,10 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
     C_HIGHLIGHT : '#ffa0a0',
     /** Selected text/graphics */
     C_SELECT : '#ffffa0',
-    SunGear : SunGear
+    Sungear : Sungear
   };
 
-  function SunGear(genes,thresh,statsF) {
+  function Sungear(genes,thresh,statsF) {
     this.genes = genes;
     this.thresh = thresh;
     this.statsF = statsF;
@@ -76,7 +76,7 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
     // GET THIS.
     var statsPanel = document.getElementById("#stats");
     for(var i = 0; i < tempStats.length; i++){
-      // Check out test.js for how to populate rows.
+      // Check out test.js for hows to populate rows.
     }
     // Check out lines 138 - 192.
     this.highCnt = 0;
@@ -86,8 +86,8 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       x : -values.R_CIRCLE,
       y : -values.R_CIRCLE,
       // unsure.
-      width : 2*R_CIRCLE,
-      height : 2*R_CIRCLE
+      width : 2*values.R_CIRCLE,
+      height : 2*values.R_CIRCLE
     };
     this.setPreferredSize();
     // add event listeners from 200 - 255
@@ -101,7 +101,7 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
   }
 
   Sungear.prototype = {
-    constructor:Sungear,
+    constructor: Sungear,
 
     cleanup:function() {
       for(var i = 0; i < this.anchors.length; i++){
@@ -117,7 +117,7 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       this.lastVessel = null;
     },
 
-    function getVessels() { return vessels; },
+     getVessels: function() { return vessels; },
 
     // makeButton is probably unnecessary
 
@@ -129,7 +129,6 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
         this.updateCount();
         // repaint(); //FIXME
       } else {
-        console.log("NAH");
         throw new Error("Invalid index n to order function");
       }
     },
@@ -180,7 +179,7 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       this.showArrows = b;
       this.sa = this.saI[b ? 0 : 1];
       //TODO: in the java version there was button interaction here
-      if(this.vessels != null){
+      if(this.vessels !== null){
         for(var i = 0; i < vessels.length; i++){
           this.vessels[i].setShowArrows(b);
         }
@@ -233,33 +232,32 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       var anchorConv = [];
       // Implement doubles from line 500
       // TODO: rest of code is from 501 - 543 [DENNIS]
-    }
-  }
+    },
 
 
   // RESUME HERE:
 
 
-  function getAnchor(p) { //a 2D 'Sungear' coordinates
+   getAnchor: function(p) { //a 2D 'Sungear' coordinates
       for(var i = 0; i < anchors.length; i++){
           if(anchors[i].contains(p)){
               return anchors[i];
           }
       }
       return null;
-  }
+  },
 
 
-  function positionVessels() {
+   positionVessels: function() {
   	if(polarPlot){
   	    positionVesselsPolar();
     }
   	else{
   	    positionVesselsCartesian();
       }
-  }
+  },
 
-  function positionVesselsPolar(){
+   positionVesselsPolar: function(){
     for(var i = 0; i < vessels.length; i++) {
   	    if(vessels[i].anchor.length > 0) {
       		var r = rad_inner * (1.0- (vessels[i].anchor.length-1.0) / (anchors.length-1.0));
@@ -273,8 +271,9 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
   	    }
   	}
   	// repaint();
-  }
-  function positionVesselsCartesian(){
+  },
+
+   positionVesselsCartesian: function(){
     for(var i = 0; i < vessels.length; i++) {
       vessels[i].getCenter().x = vessels[i].getStart().x;
       vessels[i].getCenter().y = vessels[i].getStart().y;
@@ -287,10 +286,10 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
         adjustCenters(1.0);
     }
     // repaint(); //TODO
-  }
+  },
 
 
-  function relaxStep(eta){
+   relaxStep: function(eta){
   // scaling factor to give extra space for vessels (and arrows)
     var sf = 1.5;
   // random factor added to or subtracted from movement
@@ -352,16 +351,10 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
         }
     }
     return e;
-  }
+  },
 
 
-
-
-
-
-
-
-  function adjustCenters(){
+   adjustCenters:function(){
     var l = [];
     //default vector size in java is 10, so mimicking that
     for(var i = 0; i < 10; i++){
@@ -388,9 +381,9 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       }
     }
 
-  }
+  },
 
-  function relaxCenters(){
+   relaxCenters: function(){
     var maxIter = 200;
     var eta = 1.0;
     var decay = 0.01;
@@ -407,17 +400,18 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       vessels[i].updateCenter();
     }
 
-  }
-  function getAnchor2D(p){
+  },
+
+   getAnchor2D: function(p){
     for(var i = 0; i < anchors.length; i++){
       if(anchors[i].contains(p)){
           return anchors[i];
       }
     }
     return null;
-  }
+  },
 
-  function getVessel(p) {  //regular screen point
+   getVessel: function(p) {  //regular screen point
     try {
         var vt = makeTransform(getWidth(), getHeight()).createInverse();
         // var pp = (Point2D.Double)vt.transform(new Point2D.Double(p.x, p.y), null); //FIXME
@@ -426,20 +420,20 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
         e.printStackTrace();
         return null;
     }
-  }
+  },
 
-  function getVessel2D(p){ //2D 'sungear' point
+   getVessel2D: function(p){ //2D 'sungear' point
     for(var i = 0; i < vessels.length; i++){
     if(vessels[i].contains(p)){
         return vessels[i];
         }
     }
     return null;
-  }
+  },
 
 
 
-  function updateCount(){
+   updateCount: function(){
     //create new treeset of Gene objects
     var c1 = new TreeSet();
     console.log("Created new TreeSet");
@@ -450,9 +444,9 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
     }
     highCnt = c1.size();
     console.log("TreeSet's size is " + highCnt);
-  }
+  },
 
-  function checkHighlight(a, v){ //anchordisplay and vesseldisplay objects
+   checkHighlight: function(a, v){ //anchordisplay and vesseldisplay objects
     if(arguments.length == 2){
       var chg = false;
       if(a != lastAnchor){
@@ -482,9 +476,9 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       var y = (p===null) ? null : (a !== null ? null : getVessel(p));
       checkHighlight(x, y);
     }
-  }
+  },
 
-  function updateActive() {
+   updateActive: function() {
   	// update active sets
   	// find max value
   	var max = 0;
@@ -498,28 +492,28 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
   		vessels[i].setMax(max);
   		vessels[i].makeShape(rad_inner);
   	}
-  }
+  },
 
-  function updateHighlight() {
+   updateHighlight: function() {
     var a = lastAnchor;
     lastAnchor = null;
     var v = lastVessel;
     lastVessel = null;
     checkHighlight(a, v);
-  }
+  },
 
 
-  function makeTransform(w, h){
+   makeTransform: function(w, h){
     var M = Math.min(w, h);
     //declare new AffineTransform object
     var vt = new AffineTransform(); //TODO
     vt.translate(w/2, h/2);
     vt.scale(0.5*M/R_OUTER, 0.5*M/R_OUTER);
     return vt;
-  }
+  },
 
 
-  function getMultiSelection(operation){
+   getMultiSelection: function(operation){
      var s = new TreeSet();
     var cnt = 0;      // number of selected items in component
     if(operation == MultiSelectable.INTERSECT){ //TODO
@@ -549,18 +543,18 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
         }
     }
     return (cnt > 0) ? s : null;
-  }
+  },
 
-  function highlightVessel(v){
+   highlightVessel: function(v){
     for(var i = 0; i < vessels.length; i++)
       vessels[i].setHighlight(vessels[i] == v);
     for(var i = 0; i < anchors.length; i++) {
-        var b = (v != null && anchors[i].vessels.contains(v));
+        var b = (v !== null && anchors[i].vessels.contains(v));
         anchors[i].setHighlight(b);
     }
-  }
+  },
 
-  function binarySearch(array, desired){
+   binarySearch: function(array, desired){
     var mid = Math.floor(array.length/2);
 
     if(array[mid] == desired) return mid;
@@ -570,9 +564,9 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
     else if(array[mid] > desired && array.length > 1){
       return binarySearch(array.splice(0, mid), desired);
     }else{ return -1; }
-  }
+  },
 
-  function setMulti(b){
+   setMulti: function(b){
     multi = b;
     if(!b){
       for(var i = 0; i < vessels.length; i++){
@@ -582,9 +576,9 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
         anchors[i].setSelect(false);
       }
     }
-
   }
 
+};
+return values;
 
-  return values;
 });

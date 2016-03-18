@@ -13,7 +13,7 @@ function(anchor, anchorDisplay, p5, sunGear, vesselDisplay){
       var testShape = testDis.makeShape(4);
       console.log(testShape);
       DrawStack.push(testShape);
-    }
+    },
 
     x.draw = function() {
       x.background(16,16,16);

@@ -1,7 +1,7 @@
 /*
 Radhika Mattoo, October 2015 N.Y.
 Porting Sungear from Java to Javascript,
-Translated from Ilyas Mounaime's Java code 
+Translated from Ilyas Mounaime's Java code
 */
 
 //uses functions from java.io and java.net imports
@@ -27,12 +27,12 @@ Translated from Ilyas Mounaime's Java code
     /** Data directory for relative file locations */
     var dataDir;
     /** Reader object that performs actual file parsing */
-    //JAVASCRIPT FILE INPUT? 
+    //JAVASCRIPT FILE INPUT?
     var reader = new FileReader();
-    // * Holds arbitrary information about the current experiment 
-    // /* ilyas */ 
+    // * Holds arbitrary information about the current experiment
+    // /* ilyas */
     //Attributes is basically a map for making sure basic attributes are set (file name, species)
-    var attrib = {}; 
+    var attrib = {};
 
     function DataSource(dataDir){
     	this.dataDir = dataDir;
@@ -47,10 +47,10 @@ Translated from Ilyas Mounaime's Java code
     }
 
     function checkAttributes(attrib, base){ //throws IO, Parse exceptions
-    	if(attrib["sungearU"] == null){
-    		document.write("Sungear file not specified.");
+    	if(attrib["sungearU"] === null){
+    		console.log("Sungear file not specified.");
     	}
-    	
+
 
     }
 

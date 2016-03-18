@@ -88,4 +88,4 @@ console.log(term.getAllGenes()); //notRadhika
 console.log(term.getSelectedState());//STATE_UNKNOWN (0)
 term.initSelectedState();
 term.updateSelectedState(list);
-console.log(term.getSelectedState()); //either selected or unselected (1 or 2)
+console.log(term.getSelectedState()); //either 1 or 2
