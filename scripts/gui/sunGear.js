@@ -235,67 +235,62 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
     },
 
 
-  // RESUME HERE:
-
-
-   getAnchor: function(p) { //a 2D 'Sungear' coordinates
-      for(var i = 0; i < anchors.length; i++){
-          if(anchors[i].contains(p)){
-              return anchors[i];
-          }
+    getAnchor:function(p) { //a 2D 'Sungear' coordinates
+      for(var i = 0; i < this.anchors.length; i++){
+        if(this.anchors[i].indexOf(p) >= 0){
+          return this.anchors[i];
+        }
       }
       return null;
-  },
+    },
 
 
-   positionVessels: function() {
-  	if(polarPlot){
-  	    positionVesselsPolar();
-    }
-  	else{
-  	    positionVesselsCartesian();
+    positionVessels:function() {
+      if(this.polarPlot){
+        this.positionVesselsPolar();
+      } else {
+        this.positionVesselsCartesian();
       }
-  },
+    },
 
-   positionVesselsPolar: function(){
-    for(var i = 0; i < vessels.length; i++) {
-  	    if(vessels[i].anchor.length > 0) {
-      		var r = rad_inner * (1.0- (vessels[i].anchor.length-1.0) / (anchors.length-1.0));
-      		var x = vessels[i].getStart().x, y = vessels[i].getStart().y;
+    positionVesselsPolar:function(){
+      for(var i = 0; i < this.vessels.length; i++) {
+        if(this.vessels[i].anchor.length > 0) {
+      		var r = rad_inner * (1.0- (this.vessels[i].anchor.length-1.0) / (this.anchors.length-1.0));
+      		var x = this.vessels[i].getStart().x, y = this.vessels[i].getStart().y;
       		var d = Math.sqrt(x*x + y*y);
-      		var t = (d < 0.001) ? vessels[i].anchor[0].getAngle() : Math.S(y, x);
-      		vessels[i].getCenter().x = r * Math.cos(t);
-      		vessels[i].getCenter().y = r * Math.sin(t);
-      		vessels[i].setRadMax(0.05);
-      		vessels[i].updateCenter();
-  	    }
-  	}
-  	// repaint();
-  },
+      		var t = (d < 0.001) ? this.vessels[i].anchor[0].getAngle() : Math.atan2(y, x);
+      		this.vessels[i].getCenter().x = r * Math.cos(t);
+      		this.vessels[i].getCenter().y = r * Math.sin(t);
+      		this.vessels[i].setRadMax(0.05);
+      		this.vessels[i].updateCenter();
+        }
+      }
+    	// this.repaint();
+    },
 
-   positionVesselsCartesian: function(){
-    for(var i = 0; i < vessels.length; i++) {
-      vessels[i].getCenter().x = vessels[i].getStart().x;
-      vessels[i].getCenter().y = vessels[i].getStart().y;
-      vessels[i].updateCenter();
-    }
-    if(relax) {
-        adjustCenters(0.005);
-        relaxCenters();
-    } else {
-        adjustCenters(1.0);
-    }
-    // repaint(); //TODO
-  },
+    positionVesselsCartesian: function(){
+      for(var i = 0; i < this.vessels.length; i++) {
+        this.vessels[i].getCenter().x = vessels[i].getStart().x;
+        this.vessels[i].getCenter().y = vessels[i].getStart().y;
+        this.vessels[i].updateCenter();
+      }
+      if(this.relax) {
+        this.adjustCenters(0.005);
+        this.relaxCenters();
+      } else {
+        this.adjustCenters(1.0);
+      }
+      // this.repaint(); //TODO
+    },
 
-
-   relaxStep: function(eta){
-  // scaling factor to give extra space for vessels (and arrows)
-    var sf = 1.5;
-  // random factor added to or subtracted from movement
-    var rf = 0.3;
-    for(var i = 0; i < vessels.length; i++) {
-        var v = vessels[i];
+    relaxStep: function(eta){
+      // scaling factor to give extra space for vessels (and arrows)
+      var sf = 1.5;
+      // random factor added to or subtracted from movement
+      var rf = 0.3;
+      for(var i = 0; i < this.vessels.length; i++) {
+        var v = this.vessels[i];
         if(v.anchor.length === 0 || v.getActiveCount() === 0){
             continue;
         }
@@ -308,277 +303,270 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
             v.dx -= (md-1) * v.getCenter().x;
             v.dy -= (md-1) * v.getCenter().y;
         }
-    }
-    // overlapping vessels repel
-    for(i = 0; i < vessels.length; i++) {
-        var v1 = vessels[i];
+      }
+      // overlapping vessels repel
+      for(i = 0; i < this.vessels.length; i++) {
+        var v1 = this.vessels[i];
         if(v1.getActiveCount() === 0) {continue;}
-        for(var j = i+1; j < vessels.length; j++) {
-            var v2 = vessels[j];
-            if(v2.getActiveCount() === 0){continue;}
-            // x & y distance b/t points, and total radius
-            var ax = v1.getCenter().x - v2.getCenter().x, ay = v1.getCenter().y - v2.getCenter().y;
-            var ar = sf * (v1.getRadOuter() + v2.getRadOuter());
-            // do vessels overlap?
-            if(ax*ax + ay*ay < ar*ar) {
-                // how much the overlap is
-                var adist = Math.sqrt(ax*ax + ay*ay);
-                var dr = ar - adist;
-                var dx, dy;
-                if(adist < 1e-12) {   // total overlap = vessel centers are the same
-                    var t = rng() * 2 * Math.PI;
-                    dx = sf * dr * Math.cos(t);
-                    dy = sf * dr * Math.sin(t);
-                } else {
-                    dx = 0.75 * (dr/adist) * (v2.getCenter().x - v1.getCenter().x);
-                    dy = 0.75 * (dr/adist) * (v2.getCenter().y - v1.getCenter().y);
-                }
-                var iv = vessels[i].anchor.length, jv = vessels[j].anchor.length;
-                v1.dx -= (jv/(iv+jv)) * dx * (1 + 2*rf*rng()-rf);
-                v1.dy -= (jv/(iv+jv)) * dy * (1 + 2*rf*rng()-rf);
-                v2.dx += (iv/(iv+jv)) * dx * (1 + 2*rf*rng()-rf);
-                v2.dy += (iv/(iv+jv)) * dy * (1 + 2*rf*rng()-rf);
+        for(var j = i+1; j < this.vessels.length; j++) {
+          var v2 = this.vessels[j];
+          if(v2.getActiveCount() === 0){continue;}
+          // x & y distance b/t points, and total radius
+          var ax = v1.getCenter().x - v2.getCenter().x, ay = v1.getCenter().y - v2.getCenter().y;
+          var ar = sf * (v1.getRadOuter() + v2.getRadOuter());
+          // do vessels overlap?
+          if(ax*ax + ay*ay < ar*ar) {
+            // how much the overlap is
+            var adist = Math.sqrt(ax*ax + ay*ay);
+            var dr = ar - adist;
+            var dx, dy;
+            if(adist < 1e-12) {   // total overlap = vessel centers are the same
+                var t = rng() * 2 * Math.PI;
+                dx = sf * dr * Math.cos(t);
+                dy = sf * dr * Math.sin(t);
+            } else {
+                dx = 0.75 * (dr/adist) * (v2.getCenter().x - v1.getCenter().x);
+                dy = 0.75 * (dr/adist) * (v2.getCenter().y - v1.getCenter().y);
             }
+            var iv = this.vessels[i].anchor.length, jv = this.vessels[j].anchor.length;
+            v1.dx -= (jv/(iv+jv)) * dx * (1 + 2*rf*rng()-rf);
+            v1.dy -= (jv/(iv+jv)) * dy * (1 + 2*rf*rng()-rf);
+            v2.dx += (iv/(iv+jv)) * dx * (1 + 2*rf*rng()-rf);
+            v2.dy += (iv/(iv+jv)) * dy * (1 + 2*rf*rng()-rf);
+          }
         }
-    }
-    var e = 0;
-    for(i = 0; i < vessels.length; i++) {
-        var v = vessels[i];
+      }
+      var e = 0;
+      for(i = 0; i < this.vessels.length; i++) {
+        var v = this.vessels[i];
         if(v.getActiveCount() !== 0) {
             v.getCenter().x += eta * v.dx;
             v.getCenter().y += eta * v.dy;
             e += Math.sqrt(v.dx*v.dx + v.dy*v.dy);
         }
-    }
-    return e;
-  },
-
-
-   adjustCenters:function(){
-    var l = [];
-    //default vector size in java is 10, so mimicking that
-    for(var i = 0; i < 10; i++){
-      l[i] = [];
-    }
-    for(i = 0; i < vessels.length; i++){
-      if(vessels[i].activeCount() === 0){ //TODO
-        continue;
       }
-      p = vessels[i].getCenter(); //TODO
-      var added = false;
-      var v;
-      for(var j = 0; j < l.length && !added; j++){
-        v = l[j];
-        if(p.distance(v[0].getCenter()) < 0.0001){
-          v.push(vessels[i]);
-          added = true;
+      return e;
+    },
+
+    adjustCenters:function(){
+      var l = [];
+      //default vector size in java is 10, so mimicking that
+      for(var i = 0; i < 10; i++){
+        l[i] = [];
+      }
+      for(i = 0; i < this.vessels.length; i++){
+        if(vessels[i].activeCount() === 0){ //TODO
+          continue;
+        }
+        p = this.vessels[i].getCenter(); //TODO
+        var added = false;
+        var v;
+        for(var j = 0; j < l.length && !added; j++){
+          v = l[j];
+          if(p.distance(v[0].getCenter()) < 0.0001){
+            v.push(this.vessels[i]);
+            added = true;
+          }
+        }
+        if(!added){
+          v = [];
+          v.push(this.vessels[i]);
+          l.push(v);
         }
       }
-      if(!added){
-        v = [];
-        v.push(vessels[i]);
-        l.push(v);
+
+    },
+
+    relaxCenters:function(){
+      var maxIter = 200;
+      var eta = 1.0;
+      var decay = 0.01;
+      var energy = this.vessels.length;
+      var cnt = 0;
+      do {
+        var e = this.relaxStep(eta); //TODO
+        energy = e;
+        eta *= (1-decay);
+        cnt += 1;
+      } while(cnt <10 || (energy*eta > 5e-5*vessels.length && cnt < maxIter));
+
+      for(var i = 0; i < this.vessels.length; i++){
+        this.vessels[i].updateCenter();
       }
-    }
 
-  },
+    },
 
-   relaxCenters: function(){
-    var maxIter = 200;
-    var eta = 1.0;
-    var decay = 0.01;
-    var energy = vessels.length;
-    var cnt = 0;
-    do{
-      var e = relaxStep(eta); //TODO
-      energy = e;
-      eta *= (1-decay);
-      cnt += 1;
-    }while(cnt <10 || (energy*eta > 5e-5*vessels.length && cnt < maxIter));
-
-    for(var i = 0; i < vessels.length; i++){
-      vessels[i].updateCenter();
-    }
-
-  },
-
-   getAnchor2D: function(p){
-    for(var i = 0; i < anchors.length; i++){
-      if(anchors[i].contains(p)){
-          return anchors[i];
+    getAnchor2D: function(p){
+      for(var i = 0; i < this.anchors.length; i++){
+        if(this.anchors[i].indexOf(p) >= 0){
+            return this.anchors[i];
+        }
       }
-    }
-    return null;
-  },
+      return null;
+    },
 
-   getVessel: function(p) {  //regular screen point
-    try {
-        var vt = makeTransform(getWidth(), getHeight()).createInverse();
+    getVessel: function(p) {  //regular screen point
+      try {
+        var vt = this.makeTransform(getWidth(), getHeight()).createInverse();
         // var pp = (Point2D.Double)vt.transform(new Point2D.Double(p.x, p.y), null); //FIXME
-        return getVessel2D(pp);
-    } catch(e) {
-        e.printStackTrace();
-        return null;
-    }
-  },
-
-   getVessel2D: function(p){ //2D 'sungear' point
-    for(var i = 0; i < vessels.length; i++){
-    if(vessels[i].contains(p)){
-        return vessels[i];
-        }
-    }
-    return null;
-  },
-
-
-
-   updateCount: function(){
-    //create new treeset of Gene objects
-    var c1 = new TreeSet();
-    console.log("Created new TreeSet");
-    for(var i = 0; i < vessels.length; i++){
-      if(vessels[i].getHighlight()){
-        c1.addAll(vessels[i].selectedGenes);
+        return this.getVessel2D(pp);
+      } catch(e) {
+          return null;
       }
-    }
-    highCnt = c1.size();
-    console.log("TreeSet's size is " + highCnt);
-  },
+    },
 
-   checkHighlight: function(a, v){ //anchordisplay and vesseldisplay objects
-    if(arguments.length == 2){
-      var chg = false;
-      if(a != lastAnchor){
-        chg = true;
-        for(var i = 0; i < anchors.length; i++){
-          anchors[i].setHighlight(anchors[i] == a);
-          anchors[i].setShowLongDesc(anchors[i] == a);
-        }
-        for(var i = 0; i < vessels.length; i++) {
-          var b = (a !== null && binarySearch(vessels[i].anchor, a) >= 0);
-          vessels[i].setHighlight(b);
+    getVessel2D: function(p){ //2D 'sungear' point
+      for(var i = 0; i < this.vessels.length; i++){
+        if(this.vessels[i].contains(p)){
+          return this.vessels[i];
         }
       }
-      if(a === null && v !== lastVessel) {
-        chg = true;
-        highlightVessel(v);
-      }
-      lastAnchor = a;
-      lastVessel = v;
-      if(chg) {
-          updateCount();
-          repaint(); //TODO
-      }
-    }else{// one screen point p
-      var p = a;
-      var x = (p===null) ? null : (isInGear(p) ? null : getAnchor(p));
-      var y = (p===null) ? null : (a !== null ? null : getVessel(p));
-      checkHighlight(x, y);
-    }
-  },
+      return null;
+    },
 
-   updateActive: function() {
-  	// update active sets
-  	// find max value
-  	var max = 0;
-  	for(var i = 0; i < vessels.length; i++) {
-  		vessels[i].setActiveGenes(genes.getActiveSet());
-  		max = Math.max(max, vessels[i].getActiveCount());
-  	}
-  	// update max values
-  	// reshape
-  	for(var i = 0; i < vessels.length; i++) {
-  		vessels[i].setMax(max);
-  		vessels[i].makeShape(rad_inner);
-  	}
-  },
-
-   updateHighlight: function() {
-    var a = lastAnchor;
-    lastAnchor = null;
-    var v = lastVessel;
-    lastVessel = null;
-    checkHighlight(a, v);
-  },
-
-
-   makeTransform: function(w, h){
-    var M = Math.min(w, h);
-    //declare new AffineTransform object
-    var vt = new AffineTransform(); //TODO
-    vt.translate(w/2, h/2);
-    vt.scale(0.5*M/R_OUTER, 0.5*M/R_OUTER);
-    return vt;
-  },
-
-
-   getMultiSelection: function(operation){
-     var s = new TreeSet();
-    var cnt = 0;      // number of selected items in component
-    if(operation == MultiSelectable.INTERSECT){ //TODO
-        s.addAll(genes.getActiveSet());
-      }
-    for(var i = 0; i < vessels.length; i++){
-        if(vessels[i].getSelect()) {
-            cnt++;
-            if(operation == MultiSelectable.UNION)
-                s.addAll(vessels[i].selectedGenes);
-            else
-                s.retainAll(vessels[i].selectedGenes);
+    updateCount: function(){
+      //create new treeset of Gene objects
+      var c1 = new TreeSet();
+      console.log("Created new TreeSet");
+      for(var i = 0; i < this.vessels.length; i++){
+        if(this.vessels[i].getHighlight()){
+          c1.addAll(this.vessels[i].selectedGenes);
         }
-    }
-    for(var i = 0; i < anchors.length; i++){
-        if(anchors[i].getSelect()) {
-            cnt++;
-            // find all of anchor's selected genes
-            var ag = new TreeSet();
-            var it; //iterator for for loop
-            for(it = anchors[i].vessels.iterator(); it.hasNext();)
-                ag.addAll(it.next().selectedGenes);
-            if(operation == MultiSelectable.UNION)
-                s.addAll(ag);
-            else
-                s.retainAll(ag);
+      }
+      this.highCnt = c1.size();
+      console.log("TreeSet's size is " + this.highCnt);
+    },
+
+    checkHighlight: function(a, v){ //anchordisplay and vesseldisplay objects
+      if(arguments.length == 2){
+        var chg = false;
+        if(a != this.lastAnchor){
+          chg = true;
+          for(var i = 0; i < this.anchors.length; i++){
+            this.anchors[i].setHighlight(anchors[i] == a);
+            this.anchors[i].setShowLongDesc(anchors[i] == a);
+          }
+          for(var i = 0; i < this.vessels.length; i++) {
+            var b = (a !== null && binarySearch(vessels[i].anchor, a) >= 0);
+            this.vessels[i].setHighlight(b);
+          }
         }
-    }
-    return (cnt > 0) ? s : null;
-  },
-
-   highlightVessel: function(v){
-    for(var i = 0; i < vessels.length; i++)
-      vessels[i].setHighlight(vessels[i] == v);
-    for(var i = 0; i < anchors.length; i++) {
-        var b = (v !== null && anchors[i].vessels.contains(v));
-        anchors[i].setHighlight(b);
-    }
-  },
-
-   binarySearch: function(array, desired){
-    var mid = Math.floor(array.length/2);
-
-    if(array[mid] == desired) return mid;
-    else if(array[mid] < desired && array.length > 1){
-      return binarySearch(array.splice(mid, Number.MAX_VALUE), desired);
-    }
-    else if(array[mid] > desired && array.length > 1){
-      return binarySearch(array.splice(0, mid), desired);
-    }else{ return -1; }
-  },
-
-   setMulti: function(b){
-    multi = b;
-    if(!b){
-      for(var i = 0; i < vessels.length; i++){
-        vessels[i].setSelect(false);
+        if(a === null && v !== this.lastVessel) {
+          chg = true;
+          this.highlightVessel(v);
+        }
+        this.lastAnchor = a;
+        this.lastVessel = v;
+        if(chg) {
+            this.updateCount();
+            this.repaint(); //TODO
+        }
+      }else{// one screen point p
+        var p = a;
+        var x = (p===null) ? null : (isInGear(p) ? null : this.getAnchor(p));
+        var y = (p===null) ? null : (a !== null ? null : this.getVessel(p));
+        this.checkHighlight(x, y);
       }
-      for(var i = 0; i < vessels.length; i++){
-        anchors[i].setSelect(false);
+    },
+
+    updateActive: function() {
+      // update active sets
+    	// find max value
+    	var max = 0;
+    	for(var i = 0; i < this.vessels.length; i++) {
+    		this.vessels[i].setActiveGenes(genes.getActiveSet());
+    		max = Math.max(max, vessels[i].getActiveCount());
+    	}
+    	// update max values
+    	// reshape
+    	for(var i = 0; i < this.vessels.length; i++) {
+    		this.vessels[i].setMax(max);
+    		this.vessels[i].makeShape(rad_inner);
+    	}
+    },
+
+    updateHighlight: function() {
+      var a = this.lastAnchor;
+      this.lastAnchor = null;
+      var v = this.lastVessel;
+      this.lastVessel = null;
+      this.checkHighlight(a, v);
+    },
+
+    makeTransform: function(w, h){
+      var M = Math.min(w, h);
+      //declare new AffineTransform object
+      var vt = new AffineTransform(); //TODO
+      vt.translate(w/2, h/2);
+      vt.scale(0.5*M/R_OUTER, 0.5*M/R_OUTER);
+      return vt;
+    },
+
+    getMultiSelection: function(operation){
+      var s = new TreeSet();
+      var cnt = 0;      // number of selected items in component
+      if(operation == MultiSelectable.INTERSECT){ //TOD)
+        s.addAll(this.genes.getActiveSet());
+      }
+      for(var i = 0; i < this.vessels.length; i++){
+          if(this.vessels[i].getSelect()) {
+              cnt++;
+              if(operation == MultiSelectable.UNION)
+                  s.addAll(vessels[i].selectedGenes);
+              else
+                  s.retainAll(vessels[i].selectedGenes);
+          }
+      }
+      for(var i = 0; i < this.anchors.length; i++){
+          if(this.anchors[i].getSelect()) {
+              cnt++;
+              // find all of anchor's selected genes
+              var ag = new TreeSet();
+              var it; //iterator for for loop
+              for(it = this.anchors[i].vessels.iterator(); it.hasNext();)
+                  ag.addAll(it.next().selectedGenes);
+              if(operation == MultiSelectable.UNION)
+                  s.addAll(ag);
+              else
+                  s.retainAll(ag);
+          }
+      }
+      return (cnt > 0) ? s : null;
+    },
+
+    highlightVessel: function(v){
+      for(var i = 0; i < this.vessels.length; i++)
+        this.vessels[i].setHighlight(vessels[i] == v);
+      for(var i = 0; i < anchors.length; i++) {
+          var b = (v !== null && this.anchors[i].vessels.contains(v));
+          this.anchors[i].setHighlight(b);
+      }
+    },
+
+    binarySearch: function(array, desired){
+      var mid = Math.floor(array.length/2);
+      if(array[mid] == desired) {
+        return mid;
+      } else if (array[mid] < desired && array.length > 1) {
+        return this.binarySearch(array.splice(mid, Number.MAX_VALUE), desired);
+      } else if (array[mid] > desired && array.length > 1) {
+        return this.binarySearch(array.splice(0, mid), desired);
+      } else {
+        return -1;
+      }
+    },
+
+    setMulti: function(b){
+      this.multi = b;
+      if(!b){
+        for(var i = 0; i < this.vessels.length; i++){
+          this.vessels[i].setSelect(false);
+        }
+        for(var i = 0; i < this.anchors.length; i++){
+          this.anchors[i].setSelect(false);
+        }
       }
     }
-  }
-
-};
-return values;
-
+  };
+  return values;
 });
