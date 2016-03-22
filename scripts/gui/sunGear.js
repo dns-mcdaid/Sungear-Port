@@ -117,7 +117,7 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       this.lastVessel = null;
     },
 
-     getVessels: function() { return vessels; },
+    getVessels: function() { return vessels; },
 
     // makeButton is probably unnecessary
 
@@ -183,7 +183,7 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
         for(var i = 0; i < vessels.length; i++){
           this.vessels[i].setShowArrows(b);
         }
-        //repaint(); //TODO
+        //this.repaint(); //TODO
       }
     },
 
@@ -234,17 +234,6 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       // TODO: rest of code is from 501 - 543 [DENNIS]
     },
 
-
-    getAnchor:function(p) { //a 2D 'Sungear' coordinates
-      for(var i = 0; i < this.anchors.length; i++){
-        if(this.anchors[i].indexOf(p) >= 0){
-          return this.anchors[i];
-        }
-      }
-      return null;
-    },
-
-
     positionVessels:function() {
       if(this.polarPlot){
         this.positionVesselsPolar();
@@ -282,6 +271,25 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
         this.adjustCenters(1.0);
       }
       // this.repaint(); //TODO
+    },
+
+    relaxCenters:function(){
+      var maxIter = 200;
+      var eta = 1.0;
+      var decay = 0.01;
+      var energy = this.vessels.length;
+      var cnt = 0;
+      do {
+        var e = this.relaxStep(eta); //TODO
+        energy = e;
+        eta *= (1-decay);
+        cnt += 1;
+      } while(cnt <10 || (energy*eta > 5e-5*vessels.length && cnt < maxIter));
+
+      for(var i = 0; i < this.vessels.length; i++){
+        this.vessels[i].updateCenter();
+      }
+
     },
 
     relaxStep: function(eta){
@@ -374,28 +382,38 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
           l.push(v);
         }
       }
-
     },
 
-    relaxCenters:function(){
-      var maxIter = 200;
-      var eta = 1.0;
-      var decay = 0.01;
-      var energy = this.vessels.length;
-      var cnt = 0;
-      do {
-        var e = this.relaxStep(eta); //TODO
-        energy = e;
-        eta *= (1-decay);
-        cnt += 1;
-      } while(cnt <10 || (energy*eta > 5e-5*vessels.length && cnt < maxIter));
-
-      for(var i = 0; i < this.vessels.length; i++){
-        this.vessels[i].updateCenter();
+    isInGear:function(p) {
+      try {
+        // TODO: Paper.js
+        var vt = this.makeTransform(this.getWidth(), this.getHeight()).createInverse();
+        //var pp = vt.transform(new Point2D.Double(p.x, p.y), null);
+        return this.exterior.contains(pp);
+      } catch(t) {
+        return false;
       }
-
     },
 
+    /**
+     * Finds the anchor at a point in sungear coordinates.
+     * @param p the point in sungear coordinates
+     * @return the anchor at the given location, or null if none
+     */
+    getAnchor:function(p) { //a 2D 'Sungear' coordinates
+      for(var i = 0; i < this.anchors.length; i++){
+        if(this.anchors[i].indexOf(p) >= 0){
+          return this.anchors[i];
+        }
+      }
+      return null;
+    },
+
+    /**
+     * Finds the anchor at a point in screen coordinates.
+     * @param p the screen point
+     * @return the anchor at the given location, or null if none
+     */
     getAnchor2D: function(p){
       for(var i = 0; i < this.anchors.length; i++){
         if(this.anchors[i].indexOf(p) >= 0){
@@ -405,6 +423,11 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       return null;
     },
 
+    /**
+     * Finds the vessel at a point in screen coordinates.
+     * @param p the screen point
+     * @return the vessel at the given location, or null if none
+     */
     getVessel: function(p) {  //regular screen point
       try {
         var vt = this.makeTransform(getWidth(), getHeight()).createInverse();
@@ -415,6 +438,11 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       }
     },
 
+    /**
+     * Finds the vessel at a point in sungear coordinates.
+     * @param p the point in sungear coordinates
+     * @return the vessel at the given location, or null if none
+     */
     getVessel2D: function(p){ //2D 'sungear' point
       for(var i = 0; i < this.vessels.length; i++){
         if(this.vessels[i].contains(p)){
@@ -422,6 +450,154 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
         }
       }
       return null;
+    },
+
+    /**
+     * Updates the selected state of anchors/vessels based on mouse location.
+     * Changes appearance only, not selected gene sets.
+     * @param e mouse event with most recent mouse position
+     */
+    checkSelect:function(e) {
+      // TODO: p5 BABY
+      var p = e;
+      var chg = false;
+      var a = this.getAnchor(p);
+      for (var i = 0; i < this.anchors.length; i++) {
+        chg = chg || (this.anchors[i].getSelect() != (this.anchors[i] == a));
+        this.anchors[i].setSelect(this.anchors[i] == a);
+      }
+      var v = getVessel(p);
+      for (var i = 0; i < this.vessels.length; i++) {
+        chg = chg || (this.vessels[i].getSelect() != (this.vessels[i] == v));
+        this.vessels[i].setSelect(vessels[i] == v);
+      }
+
+      if(chg) {
+        this.repaint();
+      }
+    },
+
+    setMulti: function(b){
+      this.multi = b;
+      if(!b){
+        for(var i = 0; i < this.vessels.length; i++){
+          this.vessels[i].setSelect(false);
+        }
+        for(var i = 0; i < this.anchors.length; i++){
+          this.anchors[i].setSelect(false);
+        }
+      }
+    },
+
+    /**
+     * Updates the selected state of anchors/vessels based on mouse location.
+     * Changes the current selected set if appropriate.
+     * @param e mouse event with most recent mouse position
+     */
+    handleSelect:function(e) {
+      var p = e;
+      var a = this.getAnchor(p);
+      if (a != null) {
+        if (this.multi) {
+          if (false) {
+            // Use keypress for this.
+            a.setSelect(!a.getSelect());
+          } else {
+            for (var i = 0; i < this.anchors.length; i++) {
+              this.anchors[i].setSelect(this.anchors[i] == a);
+            }
+          }
+        } else {
+          // USE KEYPRESS FOR THE NEXT TWO SECTIONS.
+          if (false) {
+            this.genes.startMultiSelect(this);
+            a.setSelect(true);
+          } else if (!true) {
+            var ag = new TreeSet();
+            var add = true;
+            for (var i = 0; i < a.vessels.length; i++) {
+              var av = a.vessels[i];
+              ag.addAll(av.activeGenes);
+              add = add && av.selectedGenes.isEmpty();
+            }
+            a.setSelect(false);
+            var sel = new TreeSet(this.genes.getSelectedSet());
+            if (add) {
+              sel.addAll(ag);
+            } else {
+              sel.removeAll(ag);
+            }
+            this.genes.setSelection(this, sel);
+          } else {
+            var sel = new TreeSet();
+            for (var i = 0; i < a.vessels.length; i++) {
+              sel.addAll(a.vessels[i].activeGenes);
+              a.setSelect(false);
+              this.genes.setSelection(this, sel);
+            }
+          }
+          this.lastAnchor = null;
+          this.checkHighlight(p);
+        }
+      } else if (a == null) {
+        var v = this.getVessel(p);
+        if (this.multi) {
+          if (v != null) {
+            // TODO: Keypress
+            if (false) {
+              v.setSelect(!v.getSelect());
+            } else {
+              for (var i = 0; i < this.vessels.length; i++) {
+                this.vessels[i].setSelect(this.vessels[i] == v);
+              }
+            }
+          }
+        } else {
+          // TODO: Keypress for next two.
+          if (false) {
+            this.genes.startMultiSelect(this);
+            v.setSelect(true);
+          } else if (!true) {
+            if (v != null) {
+              var sel = new TreeSet(this.genes.getSelectedSet());
+              if(v.getSelectedCount() > 0) {
+                sel.removeAll(v.selectedGenes);
+              } else {
+                sel.addAll(v.activeGenes);
+              }
+              this.genes.setSelection(this, sel);
+              v.setSelect(false);
+            }
+          } else {
+            if(v != null) {
+              for (var i = 0; i < this.vessels.length; i++) {
+                if(this.vessels[i] != v) {
+                  this.vessels[i].clearSelectedGenes();
+                }
+              }
+              v.selectAllGenes();
+            }
+            var sel = new TreeSet();
+            for(var i = 0; i < this.vessels.length; i++) {
+              sel.addAll(vessels[i].selectedGenes);
+              this.vessels[i].setSelect(false);
+            }
+            genes.setSelection(this, sel);
+          }
+          this.lastVessel = null;
+          this.checkHighlight(p);
+        }
+      }
+      this.repaint();
+    },
+
+    highlightVessel: function(v){
+      for(var i = 0; i < this.vessels.length; i++)
+        this.vessels[i].setHighlight(vessels[i] == v);
+      for(var i = 0; i < anchors.length; i++) {
+          var b = (v !== null && this.anchors[i].vessels.contains(v));
+          this.anchors[i].setHighlight(b);
+      }
     },
 
     updateCount: function(){
@@ -463,10 +639,23 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
         }
       }else{// one screen point p
         var p = a;
-        var x = (p===null) ? null : (isInGear(p) ? null : this.getAnchor(p));
+        var x = (p===null) ? null : (this.isInGear(p) ? null : this.getAnchor(p));
         var y = (p===null) ? null : (a !== null ? null : this.getVessel(p));
         this.checkHighlight(x, y);
       }
+    },
+
+    paintComponent:function(g) {
+      // TODO: p5
+    },
+
+    makeTransform: function(w, h){
+      var M = Math.min(w, h);
+      //declare new AffineTransform object
+      var vt = new AffineTransform(); //TODO
+      vt.translate(w/2, h/2);
+      vt.scale(0.5*M/R_OUTER, 0.5*M/R_OUTER);
+      return vt;
     },
 
     updateActive: function() {
@@ -491,15 +680,6 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       var v = this.lastVessel;
       this.lastVessel = null;
       this.checkHighlight(a, v);
-    },
-
-    makeTransform: function(w, h){
-      var M = Math.min(w, h);
-      //declare new AffineTransform object
-      var vt = new AffineTransform(); //TODO
-      vt.translate(w/2, h/2);
-      vt.scale(0.5*M/R_OUTER, 0.5*M/R_OUTER);
-      return vt;
     },
 
     getMultiSelection: function(operation){
@@ -534,13 +714,35 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
       return (cnt > 0) ? s : null;
     },
 
-    highlightVessel: function(v){
-      for(var i = 0; i < this.vessels.length; i++)
-        this.vessels[i].setHighlight(vessels[i] == v);
-      for(var i = 0; i < anchors.length; i++) {
-          var b = (v !== null && this.anchors[i].vessels.contains(v));
-          this.anchors[i].setHighlight(b);
-      }
+    listUpdated:function(e) {
+      switch(e.getType()) {
+        case GeneEvent.NEW_LIST:
+            this.set(this.genes.getSource());
+            this.updateSelect();
+            this.updateHighlight();
+            this.stats.update(genes);
+            this.repaint();
+            break;
+        case GeneEvent.NARROW:
+        case GeneEvent.RESTART:
+            this.updateActive();
+            this.updateSelect();
+            this.updateHighlight();
+            this.positionVessels();
+            this.stats.update(genes);
+            this.repaint();
+            break;
+        case GeneEvent.SELECT:
+            this.updateSelect();
+            this.updateHighlight();
+            break;
+        case GeneEvent.MULTI_START:
+            this.setMulti(true);
+            break;
+        case GeneEvent.MULTI_FINISH:
+            this.setMulti(false);
+            break;
+        }
     },
 
     binarySearch: function(array, desired){
@@ -553,18 +755,6 @@ function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
         return this.binarySearch(array.splice(0, mid), desired);
       } else {
         return -1;
-      }
-    },
-
-    setMulti: function(b){
-      this.multi = b;
-      if(!b){
-        for(var i = 0; i < this.vessels.length; i++){
-          this.vessels[i].setSelect(false);
-        }
-        for(var i = 0; i < this.anchors.length; i++){
-          this.anchors[i].setSelect(false);
-        }
       }
     }
   };

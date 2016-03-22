@@ -15,8 +15,8 @@ function(anchor, gene, vessel, sungear, p5){
       x: null,
       y: null
     };
-    this.activeGenes = []; // new TreeSet<Gene>();
-    this.selectedGenes = []; // see above
+    this.activeGenes = new TreeSet(); // new TreeSet<Gene>();
+    this.selectedGenes = new TreeSet(); // see above
     this.radMax = 0.1;
     this.radMin = 0;
     this.showArrows = true;
