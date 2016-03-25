@@ -64,4 +64,4 @@ GeneEvent.prototype = {
     return this.type;
   }
 };
-module.exports = GeneEvent;
+//module.exports = GeneEvent;

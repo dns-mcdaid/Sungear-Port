@@ -1,5 +1,5 @@
-define(['anchor', 'anchorDisplay', 'p5', 'sunGear', 'vesselDisplay'],
-function(anchor, anchorDisplay, p5, sunGear, vesselDisplay){
+define(['anchor', 'anchorDisplay', 'p5', 'sungear', 'vesselDisplay'],
+function(anchor, anchorDisplay, p5, sungear, vesselDisplay){
   var canvas;
   var DrawStack = [];
   var added = false;
@@ -28,11 +28,11 @@ function(anchor, anchorDisplay, p5, sunGear, vesselDisplay){
       if (x.mouseIsPressed) {
         x.fill(0);
       } else {
-        x.fill(sunGear.C_HIGHLIGHT);
+        x.fill(sungear.C_HIGHLIGHT);
       }
       x.ellipse(x.mouseX, x.mouseY, 80, 80);
 
-      x.fill(sunGear.C_PLAIN);
+      x.fill(sungear.C_PLAIN);
       x.ellipse(toDraw.x, toDraw.y, toDraw.width, toDraw.height);
     }
   }, 'sunGui');

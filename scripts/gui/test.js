@@ -20,12 +20,14 @@ var statsPanel = document.getElementById("#stats");
 for(var i = 0; i < tempStats.length; i++){
   // Check out test.js for hows to populate rows.
 }
-*/
 
-var Sungear = require('./sunGear');
+
+var Sungear = require('./sungear');
 var Gene = require('../genes/gene');
 
 var gene = new Gene("Radhika", "super cool");
 var otherGene = new Gene("notRadhika", "not super cool");
 var geneList = [gene, otherGene];
 var sungear = new Sungear(geneList, 1.0, null);
+
+*/

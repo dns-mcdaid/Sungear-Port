@@ -24,4 +24,4 @@ Anchor.prototype = {
   }
 };
 
-module.exports = Anchor;
+//module.exports = Anchor;

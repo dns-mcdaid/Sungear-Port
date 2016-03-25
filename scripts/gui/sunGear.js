@@ -7,10 +7,10 @@ console.log(rng());
 var TreeSet = javascript.util.TreeSet;
 */
 
-define(['p5','dataSource','anchorDisplay','comp','icons','stats','vesselDisplay',
-'anchor','genesGene','geneEvent','geneList','geneListener','multiSelectable','term','vessel'],
-function(p5,dataSource,anchorDisplay,comp,icons,stats,vesselDisplay,
-  anchor,genesGene,geneEvent,geneList,geneListener,multiSelectable,term,vessel){
+define([/*'dataSource',*/'anchorDisplay',/*'comp','icons','stats',*/'vesselDisplay',
+'anchor','genesGene','geneEvent',/*'geneList','geneListener','multiSelectable',*/'term','vessel'],
+function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
+  anchor,genesGene,geneEvent,/*geneList,geneListener,multiSelectable,*/term,vessel){
 
   /** Display size of largest vessel */
   var vRadMax = 0.1; /** Display size of largest vessel */

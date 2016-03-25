@@ -346,4 +346,4 @@ Term.prototype = {
     return this.selectedState;
   }
 };
-module.exports = Term;
+//module.exports = Term;

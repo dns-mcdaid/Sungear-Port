@@ -28,7 +28,7 @@ requirejs.config({
     // With the external libraries out of the way, we can move onto grabbing real Sungear files.
 
     // From the gui folder
-    sunGear: 'gui/sunGear',
+    sungear: 'gui/sungear',
       // From the sungear folder
     anchorDisplay: 'gui/sungear/anchorDisplay',
     vesselDisplay: 'gui/sungear/vesselDisplay',

@@ -1,5 +1,5 @@
-define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay', 'p5'],
-function(anchor, gene, vessel, sungear, p5){
+define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay'],
+function(anchor, gene, vessel, sungear){
   var methods = {
     VesselDisplay: VesselDisplay
   };
@@ -15,8 +15,8 @@ function(anchor, gene, vessel, sungear, p5){
       x: null,
       y: null
     };
-    this.activeGenes = new TreeSet(); // new TreeSet<Gene>();
-    this.selectedGenes = new TreeSet(); // see above
+    //this.activeGenes = new TreeSet(); // new TreeSet<Gene>();
+    //this.selectedGenes = new TreeSet(); // see above
     this.radMax = 0.1;
     this.radMin = 0;
     this.showArrows = true;
@@ -99,8 +99,8 @@ function(anchor, gene, vessel, sungear, p5){
         if(this.anchor.length === 0) {
           console.log("OVER HERE");
           // BOTH VALUES SHOULD BE NEGATIVE
-          p.x = -values.R_CIRCLE;
-          p.y = -values.R_CIRCLE + 0.15;
+          p.x = -sungear.R_CIRCLE;
+          p.y = -sungear.R_CIRCLE + 0.15;
         } else {
           console.log("OVER THERE");
           for(var i = 0; i < this.anchor.length; i++) {
