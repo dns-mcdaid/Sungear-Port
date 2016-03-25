@@ -3,21 +3,24 @@ function(anchor, anchorDisplay, p5, sungear, vesselDisplay){
   var canvas;
   var DrawStack = [];
   var added = false;
+  var pressed = false;
+  var makePolygon = false;
   var toDraw;
-  var setupCanvas = new p5(function(x){
-    x.setup = function() {
+  var currentColor = sungear.C_HIGHLIGHT;
+  var setupCanvas = new p5(function(p5){
+    p5.setup = function() {
       var HEIGHT = document.getElementById('sunGui').clientHeight;
       var WIDTH = document.getElementById('sunGui').clientWidth;
-      canvas = x.createCanvas(WIDTH,HEIGHT);
+      canvas = p5.createCanvas(WIDTH,HEIGHT);
       var testDis = new vesselDisplay.VesselDisplay("testAnc");
       var testShape = testDis.makeShape(4);
       console.log(testShape);
       DrawStack.push(testShape);
     },
 
-    x.draw = function() {
-      x.background(16,16,16);
-      x.fill(0);
+    p5.draw = function() {
+      p5.background(16,16,16);
+      p5.fill(0);
 
       if(!added){
         toDraw = DrawStack.pop();
@@ -25,15 +28,43 @@ function(anchor, anchorDisplay, p5, sungear, vesselDisplay){
         added = true;
       }
 
-      if (x.mouseIsPressed) {
-        x.fill(0);
-      } else {
-        x.fill(sungear.C_HIGHLIGHT);
+      if(makePolygon) {
+        p5.polygon(100, 100, 70, 7);
       }
-      x.ellipse(x.mouseX, x.mouseY, 80, 80);
 
-      x.fill(sungear.C_PLAIN);
-      x.ellipse(toDraw.x, toDraw.y, toDraw.width, toDraw.height);
+      if (p5.mouseIsPressed) {
+        p5.fill(0);
+      } else {
+        p5.fill(currentColor);
+      }
+      p5.ellipse(p5.mouseX, p5.mouseY, 80, 80);
+
+      p5.fill(sungear.C_PLAIN);
+      p5.ellipse(toDraw.p5, toDraw.y, toDraw.width, toDraw.height);
+    },
+
+    p5.polygon = function(x, y, radius, npoints) {
+      var angle = p5.TWO_PI / npoints;
+      p5.fill(0);
+      p5.stroke("#f00");
+      p5.strokeWeight(4);
+      p5.beginShape();
+      for (var a = 0; a < p5.TWO_PI; a += angle) {
+        var sx = x + p5.cos(a) * radius;
+        var sy = y + p5.sin(a) * radius;
+        p5.vertex(sx, sy);
+      }
+      p5.endShape(p5.CLOSE);
+      p5.stroke(0);
+      p5.strokeWeight(1);
     }
+
+    document.getElementById("findCool").addEventListener("click", function(){
+      currentColor = "#0ff";
+      makePolygon = true;
+    });
+
   }, 'sunGui');
+
+
 });

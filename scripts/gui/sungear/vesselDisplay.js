@@ -1,8 +1,8 @@
-require('javascript.util');
-var TreeSet = javascript.util.TreeSet;
+/*require('javascript.util');
+var TreeSet = javascript.util.TreeSet;*/
 
 define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay'],
-function(anchor, gene, vessel, sungear){
+function(anchor, gene, vessel, sungear, anchorDisplay){
 
   var methods = {
     VesselDisplay: VesselDisplay
@@ -103,8 +103,8 @@ function(anchor, gene, vessel, sungear){
         if(this.anchor.length === 0) {
           console.log("OVER HERE");
           // BOTH VALUES SHOULD BE NEGATIVE
-          p.x = -sungear.R_CIRCLE;
-          p.y = -sungear.R_CIRCLE + 0.15;
+          p.x = sungear.R_CIRCLE;
+          p.y = sungear.R_CIRCLE + 0.15;
         } else {
           console.log("OVER THERE");
           for(var i = 0; i < this.anchor.length; i++) {
