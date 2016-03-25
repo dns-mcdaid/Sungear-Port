@@ -1,5 +1,9 @@
+require('javascript.util');
+var TreeSet = javascript.util.TreeSet;
+
 define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay'],
 function(anchor, gene, vessel, sungear){
+
   var methods = {
     VesselDisplay: VesselDisplay
   };

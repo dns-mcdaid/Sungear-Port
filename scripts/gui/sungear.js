@@ -1,11 +1,11 @@
-/*
+
 require('javascript.util');
 var weak = require('weak');
 var seedrandom = require('seedrandom');
 rng = seedrandom();
 console.log(rng());
 var TreeSet = javascript.util.TreeSet;
-*/
+
 
 define([/*'dataSource',*/'anchorDisplay',/*'comp','icons','stats',*/'vesselDisplay',
 'anchor','genesGene','geneEvent',/*'geneList','geneListener','multiSelectable',*/'term','vessel'],
