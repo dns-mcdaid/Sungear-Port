@@ -10,6 +10,7 @@ function(anchor, anchorDisplay, p5, sungear, vesselDisplay){
   var sides = 1;
   var HEIGHT;
   var WIDTH;
+
   var setupCanvas = new p5(function(p5){
     p5.setup = function() {
       WIDTH = document.getElementById('sunGui').clientWidth;
@@ -66,13 +67,102 @@ function(anchor, anchorDisplay, p5, sungear, vesselDisplay){
       p5.strokeWeight(1);
     }
 
-    document.getElementById("findCool").addEventListener("click", function(){
-      currentColor = "#0ff";
-      sides++;
-      makePolygon = true;
-    });
-
   }, 'sunGui');
 
+  // Sungear Direct Control Panel options.
+  document.getElementById("restart").addEventListener("click", function(){
+    console.log("Restarting Sungear...");
 
+  });
+
+  document.getElementById("all").addEventListener("click", function(){
+    console.log("Selecting all genes...");
+
+  });
+
+  document.getElementById("none").addEventListener("click", function(){
+    console.log("Deselecting all gene sets...");
+
+  });
+
+  document.getElementById("left").addEventListener("click", function(){
+    console.log("Loading previous gene...");
+
+  });
+
+  document.getElementById("right").addEventListener("click", function(){
+    console.log("Loading next gene...");
+
+  });
+
+  document.getElementById("narrow").addEventListener("click", function(){
+    console.log("Narrowing down gene options...");
+
+  });
+
+  document.getElementById("union").addEventListener("click", function(){
+    console.log("Displaying all unions...");
+
+  });
+
+  document.getElementById("intersect").addEventListener("click", function(){
+    console.log("Displaying all intersections...");
+
+  });
+
+  document.getElementById("findCool").addEventListener("click", function(){
+    console.log("Locating cool genes...");
+    currentColor = "#0ff";
+    sides++;
+    makePolygon = true;
+  });
+
+  document.getElementById("remove").addEventListener("click", function(){
+    console.log("Removing genes...");
+
+  });
+
+  document.getElementById("export").addEventListener("click", function(){
+    console.log("Exporting genes...");
+
+  });
+
+  // Genes display buttons
+  document.getElementById("geneQuery").addEventListener("click", function(){
+    console.log("Querying the genes...");
+
+  });
+
+  document.getElementById("geneCopy").addEventListener("click", function(){
+    console.log("Copying genes...");
+
+  });
+
+  document.getElementById("geneFind").addEventListener("click", function(){
+    var toFind = document.getElementById("geneSearch").value;
+    console.log("Locating " + toFind);
+  });
+
+  // GO Terms
+  document.getElementById("expand").addEventListener("click", function(){
+    console.log("Expanding on GO Terms...");
+
+  });
+
+  document.getElementById("collapse").addEventListener("click", function(){
+    console.log("Collapsing GO Terms...");
+  });
+
+  document.getElementById("zFind").addEventListener("click", function() {
+    var toFind = document.getElementById("zSearch").value;
+    document.getElementById("goCount").innerHTML = "GO Terms: " + toFind;
+  });
+
+  document.getElementById("goCopy").addEventListener("click", function(){
+    console.log("Copying GO Terms...");
+  });
+
+  document.getElementById("sort").addEventListener("click", function(){
+    console.log("Sorting Genes by z-Score");
+  });
 });

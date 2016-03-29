@@ -50,7 +50,6 @@ requirejs.config({
 
 // See 'test.js' for more info on how this function works.
 require(['test'], function(Y){
-  document.getElementById("ctrlRestart").addEventListener("click", Y.visualizeCircles);
   document.getElementById("geneQuery").addEventListener("click", Y.populateGenes);
   document.getElementById("expand").addEventListener("click", Y.populateGoTerms);
   document.getElementById("collapse").addEventListener("click", Y.removeGoTerms);
