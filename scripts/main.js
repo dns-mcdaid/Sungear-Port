@@ -1,5 +1,5 @@
-define(['anchor', 'anchorDisplay', 'p5', 'sungear', 'vesselDisplay'],
-function(anchor, anchorDisplay, p5, sungear, vesselDisplay){
+define(['p5', 'sungear'],
+function(p5, sungear){
   var canvas;
   var DrawStack = [];
   var added = false;
@@ -10,6 +10,9 @@ function(anchor, anchorDisplay, p5, sungear, vesselDisplay){
   var sides = 1;
   var HEIGHT;
   var WIDTH;
+
+  var activeSungear = new sungear.Sungear(9,"potato","ehh");
+  console.log(activeSungear.getVessels);
 
   var setupCanvas = new p5(function(p5){
     p5.setup = function() {

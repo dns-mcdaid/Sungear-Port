@@ -63,12 +63,9 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
     this.polarPlot = false;
     this.showArrows = true;
     this.minRadIdx = 0;
-    this.canvas = new p5(function(x){
-      // TODO: Fill this in.
-    });
     var tempStats = new Stats(genes, this);
     // GET THIS.
-    var statsPanel = document.getElementById("#stats");
+    var statsPanel = document.getElementById("stats");
     for(var i = 0; i < tempStats.length; i++){
       // Check out test.js for hows to populate rows.
     }
@@ -85,6 +82,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
     };
     this.setPreferredSize();
     // add event listeners from 200 - 255
+      // Think it's done. 2016.03.29
     this.setFocusable(true);
     this.genes.addGeneListener(this);
     this.genes.addMultiSelect(this);
