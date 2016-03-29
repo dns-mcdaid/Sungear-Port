@@ -58,4 +58,4 @@ Gene.prototype = {
     return this.name;
   }
 };
-//module.exports = Gene;
+module.exports = Gene;
