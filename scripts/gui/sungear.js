@@ -3,7 +3,7 @@
 define([/*'dataSource',*/'anchorDisplay',/*'comp','icons','stats',*/'vesselDisplay',
 'anchor','genesGene','geneEvent',/*'geneList','geneListener','multiSelectable',*/'term','vessel', 'TreeSet', 'weak', 'seedrandom'],
 function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
-  anchor,genesGene,geneEvent,/*geneList,geneListener,multiSelectable,*/term,vessel, TreeSet, weak, seedrandom){
+  anchor,genesGene,geneEvent,/*geneList,geneListener,multiSelectable,*/term,vessel, TreeSet, weak, seedrandom ){
 
   /** Display size of largest vessel */
   var rng = seedrandom.seedrandom(); /* RNG from external node module */
