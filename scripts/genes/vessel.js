@@ -1,4 +1,4 @@
-/**
+ /**
  * @author crispy
  * Copyright Chris Poultney 2004.
  * Updated by Dennis McDaid.
@@ -32,4 +32,4 @@ Vessel.prototype = {
     return this.genes.length;
   }
 };
-//module.exports = Vessel;
+module.exports = Vessel;

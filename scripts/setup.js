@@ -44,7 +44,16 @@ requirejs.config({
     geneLightsGene: 'geneLights/gene',
     geneLoc: 'geneLights/geneLoc',
     label: 'geneLights/label',
-    parseData: 'geneLights/parseData'
+    parseData: 'geneLights/parseData',
+
+    //From javascript.util node module
+    TreeSet: '../node_modules/javascript.util/src/javascript/util/TreeSet',
+    Collection: '../node_modules/javascript.util/src/javascript/util/Collection',
+    ArrayList:'../node_modules/javascript.util/src/javascript/util/ArrayList',
+    Iterator: '../node_modules/javascript.util/src/javascript/util/Iterator',
+    TreeMap: '../node_modules/javascript.util/src/javascript/util/TreeMap',
+    seedrandom: '../node_modules/seedrandom/seedrandom',
+    weak: '../node_modules/weak/lib/weak'
   }
 });
 

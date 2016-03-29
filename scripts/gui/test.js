@@ -21,13 +21,23 @@ for(var i = 0; i < tempStats.length; i++){
   // Check out test.js for hows to populate rows.
 }
 
+*/
+
+
 
 var Sungear = require('./sungear');
+var VesselDisplay = require('./sungear/vesselDisplay');
+var Vessel = require('../genes/vessel');
+var Anchor = require('../genes/anchor');
 var Gene = require('../genes/gene');
+
+var anchor = new Anchor("radhika");
+var otherAnchor = new Anchor("notRadhika");
+
+var anchorArray = [anchor, otherAnchor];
+var vessel = new Vessel(anchorArray);
 
 var gene = new Gene("Radhika", "super cool");
 var otherGene = new Gene("notRadhika", "not super cool");
 var geneList = [gene, otherGene];
 var sungear = new Sungear(geneList, 1.0, null);
-
-*/

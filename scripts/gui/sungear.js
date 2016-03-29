@@ -1,19 +1,12 @@
-/*
-require('javascript.util');
-var weak = require('weak');
-var seedrandom = require('seedrandom');
-rng = seedrandom();
-console.log(rng());
-var TreeSet = javascript.util.TreeSet;
-*/
 
 
 define([/*'dataSource',*/'anchorDisplay',/*'comp','icons','stats',*/'vesselDisplay',
-'anchor','genesGene','geneEvent',/*'geneList','geneListener','multiSelectable',*/'term','vessel'],
+'anchor','genesGene','geneEvent',/*'geneList','geneListener','multiSelectable',*/'term','vessel', 'TreeSet', 'weak', 'seedrandom'],
 function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
-  anchor,genesGene,geneEvent,/*geneList,geneListener,multiSelectable,*/term,vessel){
+  anchor,genesGene,geneEvent,/*geneList,geneListener,multiSelectable,*/term,vessel, TreeSet, weak, seedrandom){
 
   /** Display size of largest vessel */
+  var rng = seedrandom.seedrandom(); /* RNG from external node module */
   var vRadMax = 0.1; /** Display size of largest vessel */
   var vMax; /** Item count of largest vessel */
   var vMin; /** Item count of smallest vessel */
@@ -152,7 +145,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
 
     setGo:function(t) {
       //make weak ref to GoTerm t
-      goTerm = weak(t, function(){
+      goTerm = weak.weak(t, function(){
         console.log("GoTerm has been garbage collected");
       });
     },
@@ -199,11 +192,11 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
     },
 
     getAssocGenes:function(){
-      return (this.goTerm === null || this.goTerm.get() === null) ? new TreeSet() : this.goTerm.get().assocGenes;
+      return (this.goTerm === null || this.goTerm.get() === null) ? new TreeSet.TreeSet() : this.goTerm.get().assocGenes;
     },
 
     getTerms:function(c) { //c is a Collection of Gene objects
-      var t = new TreeSet(); //new TreeSet of Term objects
+      var t = new TreeSet.TreeSet(); //new TreeSet of Term objects
       for(var it = c.iterator(); it.hasNext();) {
         t.addAll(getGeneTerms(it.next()));
       }
@@ -514,7 +507,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
             this.genes.startMultiSelect(this);
             a.setSelect(true);
           } else if (!true) {
-            var ag = new TreeSet();
+            var ag = new TreeSet.TreeSet();
             var add = true;
             for (var i = 0; i < a.vessels.length; i++) {
               var av = a.vessels[i];
@@ -522,7 +515,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
               add = add && av.selectedGenes.isEmpty();
             }
             a.setSelect(false);
-            var sel = new TreeSet(this.genes.getSelectedSet());
+            var sel = new TreeSet.TreeSet(this.genes.getSelectedSet());
             if (add) {
               sel.addAll(ag);
             } else {
@@ -530,7 +523,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
             }
             this.genes.setSelection(this, sel);
           } else {
-            var sel = new TreeSet();
+            var sel = new TreeSet.TreeSet();
             for (var i = 0; i < a.vessels.length; i++) {
               sel.addAll(a.vessels[i].activeGenes);
               a.setSelect(false);
@@ -560,7 +553,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
             v.setSelect(true);
           } else if (!true) {
             if (v != null) {
-              var sel = new TreeSet(this.genes.getSelectedSet());
+              var sel = new TreeSet.TreeSet(this.genes.getSelectedSet());
               if(v.getSelectedCount() > 0) {
                 sel.removeAll(v.selectedGenes);
               } else {
@@ -578,7 +571,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
               }
               v.selectAllGenes();
             }
-            var sel = new TreeSet();
+            var sel = new TreeSet.TreeSet();
             for(var i = 0; i < this.vessels.length; i++) {
               sel.addAll(vessels[i].selectedGenes);
               this.vessels[i].setSelect(false);

@@ -1,8 +1,5 @@
-/*require('javascript.util');
-var TreeSet = javascript.util.TreeSet;*/
-
-define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay'],
-function(anchor, gene, vessel, sungear, anchorDisplay){
+define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay', 'TreeSet'],
+function(anchor, gene, vessel, sungear, TreeSet){
 
   var methods = {
     VesselDisplay: VesselDisplay
@@ -19,8 +16,8 @@ function(anchor, gene, vessel, sungear, anchorDisplay){
       x: null,
       y: null
     };
-    //this.activeGenes = new TreeSet(); // new TreeSet<Gene>();
-    //this.selectedGenes = new TreeSet(); // see above
+    this.activeGenes = new TreeSet.TreeSet();
+    this.selectedGenes = new TreeSet.TreeSet();
     this.radMax = 0.1;
     this.radMin = 0;
     this.showArrows = true;
@@ -188,5 +185,6 @@ function(anchor, gene, vessel, sungear, anchorDisplay){
 
     }
   };
+  module.exports = VesselDisplay;
   return methods;
 });
