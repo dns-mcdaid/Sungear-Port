@@ -2,15 +2,15 @@
 Radhika Mattoo, October 2015 N.Y.
 
 Porting Sungear from Java to Javascript,
-Translated from Ilyas Mounaime's Java code 
+Translated from Ilyas Mounaime's Java code
 
 */
 
-//extends MathIllegalArgumentException 
+//extends MathIllegalArgumentException
 
-var serialVersionUID = -7447085893598031110L;
+var serialVersionUID = -7447085893598031110;
 
-var argument; 
+var argument;
 
 //IMPLEMENT INHERITANCE
 MathIllegalNumberException.prototype = new MathIllegalArgumentException();
@@ -22,12 +22,12 @@ MathIllegalNumberException.prototype.constructor = MathIllegalNumberException;
 //rather than having to use MathIllegalNumberException.prototype.functionName.call() everytime
 MathIllegalNumberException.prototype.parent = MathIllegalNumberException.prototype;
 
-function MathIllegalNumberException(pattern, wrong){ //Object...arguments (variable # of arguments in JS gets stored in the arguments variable) 
+function MathIllegalNumberException(pattern, wrong){ //Object...arguments (variable # of arguments in JS gets stored in the arguments variable)
 	this.parent.MathIllegalNumberException.call(pattern, wrong, arguments);
-	argument = wrong; 
+	argument = wrong;
 
 }
 
 function getArgument(){
-	return argument; 
+	return argument;
 }

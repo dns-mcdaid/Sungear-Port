@@ -11,7 +11,7 @@ Translated from Ilyas Mounaime's Java code
 //extends NumberIsTooSmallException
 
 
-var serialVersionUID = -2250556892093726375L;
+var serialVersionUID = -2250556892093726375;
 
 //create inheritance via .prototype
 NotPositiveException.prototype = new NumberIsTooSmallException();
@@ -26,7 +26,7 @@ NotPositiveException.prototype.parent = NumberIsTooSmallException.prototype;
 //constructor
 function NotPositiveException(value){
 	this.parent.NumberIsTooSmallException.call(this, value, 0, true);
-	
+
 }
 
 // function NotPositiveException(specific, value){

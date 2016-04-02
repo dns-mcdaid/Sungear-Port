@@ -3,10 +3,13 @@ Radhika Mattoo, March 2016
 Test File for geneLights folder
 @radhikamattoo | rm3485@nyu.edu
 */
-var Label = require('./Label');
-var geneLoc = require('./geneLoc');
-var Gene = require('./gene');
-var anchorList = require('./anchorList');
+
+// define(['jquery', 'p5'], function($, p5){
+// });
+// var Label = require('./Label');
+// var geneLoc = require('./geneLoc');
+// var Gene = require('./gene');
+// var anchorList = require('./anchorList');
 //-------------------------------Label.js-------------------------------------//
 console.log("LABEL");
 console.log("------------");

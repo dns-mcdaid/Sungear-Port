@@ -5,7 +5,6 @@ Porting Sungear from Java to Javascript,
 Translated from Ilyas Mounaime's Java code
 
 */
-//FIXME: how do you setup functions in js? is that possible?
 var DEFAULT_RELATIVE_ACCURACY = 1e-14;
 var DEFAULT_FUNCTION_VALUE_ACCURACY = 1e-15;
 var counterMax;

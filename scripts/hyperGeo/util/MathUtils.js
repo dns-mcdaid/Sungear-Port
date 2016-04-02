@@ -5,5 +5,6 @@ Porting Sungear from Java to Javascript,
 Translated from Ilyas Mounaime's Java code
 
 */
-var TWO_PI = 2 * Math.PI; 
-module.exports = TWO_PI; 
+define({
+   TWO_PI : 2 * Math.PI
+});

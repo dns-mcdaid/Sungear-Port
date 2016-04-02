@@ -2,13 +2,13 @@
 Radhika Mattoo, October 2015 N.Y.
 
 Porting Sungear from Java to Javascript,
-Translated from Ilyas Mounaime's Java code 
+Translated from Ilyas Mounaime's Java code
 
 */
 
 //extends NumberIsTooSmallException
 
-var serialVersionUID = -7824848630829852237L;
+var serialVersionUID = -7824848630829852237;
 
 
 //IMPLEMENT INHERITANCE
@@ -25,8 +25,7 @@ function NotStrictlyPositiveException(value){
 	this.parent.NumberIsTooSmallException.call(this, value, 0, false);
 }
 
-// //exception with a specific context 
+// //exception with a specific context
 // function NotStrictlyPositiveException(specific, value){
 // 	this.parent.NumberIsTooSmallException.call(this, specific, value, 0, false);
 // }
-

@@ -2,9 +2,10 @@
  * Setup file used to designate which resources will need to be loaded
  * in order for Sungear Javascript edition to work properly.
  */
-
+var requirejs = require('requirejs');
 requirejs.config({
   baseUrl: 'scripts',
+  nodeRequire: require,
   shim: {
     // Designate which resources rely on other ones.
     bootstrap: {
@@ -46,14 +47,21 @@ requirejs.config({
     label: 'geneLights/label',
     parseData: 'geneLights/parseData',
 
-    //From javascript.util node module
-    TreeSet: '../node_modules/javascript.util/src/javascript/util/TreeSet',
-    Collection: '../node_modules/javascript.util/src/javascript/util/Collection',
-    ArrayList:'../node_modules/javascript.util/src/javascript/util/ArrayList',
-    Iterator: '../node_modules/javascript.util/src/javascript/util/Iterator',
-    TreeMap: '../node_modules/javascript.util/src/javascript/util/TreeMap',
-    seedrandom: '../node_modules/seedrandom/seedrandom',
-    weak: '../node_modules/weak/lib/weak'
+    //hyperGeo folder
+    hyperGeo: 'hyperGeo/distribution/HypergeometricDistribution',
+    AbstractIntegerDistribution: 'hyperGeo/distribution/AbstractIntegerDistribution',
+    AbstractRealDistribution: 'hyperGeo/distribution/AbstractRealDistribution',
+    Gamma: 'hyperGeo/distribution/Gamma',
+    IntegerDistribution: 'hyperGeo/distribution/IntegerDistribution',
+    RealDistribution: 'hyperGeo/distribution/RealDistribution',
+    SaddlePointExpansion: 'hyperGeo/distribution/SaddlePointExpansion',
+    AbstractWell: 'hyperGeo/random/AbstractWell',
+    BitsStreamGenerator: 'hyperGeo/random/BitsStreamGenerator',
+    RandomGenerator: 'hyperGeo/random/RandomGenerator',
+    Well19937c: 'hyperGeo/random/Well19937c',
+    FastMath: 'hyperGeo/util/FastMath',
+    MathUtils: 'hyperGeo/util/MathUtils'
+
   }
 });
 
@@ -64,5 +72,5 @@ require(['test'], function(Y){
   document.getElementById("collapse").addEventListener("click", Y.removeGoTerms);
 });
 
-// Call the main.js file to load the canvas and get rolling.
+// // Call the main.js file to load the canvas and get rolling.
 require(['main']);

@@ -1,12 +1,12 @@
 
 
 define([/*'dataSource',*/'anchorDisplay',/*'comp','icons','stats',*/'vesselDisplay',
-'anchor','genesGene','geneEvent',/*'geneList','geneListener','multiSelectable',*/'term','vessel', 'TreeSet', 'weak', 'seedrandom'],
+'anchor','genesGene','geneEvent',/*'geneList','geneListener','multiSelectable',*/'term','vessel', 'javascript.util', 'weak', 'seedrandom'],
 function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
-  anchor,genesGene,geneEvent,/*geneList,geneListener,multiSelectable,*/term,vessel, TreeSet, weak, seedrandom ){
+  anchor,genesGene,geneEvent,/*geneList,geneListener,multiSelectable,*/term,vessel, javascriptUtil, weak, seedrandom){
 
   /** Display size of largest vessel */
-  var rng = seedrandom.seedrandom(); /* RNG from external node module */
+  var rng = seedrandom(); /* RNG from external node module */
   var vRadMax = 0.1; /** Display size of largest vessel */
   var vMax; /** Item count of largest vessel */
   var vMin; /** Item count of smallest vessel */
@@ -190,11 +190,11 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
     },
 
     getAssocGenes:function(){
-      return (this.goTerm === null || this.goTerm.get() === null) ? new TreeSet.TreeSet() : this.goTerm.get().assocGenes;
+      return (this.goTerm === null || this.goTerm.get() === null) ? new javascriptUtil.TreeSet() : this.goTerm.get().assocGenes;
     },
 
     getTerms:function(c) { //c is a Collection of Gene objects
-      var t = new TreeSet.TreeSet(); //new TreeSet of Term objects
+      var t = new javascriptUtil.TreeSet(); //new TreeSet of Term objects
       for(var it = c.iterator(); it.hasNext();) {
         t.addAll(getGeneTerms(it.next()));
       }
@@ -505,7 +505,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
             this.genes.startMultiSelect(this);
             a.setSelect(true);
           } else if (!true) {
-            var ag = new TreeSet.TreeSet();
+            var ag = new javascriptUtil.TreeSet();
             var add = true;
             for (var i = 0; i < a.vessels.length; i++) {
               var av = a.vessels[i];
@@ -513,7 +513,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
               add = add && av.selectedGenes.isEmpty();
             }
             a.setSelect(false);
-            var sel = new TreeSet.TreeSet(this.genes.getSelectedSet());
+            var sel = new javascriptUtil.TreeSet(this.genes.getSelectedSet());
             if (add) {
               sel.addAll(ag);
             } else {
@@ -521,7 +521,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
             }
             this.genes.setSelection(this, sel);
           } else {
-            var sel = new TreeSet.TreeSet();
+            var sel = new javascriptUtil.TreeSet();
             for (var i = 0; i < a.vessels.length; i++) {
               sel.addAll(a.vessels[i].activeGenes);
               a.setSelect(false);
@@ -551,7 +551,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
             v.setSelect(true);
           } else if (!true) {
             if (v != null) {
-              var sel = new TreeSet.TreeSet(this.genes.getSelectedSet());
+              var sel = new javascriptUtil.TreeSet(this.genes.getSelectedSet());
               if(v.getSelectedCount() > 0) {
                 sel.removeAll(v.selectedGenes);
               } else {
@@ -569,7 +569,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
               }
               v.selectAllGenes();
             }
-            var sel = new TreeSet.TreeSet();
+            var sel = new javascriptUtil.TreeSet();
             for(var i = 0; i < this.vessels.length; i++) {
               sel.addAll(vessels[i].selectedGenes);
               this.vessels[i].setSelect(false);
@@ -594,7 +594,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
 
     updateCount: function(){
       //create new treeset of Gene objects
-      var c1 = new TreeSet();
+      var c1 = new javascriptUtil.TreeSet();
       console.log("Created new TreeSet");
       for(var i = 0; i < this.vessels.length; i++){
         if(this.vessels[i].getHighlight()){
@@ -675,7 +675,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
     },
 
     getMultiSelection: function(operation){
-      var s = new TreeSet();
+      var s = new javascriptUtil.TreeSet();
       var cnt = 0;      // number of selected items in component
       if(operation == MultiSelectable.INTERSECT){ //TOD)
         s.addAll(this.genes.getActiveSet());
@@ -693,7 +693,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
           if(this.anchors[i].getSelect()) {
               cnt++;
               // find all of anchor's selected genes
-              var ag = new TreeSet();
+              var ag = new javascriptUtil.TreeSet();
               var it; //iterator for for loop
               for(it = this.anchors[i].vessels.iterator(); it.hasNext();)
                   ag.addAll(it.next().selectedGenes);

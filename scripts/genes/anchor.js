@@ -23,5 +23,3 @@ Anchor.prototype = {
     return str1.localeCompare(str2);
   }
 };
-
-module.exports = Anchor;

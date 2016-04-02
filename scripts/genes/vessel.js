@@ -32,4 +32,4 @@ Vessel.prototype = {
     return this.genes.length;
   }
 };
-module.exports = Vessel;
+// module.exports = Vessel;
