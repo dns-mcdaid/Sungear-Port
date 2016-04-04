@@ -61,7 +61,11 @@ requirejs.config({
     RandomGenerator: 'hyperGeo/random/RandomGenerator',
     Well19937c: 'hyperGeo/random/Well19937c',
     FastMath: 'hyperGeo/util/FastMath',
-    MathUtils: 'hyperGeo/util/MathUtils'
+    MathUtils: 'hyperGeo/util/MathUtils',
+
+    //structs folder
+    seedrandom: 'structs/seedrandom',
+    TreeSet: 'structs/javascript/util/TreeSet'
 
   }
 });
