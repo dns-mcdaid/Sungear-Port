@@ -1,11 +1,3 @@
-
-/**
- * @see http://download.oracle.com/javase/6/docs/api/java/util/TreeSet.html
- *
- * @extends { SortedSet}
- * @constructor
- * @export
- */
 define(['SortedSet', 'Iterator_', 'Collection', 'NoSuchElementException', 'OperationNotSupported'],
 function(SortedSet, Iterator_, Collection, NoSuchElementException, OperationNotSupported){
 
@@ -126,4 +118,5 @@ TreeSet.prototype.size = function() {
 
 
 return TreeSet;
+
 });

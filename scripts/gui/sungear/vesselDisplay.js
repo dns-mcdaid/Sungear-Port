@@ -1,6 +1,5 @@
-define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay', 'TreeSet'],
-function(anchor, gene, vessel, sungear, TreeSet){
-
+define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay', 'TreeSet', 'require'],
+function(anchor, gene, vessel, sungear, TreeSet, require){
   var ARROW_LINE = 0.7;
   var ARROW_END = 0.2;
 
