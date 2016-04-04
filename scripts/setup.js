@@ -64,7 +64,7 @@ requirejs.config({
     //structs folder
     seedrandom: 'structs/seedrandom',
     TreeSet: 'structs/javascript/util/TreeSet',
-    Iterator: 'structs/javascript/util/Iterator',
+    Iterator_: 'structs/javascript/util/Iterator_',
     Collection: 'structs/javascript/util/Collection',
     NoSuchElementException: 'structs/javascript/util/NoSuchElementException',
     OperationNotSupported: 'structs/javascript/util/OperationNotSupported',

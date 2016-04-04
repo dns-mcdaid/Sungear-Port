@@ -6,7 +6,8 @@
  * @constructor
  * @export
  */
-define(['SortedSet', 'Iterator'], function(SortedSet, Iterator){
+define(['SortedSet', 'Iterator_', 'Collection', 'NoSuchElementException', 'OperationNotSupported'],
+function(SortedSet, Iterator_, Collection, NoSuchElementException, OperationNotSupported){
 
 var TreeSet = function() {
   /**
@@ -123,61 +124,6 @@ TreeSet.prototype.size = function() {
   return new Iterator_(this);
 };
 
-
-
-/**
- * @extends {javascript.util.Iterator}
- * @param {javascript.util.TreeSet} treeSet
- * @constructor
- * @private
- * @export
- */
-var Iterator_ = function(treeSet) {
-  /**
-   * @type {javascript.util.TreeSet}
-   * @private
-   */
-  this.treeSet_ = treeSet;
-  /**
-   * @type {number}
-   * @private
-   */
-  this.position_ = 0;
-};
-
-
-/**
- * @override
- * @export
- */
-Iterator_.prototype.next = function() {
-  if (this.position_ === this.treeSet_.size()) {
-    throw new NoSuchElementException();
-  }
-  return this.treeSet_.array_[this.position_++];
-};
-
-
-/**
- * @override
- * @export
- */
-Iterator_.prototype.hasNext = function() {
-  if (this.position_ < this.treeSet_.size()) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-
-/**
- * @override
- * @export
- */
-Iterator_.prototype.remove = function() {
-  throw new OperationNotSupported();
-};
 
 return TreeSet;
 });

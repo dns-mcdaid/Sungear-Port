@@ -12,7 +12,7 @@ function(p5, sungear, vesselDisplay){
   var WIDTH;
 
   var activeSungear = new sungear.Sungear(9,"potato","ehh");
-  console.log(activeSungear.getVessels());
+  // console.log(activeSungear.getVessels());
 
   var setupCanvas = new p5(function(p5){
     p5.setup = function() {
