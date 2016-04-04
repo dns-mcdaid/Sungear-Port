@@ -1,4 +1,3 @@
-goog.provide('javascript.util.OperationNotSupported');
 
 
 /**
@@ -7,13 +6,18 @@ goog.provide('javascript.util.OperationNotSupported');
  * @constructor
  * @export
  */
-javascript.util.OperationNotSupported = function(message) {
+define(function(){
+
+
+var OperationNotSupported = function(message) {
   this.message = message || '';
 };
-goog.inherits(javascript.util.OperationNotSupported, Error);
 
 
 /**
  * @type {string}
  */
-javascript.util.OperationNotSupported.prototype.name = 'OperationNotSupported';
+OperationNotSupported.prototype.name = 'OperationNotSupported';
+
+return OperationNotSupported;
+});

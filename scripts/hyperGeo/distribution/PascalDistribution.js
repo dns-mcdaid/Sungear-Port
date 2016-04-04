@@ -14,7 +14,7 @@ var probabilityOfSuccess;
 function PascalDistribution(rng, r, p){
   var passedRNG;
   var passedR;
-  var p;assedP;
+  var passedP;
   if(arguments.length == 2){
     passedRNG = new Well19937c();
     passedR = rng;

@@ -26,4 +26,4 @@ GeneLoc.prototype = {
   }
 };
 
-module.exports = GeneLoc;
+// module.exports = GeneLoc;

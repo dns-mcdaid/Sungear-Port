@@ -3,10 +3,8 @@
  * in order for Sungear Javascript edition to work properly.
  */
 
-var requirejs = require('requirejs');
 requirejs.config({
   baseUrl: 'scripts',
-  nodeRequire: require,
   shim: {
     // Designate which resources rely on other ones.
     bootstrap: {
@@ -65,7 +63,13 @@ requirejs.config({
 
     //structs folder
     seedrandom: 'structs/seedrandom',
-    TreeSet: 'structs/javascript/util/TreeSet'
+    TreeSet: 'structs/javascript/util/TreeSet',
+    Iterator: 'structs/javascript/util/Iterator',
+    Collection: 'structs/javascript/util/Collection',
+    NoSuchElementException: 'structs/javascript/util/NoSuchElementException',
+    OperationNotSupported: 'structs/javascript/util/OperationNotSupported',
+    Set: 'structs/javascript/util/Set',
+    SortedSet : 'structs/javascript/util/SortedSet'
 
   }
 });

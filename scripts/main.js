@@ -1,5 +1,5 @@
-define(['p5', 'sungear'],
-function(p5, sungear){
+define(['p5', 'sungear', 'vesselDisplay'],
+function(p5, sungear, vesselDisplay){
   var canvas;
   var DrawStack = [];
   var added = false;
@@ -12,14 +12,14 @@ function(p5, sungear){
   var WIDTH;
 
   var activeSungear = new sungear.Sungear(9,"potato","ehh");
-  console.log(activeSungear.getVessels);
+  console.log(activeSungear.getVessels());
 
   var setupCanvas = new p5(function(p5){
     p5.setup = function() {
       WIDTH = document.getElementById('sunGui').clientWidth;
       HEIGHT = document.getElementById('sunGui').clientHeight;
       canvas = p5.createCanvas(WIDTH,HEIGHT);
-      var testDis = new vesselDisplay.VesselDisplay("testAnc");
+      var testDis = new vesselDisplay("testAnc");
       var testShape = testDis.makeShape(4);
       console.log(testShape);
       DrawStack.push(testShape);

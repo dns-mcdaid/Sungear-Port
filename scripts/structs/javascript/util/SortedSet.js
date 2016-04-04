@@ -1,8 +1,3 @@
-goog.provide('javascript.util.SortedSet');
-
-goog.require('javascript.util.Set');
-
-
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/SortedSet.html
  *
@@ -10,5 +5,12 @@ goog.require('javascript.util.Set');
  * @constructor
  * @export
  */
-javascript.util.SortedSet = function() {};
-goog.inherits(javascript.util.SortedSet, javascript.util.Set);
+define(['Set'], function(Set){
+
+var SortedSet = function() {};
+
+SortedSet.prototype = Object.create(Set.prototype);
+SortedSet.prototype.constructor = SortedSet;
+
+return SortedSet;
+});

@@ -1,13 +1,10 @@
 define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay', 'TreeSet'],
 function(anchor, gene, vessel, sungear, TreeSet){
 
-  var methods = {
-    VesselDisplay: VesselDisplay
-  };
   var ARROW_LINE = 0.7;
   var ARROW_END = 0.2;
 
-  function VesselDisplay(vessel){
+  var vesselDisplay = function(vessel){
     this.vessel = vessel;
     this.highlight = false;
     this.select = false;
@@ -16,8 +13,8 @@ function(anchor, gene, vessel, sungear, TreeSet){
       x: null,
       y: null
     };
-    this.activeGenes = new TreeSet.TreeSet();
-    this.selectedGenes = new TreeSet.TreeSet();
+    this.activeGenes = new TreeSet();
+    this.selectedGenes = new TreeSet();
     this.radMax = 0.1;
     this.radMin = 0;
     this.showArrows = true;
@@ -39,10 +36,10 @@ function(anchor, gene, vessel, sungear, TreeSet){
       x: null,
       y: null
     };
-  }
+  };
 
-  VesselDisplay.prototype = {
-    constructor: VesselDisplay,
+  vesselDisplay.prototype = {
+    constructor: vesselDisplay,
     cleanup:function(){
       this.activeGenes.clear();
       this.selectedGenes.clear();
@@ -185,6 +182,6 @@ function(anchor, gene, vessel, sungear, TreeSet){
 
     }
   };
-  module.exports = VesselDisplay;
-  return methods;
+  // module.exports = VesselDisplay;
+  return vesselDisplay;
 });

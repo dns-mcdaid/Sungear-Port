@@ -3,11 +3,11 @@ Radhika Mattoo, March 2016
 Test File for gene folder
 @radhikamattoo | rm3485@nyu.edu
 */
-var Anchor = require('./anchor');
-var Gene = require('./gene');
-var GeneEvent = require('./geneEvent');
-var Term = require('./term');
-var Vessel = require('./vessel');
+// var Anchor = require('./anchor');
+// var Gene = require('./gene');
+// var GeneEvent = require('./geneEvent');
+// var Term = require('./term');
+// var Vessel = require('./vessel');
 
 console.log("\nANCHOR");
 console.log("------------");

@@ -131,4 +131,4 @@ AnchorList.prototype = {
     return this.selectedGenes;
   }
 };
-module.exports = AnchorList;
+// module.exports = AnchorList;

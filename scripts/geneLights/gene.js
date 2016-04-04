@@ -47,4 +47,4 @@ Gene.prototype = {
 		 }
 	 }
 };
-module.exports = Gene;
+// module.exports = Gene;

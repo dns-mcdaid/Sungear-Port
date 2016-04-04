@@ -1,12 +1,12 @@
-goog.provide('javascript.util.Iterator');
-
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/Iterator.html
  * @constructor
  * @export
  */
-javascript.util.Iterator = function() {};
+define(function(){
+
+var Iterator = function() {};
 
 
 /**
@@ -14,7 +14,7 @@ javascript.util.Iterator = function() {};
  * @return {boolean}
  * @export
  */
-javascript.util.Iterator.prototype.hasNext = goog.abstractMethod;
+Iterator.prototype.hasNext = function(){};
 
 
 /**
@@ -22,7 +22,7 @@ javascript.util.Iterator.prototype.hasNext = goog.abstractMethod;
  * @return {Object}
  * @export
  */
-javascript.util.Iterator.prototype.next = goog.abstractMethod;
+Iterator.prototype.next = function(){};
 
 
 /**
@@ -30,4 +30,7 @@ javascript.util.Iterator.prototype.next = goog.abstractMethod;
  * iterator (optional operation).
  * @export
  */
-javascript.util.Iterator.prototype.remove = goog.abstractMethod;
+Iterator.prototype.remove = function(){};
+
+return Iterator; 
+});

@@ -1,7 +1,3 @@
-goog.provide('javascript.util.Collection');
-
-goog.require('javascript.util.Iterator');
-
 
 /**
  * @see http://download.oracle.com/javase/6/docs/api/java/util/Collection.html
@@ -9,7 +5,10 @@ goog.require('javascript.util.Iterator');
  * @constructor
  * @export
  */
-javascript.util.Collection = function() {};
+define(function(){
+
+
+var Collection = function() {};
 
 /**
  * Ensures that this collection contains the specified element (optional
@@ -17,7 +16,7 @@ javascript.util.Collection = function() {};
  * @param {Object} e
  * @return {boolean}
  */
-javascript.util.Collection.prototype.add = goog.abstractMethod;
+Collection.prototype.add = function(){};
 
 
 /**
@@ -27,35 +26,35 @@ javascript.util.Collection.prototype.add = goog.abstractMethod;
  * @param {javascript.util.Collection} c
  * @return {boolean}
  */
-javascript.util.Collection.prototype.addAll = goog.abstractMethod;
+Collection.prototype.addAll = function(){};
 
 
 /**
  * Returns true if this collection contains no elements.
  * @return {boolean}
  */
-javascript.util.Collection.prototype.isEmpty = goog.abstractMethod;
+ Collection.prototype.isEmpty = function(){};
 
 
 /**
  * Returns an iterator over the elements in this collection.
- * @return {javascript.util.Iterator}
+ * @return { Iterator}
  */
-javascript.util.Collection.prototype.iterator = goog.abstractMethod;
+ Collection.prototype.iterator = function(){};
 
 
 /**
  * Returns an iterator over the elements in this collection.
  * @return {number}
  */
-javascript.util.Collection.prototype.size = goog.abstractMethod;
+ Collection.prototype.size = function(){};
 
 
 /**
  * Returns an array containing all of the elements in this collection.
  * @return {Array}
  */
-javascript.util.Collection.prototype.toArray = goog.abstractMethod;
+ Collection.prototype.toArray = function(){};
 
 
 /**
@@ -64,4 +63,6 @@ javascript.util.Collection.prototype.toArray = goog.abstractMethod;
  * @param {Object} e
  * @return {boolean}
  */
-javascript.util.Collection.prototype.remove = goog.abstractMethod;
+ Collection.prototype.remove = function(){};
+return Collection; 
+});

@@ -37,4 +37,4 @@ Label.prototype = {
   }
 };
 
-module.exports = Label;
+// module.exports = Label;
