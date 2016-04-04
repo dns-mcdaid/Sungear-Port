@@ -2,6 +2,7 @@
  * Setup file used to designate which resources will need to be loaded
  * in order for Sungear Javascript edition to work properly.
  */
+
 var requirejs = require('requirejs');
 requirejs.config({
   baseUrl: 'scripts',
