@@ -1,5 +1,5 @@
 body {
-	background-color: #F6F6E8;
+	background-color: #F3EFE0;
 	color: #404040;
 	font-family: 'Noto Sans', sans-serif;
 }
@@ -9,12 +9,12 @@ h1 {
 }
 
 h3 {
-	color: #F6F6E8;
+	color: #F3EFE0;
 	padding-left: 10px;
 }
 
 a {
-	color: #00ACE9;
+	color: #3399FF;
 }
 
 #sunGui {
@@ -35,12 +35,12 @@ a {
 }
 
 .btn-primary {
-	background-color: #6A9A1F;
+	background-color: #3399FF;
 	border: 0 none;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
-	background-color: #48890C;
+	background-color: #2288EE;
 }
 
 #genes {
@@ -54,7 +54,7 @@ a {
 	background-color: #111;
 	height: 400px;
 	padding: 5px;
-	color: #F6F6E8;
+	color: #F3EFE0;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
@@ -83,8 +83,8 @@ tr {
 }
 
 .table-striped tbody tr.highlight td {
-    background-color: #D43F3F;
-		color: #F6F6E8;
+    background-color: #9A3334;
+		color: #F3EFE0;
 }
 
 #ctrlbtns {
@@ -128,5 +128,5 @@ tr {
 
 #goCount, #geneCount {
 	padding-top: 10px;
-	color: #F6F6E8;
+	color: #F3EFE0;
 }

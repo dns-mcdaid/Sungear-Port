@@ -1,6 +1,6 @@
 
 
-define("sungear", [/*'dataSource',*/'anchorDisplay',/*'comp','icons','stats',*/'vesselDisplay',
+define([/*'dataSource',*/'anchorDisplay',/*'comp','icons','stats',*/'vesselDisplay',
 'anchor','genesGene','geneEvent',/*'geneList','geneListener','multiSelectable',*/'term','vessel', 'TreeSet', 'seedrandom', 'Container'],
 function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
   anchor,genesGene,geneEvent,/*geneList,geneListener,multiSelectable,*/term,vessel, TreeSet, seedrandom, Container){
@@ -45,11 +45,11 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
     R_OUTER : 1.2,
     R_CIRCLE : 1.0,
     /** Default text/graphics color */
-    C_PLAIN : '#d0d0d0',
+    C_PLAIN : '#F3EFE0',
     /** Highlighted text/graphics color */
-    C_HIGHLIGHT : '#ffa0a0',
+    C_HIGHLIGHT : '#9A3334',
     /** Selected text/graphics */
-    C_SELECT : '#ffffa0',
+    C_SELECT : '#217C7E',
     Sungear : Sungear
   };
 
