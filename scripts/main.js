@@ -1,5 +1,5 @@
-define(['p5', 'sungear', 'vesselDisplay','Container'],
-function(p5, sungear, vesselDisplay, Container){
+define(['p5', 'sungear', 'jquery', 'vesselDisplay','Container'],
+function(p5, sungear, $, vesselDisplay, Container){
 
   var masterFileArray = [];
   var canvas;
@@ -12,12 +12,10 @@ function(p5, sungear, vesselDisplay, Container){
   var sides = 1;
   var HEIGHT;
   var WIDTH;
-  var isPulling = false;
 
-  function main() {
+  function main(side) {
 
-
-    sides = masterFileArray.length;
+    sides = side;
     makePolygon = true;
     var setupCanvas = new p5(function(p5){
       p5.setup = function() {
@@ -67,6 +65,8 @@ function(p5, sungear, vesselDisplay, Container){
             var sx = x + p5.cos(a) * radius;
             var sy = y + p5.sin(a) * radius;
             p5.vertex(sx, sy);
+            p5.textSize(18);
+            p5.text("Hello!", sx, sy);
           }
           p5.endShape(p5.CLOSE);
         } else {
@@ -79,38 +79,51 @@ function(p5, sungear, vesselDisplay, Container){
     }, 'sunGui');
   }
 
+  function populateGenes(contents) {
+
+    for (var j = 0; j < contents.length; j++) {
+      var separated = contents[i].split("\n");
+
+    }
+  }
+
   function loadData() {
-    isPulling = true;
     var files = document.getElementById("inFiles").files;
-    var inFiles = [];
+    var tbody = document.getElementById("geneTbody");
     for (var i = 0, f; f = files[i]; i++) {
         var reader = new FileReader();
         reader.onload = (function (f) {
           return function (e) {
             var contents = e.target.result;
-            masterFileArray.push({name:f.name, contents:contents});
+            var separated = contents.split("\n");
+            for(var i = 0; i < separated.length; i++){
+              if (separated[i] == null) {
+                continue;
+              }
+              var row = tbody.insertRow(0);
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+              cell1.innerHTML = separated[i];
+              cell2.innerHTML = "pls work";
+            }
           }
         })(f);
         reader.readAsText(f, "UTF-8");
     }
     document.getElementById("setupload").innerHTML = "";
-    isPulling = false;
+    return files.length;
   }
 
   document.getElementById("upload").addEventListener('click', function() {
-    loadData();
-    function continuePulling() {
-      if (isPulling) {
-        setTimeout(function(){continuePulling()},100);
-      } else {
-        main();
-      };
-    }
+    var inside = loadData();
+    sides = inside;
+    main(inside);
   });
 
   // Sungear Direct Control Panel options.
   document.getElementById("restart").addEventListener("click", function(){
     console.log("Restarting Sungear...");
+    console.log(masterFileArray[0].name);
   });
 
   document.getElementById("all").addEventListener("click", function(){
