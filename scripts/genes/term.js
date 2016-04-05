@@ -44,7 +44,7 @@
 * @param name the GO term name
 */
 
-var HypergeometricDistribution = require('../../hyperGeo/distribution/HypergeometricDistribution');
+// var HypergeometricDistribution = require('../../hyperGeo/distribution/HypergeometricDistribution');
 
 function Term(id, name){
  /** GO term ID */
