@@ -1,17 +1,17 @@
-define(['p5', 'sungear', 'vesselDisplay'],
-function(p5, sungear, vesselDisplay){
+define(['p5', 'sungear', 'vesselDisplay','Container'],
+function(p5, sungear, vesselDisplay, Container){
   var canvas;
   var DrawStack = [];
   var added = false;
   var pressed = false;
   var makePolygon = false;
   var toDraw;
-  var currentColor = sungear.C_HIGHLIGHT;
+  var currentColor = Container.sungear.C_HIGHLIGHT;
   var sides = 1;
   var HEIGHT;
   var WIDTH;
 
-  var activeSungear = new sungear.Sungear(9,"potato","ehh");
+  var activeSungear = new Container.sungear.Sungear(9,"potato","ehh");
   // console.log(activeSungear.getVessels());
 
   var setupCanvas = new p5(function(p5){
@@ -19,21 +19,21 @@ function(p5, sungear, vesselDisplay){
       WIDTH = document.getElementById('sunGui').clientWidth;
       HEIGHT = document.getElementById('sunGui').clientHeight;
       canvas = p5.createCanvas(WIDTH,HEIGHT);
-      var testDis = new vesselDisplay("testAnc");
-      var testShape = testDis.makeShape(4);
-      console.log(testShape);
-      DrawStack.push(testShape);
+      // var testDis = new Container.vesselDisplay("testAnc");
+      // var testShape = testDis.makeShape(4);
+      // console.log(testShape);
+      // DrawStack.push(testShape);
     },
 
     p5.draw = function() {
       p5.background(16,16,16);
       p5.fill(0);
 
-      if(!added){
-        toDraw = DrawStack.pop();
-        console.log(toDraw);
-        added = true;
-      }
+      // if(!added){
+      //   toDraw = DrawStack.pop();
+      //   console.log(toDraw);
+      //   added = true;
+      // }
 
       if(makePolygon) {
         p5.polygon(WIDTH/2, HEIGHT/2, HEIGHT/2-5, sides);
@@ -46,8 +46,8 @@ function(p5, sungear, vesselDisplay){
       }
       p5.ellipse(p5.mouseX, p5.mouseY, 80, 80);
 
-      p5.fill(sungear.C_PLAIN);
-      p5.ellipse(toDraw.p5, toDraw.y, toDraw.width, toDraw.height);
+      p5.fill(Container.sungear.C_PLAIN);
+      // p5.ellipse(toDraw.p5, toDraw.y, toDraw.width, toDraw.height);
     },
 
     p5.polygon = function(x, y, radius, npoints) {

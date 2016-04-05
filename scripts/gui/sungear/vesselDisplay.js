@@ -1,9 +1,9 @@
-define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay', 'TreeSet', 'require'],
-function(anchor, gene, vessel, sungear, TreeSet, require){
+define("vesselDisplay",['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay', 'TreeSet', 'Container'],
+function(anchor, gene, vessel, sungear, TreeSet, Container){
   var ARROW_LINE = 0.7;
   var ARROW_END = 0.2;
 
-  var vesselDisplay = function(vessel){
+  function vesselDisplay(vessel){
     this.vessel = vessel;
     this.highlight = false;
     this.select = false;
@@ -35,7 +35,7 @@ function(anchor, gene, vessel, sungear, TreeSet, require){
       x: null,
       y: null
     };
-  };
+  }
 
   vesselDisplay.prototype = {
     constructor: vesselDisplay,
@@ -96,8 +96,8 @@ function(anchor, gene, vessel, sungear, TreeSet, require){
         if(this.anchor.length === 0) {
           console.log("OVER HERE");
           // BOTH VALUES SHOULD BE NEGATIVE
-          p.x = sungear.R_CIRCLE;
-          p.y = sungear.R_CIRCLE + 0.15;
+          p.x = sungear.sungear.R_CIRCLE;
+          p.y = sungear.sungear.R_CIRCLE + 0.15;
         } else {
           console.log("OVER THERE");
           for(var i = 0; i < this.anchor.length; i++) {
@@ -181,6 +181,5 @@ function(anchor, gene, vessel, sungear, TreeSet, require){
 
     }
   };
-  // module.exports = VesselDisplay;
-  return vesselDisplay;
+  Container.vesselDisplay = vesselDisplay;
 });

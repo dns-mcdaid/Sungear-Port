@@ -1,9 +1,9 @@
 
 
-define([/*'dataSource',*/'anchorDisplay',/*'comp','icons','stats',*/'vesselDisplay',
-'anchor','genesGene','geneEvent',/*'geneList','geneListener','multiSelectable',*/'term','vessel', 'TreeSet', 'seedrandom'],
+define("sungear", [/*'dataSource',*/'anchorDisplay',/*'comp','icons','stats',*/'vesselDisplay',
+'anchor','genesGene','geneEvent',/*'geneList','geneListener','multiSelectable',*/'term','vessel', 'TreeSet', 'seedrandom', 'Container'],
 function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
-  anchor,genesGene,geneEvent,/*geneList,geneListener,multiSelectable,*/term,vessel, TreeSet, seedrandom){
+  anchor,genesGene,geneEvent,/*geneList,geneListener,multiSelectable,*/term,vessel, TreeSet, seedrandom, Container){
 
   /** Display size of largest vessel */
   var rng = seedrandom(); /* RNG from external node module */
@@ -749,5 +749,5 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
       }
     }
   };
-  return values;
+  Container.sungear = values;
 });

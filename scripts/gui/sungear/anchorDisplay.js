@@ -3,12 +3,8 @@
  * @author Rajah_Bimmy
  * Copyright Chris Poultney 2004.
  */
-define(['anchor', 'sungear', 'vesselDisplay'],
+define("anchorDisplay", ['anchor', 'sungear', 'vesselDisplay'],
 function(anchor, values, vesselDisplay){
-  var methods = {
-    AnchorDisplay: AnchorDisplay
-  };
-
   var NAME_SEPARATOR = ";";
   function AnchorDisplay(anchor) {
     this.anchor = anchor;
@@ -51,8 +47,8 @@ function(anchor, values, vesselDisplay){
 
     setAngle:function(theta){
       this.angle = theta;
-      this.position.x = values.R_CIRCLE * Math.cos(theta);
-      this.position.y = values.R_CIRCLE * Math.sin(theta);
+      this.position.x = values.values.R_CIRCLE * Math.cos(theta);
+      this.position.y = values.values.R_CIRCLE * Math.sin(theta);
     },
 
     getAngle:function(){ return this.angle; },
@@ -83,5 +79,5 @@ function(anchor, values, vesselDisplay){
     }
   };
 
-  return methods;
+  return AnchorDisplay;
 });

@@ -69,7 +69,9 @@ requirejs.config({
     NoSuchElementException: 'structs/javascript/util/NoSuchElementException',
     OperationNotSupported: 'structs/javascript/util/OperationNotSupported',
     Set: 'structs/javascript/util/Set',
-    SortedSet : 'structs/javascript/util/SortedSet'
+    SortedSet : 'structs/javascript/util/SortedSet',
+
+    Container : 'Container'
 
   }
 });
