@@ -49,13 +49,13 @@ define(['dataReader'],function(DataReader){
   }
 
   Attributes.prototype = {
-    constructor: Attributes,
+    constructor : Attributes,
 
     /**
      * Parses the header of a file and adds any attributes specified there.
      * @param file the file to parse
      */
-    parseAttributes:function(file) {
+    parseAttributes : function(file) {
       // read javascript file i/o
     },
     /**
@@ -64,14 +64,14 @@ define(['dataReader'],function(DataReader){
      * @param value the associated attribute
      * @return the old attribute associated with that key, or null if none
      */
-    put:function(key, value) { return this.attrib[key] = value; },
+    put : function(key, value) { return this.attrib[key] = value; },
     /**
      * Removes a key/attribute pair.
      * @param key the key for the key/attribute pair to remove.
      * @return the attribute associated with the key, or null if none
      * TODO: REMOVE KEY
      */
-    remove:function(key) { return this.attrib[key] = null; },
+    remove : function(key) { return this.attrib[key] = null; },
     /**
      * Convenience method to get a attribute or, if the attribute is null,
      * a default value (saves lots of code repetition).
@@ -79,17 +79,21 @@ define(['dataReader'],function(DataReader){
      * @param defaultValue the default value to return if the key is not mapped
      * @return the mapped attribute, or the default value if no mapped attribute
      */
-    get:function(key, defaultValue) {
-      var o = this.attrib[key];
-      return (o == null ? defaultValue : o);
+    get : function(key, defaultValue) {
+      if (get.length < 2) {
+        return this.attrib[key];
+      } else {
+        var o = this.attrib[key];
+        return (o == null ? defaultValue : o);
+      }
     },
     /**
      * Returns all the attribute keys.
      * @return the set of keys
      * TODO: How the fuck do I return keys.
      */
-    getKeys:function() { return this.attrib.keys; },
+    getKeys : function() { return this.attrib.keys; },
     /** Wrapper for {@link Hashtable#toString()} */
-    toString:function() { return this.attrib.toString(); }
+    toString : function() { return this.attrib.toString(); }
   }
 });
