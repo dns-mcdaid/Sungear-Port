@@ -22,10 +22,11 @@ function(p5, sungear, $, vesselDisplay, Container){
         WIDTH = document.getElementById('sunGui').clientWidth;
         HEIGHT = document.getElementById('sunGui').clientHeight;
         canvas = p5.createCanvas(WIDTH,HEIGHT);
-        // var testDis = new Container.vesselDisplay("testAnc");
-        // var testShape = testDis.makeShape(4);
-        // console.log(testShape);
-        // DrawStack.push(testShape);
+
+        var testDis = new vesselDisplay("testAnc");
+        var testShape = testDis.makeShape(4);
+        console.log(testShape);
+        DrawStack.push(testShape);
 
       },
 
@@ -33,11 +34,11 @@ function(p5, sungear, $, vesselDisplay, Container){
         p5.background(16,16,16);
         p5.fill(0);
 
-        // if(!added){
-        //   toDraw = DrawStack.pop();
-        //   console.log(toDraw);
-        //   added = true;
-        // }
+        if(!added){
+          toDraw = DrawStack.pop();
+          console.log(toDraw);
+          added = true;
+        }
 
         if(makePolygon) {
           p5.polygon(WIDTH/2, HEIGHT/2, HEIGHT/2-5, sides);
@@ -51,7 +52,7 @@ function(p5, sungear, $, vesselDisplay, Container){
         p5.ellipse(p5.mouseX, p5.mouseY, 80, 80);
 
         p5.fill(Container.sungear.C_PLAIN);
-        // p5.ellipse(toDraw.p5, toDraw.y, toDraw.width, toDraw.height);
+        p5.ellipse(toDraw.p5, toDraw.y, toDraw.width, toDraw.height);
       },
 
       p5.polygon = function(x, y, radius, npoints) {
@@ -70,7 +71,7 @@ function(p5, sungear, $, vesselDisplay, Container){
           }
           p5.endShape(p5.CLOSE);
         } else {
-          p5.ellipse(x,y,HEIGHT-5,HEIGHT-5)
+          p5.ellipse(x,y,HEIGHT-5,HEIGHT-5);
         }
         p5.stroke(0);
         p5.strokeWeight(1);

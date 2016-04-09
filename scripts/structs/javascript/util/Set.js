@@ -9,7 +9,7 @@
 define(['Collection'], function(Collection){
 
 
-var Set = function() {};
+Set = function() {};
 
 
 /**

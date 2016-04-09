@@ -7,7 +7,7 @@
  */
 define(['Set'], function(Set){
 
-var SortedSet = function() {};
+SortedSet = function() {};
 
 SortedSet.prototype = Object.create(Set.prototype);
 SortedSet.prototype.constructor = SortedSet;

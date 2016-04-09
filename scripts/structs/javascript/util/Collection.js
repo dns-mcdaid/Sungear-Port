@@ -8,7 +8,7 @@
 define(function(){
 
 
-var Collection = function() {};
+Collection = function() {};
 
 /**
  * Ensures that this collection contains the specified element (optional
@@ -64,5 +64,5 @@ Collection.prototype.addAll = function(){};
  * @return {boolean}
  */
  Collection.prototype.remove = function(){};
-return Collection; 
+return Collection;
 });

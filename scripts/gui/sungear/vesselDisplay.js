@@ -1,5 +1,5 @@
-define("vesselDisplay",['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay', 'TreeSet', 'Container'],
-function(anchor, gene, vessel, sungear, TreeSet, Container){
+define("vesselDisplay",['anchor', 'genesGene', 'vessel', 'Container', 'anchorDisplay', 'TreeSet'],
+function(anchor, gene, vessel, Container,anchorDisplay, TreeSet){
   var ARROW_LINE = 0.7;
   var ARROW_END = 0.2;
 
@@ -12,6 +12,7 @@ function(anchor, gene, vessel, sungear, TreeSet, Container){
       x: null,
       y: null
     };
+
     this.activeGenes = new TreeSet();
     this.selectedGenes = new TreeSet();
     this.radMax = 0.1;
@@ -94,10 +95,9 @@ function(anchor, gene, vessel, sungear, TreeSet, Container){
         };
 
         if(this.anchor.length === 0) {
-          console.log("OVER HERE");
           // BOTH VALUES SHOULD BE NEGATIVE
-          p.x = sungear.sungear.R_CIRCLE;
-          p.y = sungear.sungear.R_CIRCLE + 0.15;
+          p.x = Container.sungear.R_CIRCLE;
+          p.y = Container.sungear.R_CIRCLE + 0.15;
         } else {
           console.log("OVER THERE");
           for(var i = 0; i < this.anchor.length; i++) {
@@ -181,5 +181,5 @@ function(anchor, gene, vessel, sungear, TreeSet, Container){
 
     }
   };
-  Container.vesselDisplay = vesselDisplay;
+  return vesselDisplay;
 });
