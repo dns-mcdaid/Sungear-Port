@@ -1,9 +1,9 @@
 
 
 define([/*'dataSource',*/'anchorDisplay',/*'comp','icons','stats',*/'vesselDisplay',
-'anchor','genesGene','geneEvent',/*'geneList','geneListener','multiSelectable',*/'term','vessel', 'TreeSet', 'seedrandom', 'Container'],
+'anchor','genesGene','geneEvent',/*'geneList','geneListener'*/'term','vessel', 'TreeSet', 'seedrandom', 'MultiSelectable', 'Container'],
 function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
-  anchor,genesGene,geneEvent,/*geneList,geneListener,multiSelectable,*/term,vessel, TreeSet, seedrandom, Container){
+  anchor,genesGene,GeneEvent,/*geneList,geneListener,*/term,vessel, TreeSet, seedrandom,  MultiSelectable, Container){
 
   /** Display size of largest vessel */
   var rng = seedrandom(); /* RNG from external node module */
@@ -142,9 +142,7 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
     },
 
     setGo:function(t) {
-      //TODO: make weak ref to GoTerm t
       goTerm = t;
-
     },
 
     setRelax:function(b) {
@@ -749,5 +747,5 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
       }
     }
   };
-  Container.sungear = values;
+  return values;
 });

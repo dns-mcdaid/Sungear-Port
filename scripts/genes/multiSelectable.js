@@ -4,7 +4,8 @@
  *
  * @author crispy
  */
-
+define(function(){
+var MultiSelectable = {};
 MultiSelectable.prototype = {
   /** Indicates a union multi-select operation */
   UNION : 0,
@@ -20,4 +21,8 @@ MultiSelectable.prototype = {
   getMultiSelection : function(operation) {
 
   }
-}
+
+};
+
+return MultiSelectable;
+});

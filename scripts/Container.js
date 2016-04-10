@@ -1,4 +1,4 @@
-define("Container",function() {
-    var Container={};
+define(function() {
+    var Container = {};
     return Container;
 });

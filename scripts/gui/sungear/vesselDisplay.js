@@ -1,5 +1,5 @@
-define("vesselDisplay",['anchor', 'genesGene', 'vessel', 'Container', 'anchorDisplay', 'TreeSet'],
-function(anchor, gene, vessel, Container,anchorDisplay, TreeSet){
+define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay', 'TreeSet', 'require'],
+function(anchor, gene, vessel, sungear ,anchorDisplay, TreeSet, require){
   var ARROW_LINE = 0.7;
   var ARROW_END = 0.2;
 
@@ -96,8 +96,12 @@ function(anchor, gene, vessel, Container,anchorDisplay, TreeSet){
 
         if(this.anchor.length === 0) {
           // BOTH VALUES SHOULD BE NEGATIVE
-          p.x = Container.sungear.R_CIRCLE;
-          p.y = Container.sungear.R_CIRCLE + 0.15;
+          p.x = (function(){
+            return require('sungear').R_CIRCLE;
+          }());
+          p.y = (function(){
+            return require('sungear').R_CIRCLE + 0.15;
+          }());
         } else {
           console.log("OVER THERE");
           for(var i = 0; i < this.anchor.length; i++) {

@@ -5,7 +5,7 @@ Translated from Ilyas Mounaime's Java code
 */
 
 //uses functions from java.io and java.net imports
-
+define(['attributes'], function(Attribute){
   	/** Default name of gene description file if none is given */
     var GENE_DEFAULT = "annotation.txt.gz";
     /** Default name of GO annotation file if none is given */
@@ -29,17 +29,15 @@ Translated from Ilyas Mounaime's Java code
     var dataDir;
     /** Reader object that performs actual file parsing */
     //JAVASCRIPT FILE INPUT?
-    var reader = new FileReader();
+    // var reader = new FileReader();
     // * Holds arbitrary information about the current experiment
     // /* ilyas */
     //Attributes is basically a map for making sure basic attributes are set (file name, species)
-    var attrib = {};
 
     function DataSource(dataDir){
     	this.dataDir = dataDir;
     	geneSrc = glSrc = ghSrc = ggSrc = sunSrc = null;
-    	reader = null;
-    	attrib = null;
+    	attrib = new Attribute();
     }
 
     function cleanup(){
@@ -48,14 +46,31 @@ Translated from Ilyas Mounaime's Java code
     }
 
     function checkAttributes(attrib, base){ //throws IO, Parse exceptions
-    	if(attrib["sungearU"] === null){
-    		console.log("Sungear file not specified.");
-    	}
+    	// if(attrib.get("sungearU") === null){
+    	// 	console.log("Sungear file not specified.");
+    	// }
 
-
+      //TODO: Loop through some HTML elements for "sungearU", species, and attribute data
+      //Below are the attributes and gene data within the species file (assuming we're using gene data/a species file exists) to put into attrib HashMap
+      //atrrib.put("sungearU", sungearUFileData)
+      //attrib.put("species", speciesFileData)
+      //attrib.put("speciesU", speciesUFileData)
+      //attrib.put("itemsLabel", "genes");
+      //attrib.put("categoriesLabel", "GO Terms");
+      //attrib.put("geneU", (sp != null) ? sp.geneU : new URL(base, GENE_DEFAULT));
+      //attrib.put("listU", (sp != null) ? sp.listU : new URL(base, LIST_DEFAULT));
+      //attrib.put("hierU", (sp != null) ? sp.hierU : new URL(base, HIER_DEFAULT));
+      //attrib.put("assocU", (sp != null) ? sp.assocU : new URL(base, ASSOC_DEFAULT));
     }
 
     function setAttributes (attrib, base){
     	checkAttributes(attrib, base);
     	this.attrib = attrib;
     }
+
+    //TODO: Implement some sort of GET method for attrib, since we're not using DataReader
+
+//I'm assuming you have to refresh the page/restart the program to change genes/files
+//Otherwise, just implement the set function from DataSource.java
+  return DataSource;
+});

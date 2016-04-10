@@ -1,5 +1,5 @@
-define(['p5', 'sungear', 'jquery', 'vesselDisplay','Container'],
-function(p5, sungear, $, vesselDisplay, Container){
+define(['p5', 'sungear', 'jquery', 'vesselDisplay'],
+function(p5, sungear, $, vesselDisplay){
 
   var masterFileArray = [];
   var canvas;
@@ -8,14 +8,13 @@ function(p5, sungear, $, vesselDisplay, Container){
   var pressed = false;
   var makePolygon = false;
   var toDraw;
-  var currentColor = Container.sungear.C_HIGHLIGHT;
+  var currentColor = sungear.C_HIGHLIGHT;
   var sides = 1;
   var HEIGHT;
   var WIDTH;
 
   function main(side) {
-
-    sides = side;
+    if(arguments.length > 0) {sides = side;}
     makePolygon = true;
     var setupCanvas = new p5(function(p5){
       p5.setup = function() {
@@ -51,13 +50,13 @@ function(p5, sungear, $, vesselDisplay, Container){
         }
         p5.ellipse(p5.mouseX, p5.mouseY, 80, 80);
 
-        p5.fill(Container.sungear.C_PLAIN);
+        p5.fill(sungear.C_PLAIN);
         p5.ellipse(toDraw.p5, toDraw.y, toDraw.width, toDraw.height);
       },
 
       p5.polygon = function(x, y, radius, npoints) {
         p5.fill(16,16,16);
-        p5.stroke(Container.sungear.C_PLAIN);
+        p5.stroke(sungear.C_PLAIN);
         p5.strokeWeight(4);
         if (npoints > 2) {
           var angle = p5.TWO_PI / npoints;
@@ -98,7 +97,7 @@ function(p5, sungear, $, vesselDisplay, Container){
             var contents = e.target.result;
             var separated = contents.split("\n");
             for(var i = 0; i < separated.length; i++){
-              if (separated[i] == null) {
+              if (separated[i] === null) {
                 continue;
               }
               var row = tbody.insertRow(0);

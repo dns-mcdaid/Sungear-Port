@@ -5,6 +5,7 @@
  *
  *  Modified by Dennis McDaid
  */
+define(function(){
 
 function Label(name, cool){
   this.name = name;
@@ -38,3 +39,5 @@ Label.prototype = {
 };
 
 // module.exports = Label;
+return Label; 
+});

@@ -12,6 +12,9 @@
   *  An object that contains all genes for an anchor, the name of the
   *  anchor. The genes of the anchor can be sorted by their expression value.
   */
+define(function(){
+
+
 function AnchorList(name){
   this.name = name;
   this.oriGenes = [];
@@ -132,3 +135,5 @@ AnchorList.prototype = {
   }
 };
 // module.exports = AnchorList;
+return AnchorList; 
+});

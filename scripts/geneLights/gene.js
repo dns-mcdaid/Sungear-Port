@@ -7,6 +7,8 @@
  * Copyright Delin Yang
  * Modified by Dennis McDaid
  */
+define(function(){
+
 
 function Gene(name, value){
 	this.name = name;
@@ -48,3 +50,5 @@ Gene.prototype = {
 	 }
 };
 // module.exports = Gene;
+return Gene; 
+});

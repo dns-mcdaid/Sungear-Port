@@ -2,6 +2,7 @@
  * @author crispy & Rajah_Bimmy
  * Copyright Chris Poultney 2004.
  */
+define(function(){
 
  function Anchor(name){
    this.name = name;
@@ -23,3 +24,5 @@ Anchor.prototype = {
     return str1.localeCompare(str2);
   }
 };
+return Anchor; 
+});

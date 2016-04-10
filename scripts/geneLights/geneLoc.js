@@ -7,6 +7,7 @@
  *  Copyright  Delin Yang.
  *  Updated by Dennis McDaid.
  */
+define(function(){
 
 function GeneLoc(listID, offset){
   this.listID = listID;
@@ -27,3 +28,5 @@ GeneLoc.prototype = {
 };
 
 // module.exports = GeneLoc;
+return GeneLoc; 
+});

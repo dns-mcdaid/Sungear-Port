@@ -1,76 +1,79 @@
-define([
-  "attributes","dataReader","dataSource","externalConnection","parseException",
-  "vpConnection","genesGene","geneList","collapsibleList","controls",
-  "experimentList","exportList","goTerm","sungear","waitcursor"
-],function(
-  attributes,dataReader,dataSource,externalConnection,parseException,
-  vpConnection,genesGene,geneList,collapsibleList,controls,
-  experimentList,exportList,goTerm,sungear,waitcursor){
-    /**
-     * Top-level GUI component for Sungear.  Can be instantiated
-     * as an applet or an application.
-     *
-     * @author crispy
-     */
-   /**
-    * Use this constructor when instantiating as an application.
-    * @param u URL of directory where code is being run
-    * @param pn array of names of plugins to load
-    */
-    function VisGene(u, w, pn, dataDir) {
-      console.log(notice);
-      this.base = null;
-      // this.showWarning = false;
-      this.dataDir = null;
+/**
+ * Top-level GUI component for Sungear.  Can be instantiated
+ * as an applet or an application.
+ *
+ * @author crispy
+ */
+//THIS IS A SINGLETON CLASS, I.E. ONLY ONE INSTANCE WILL BE CREATED
+//WHEN FIRST LOADED BY REQUIREJS. THIS INSTANCE WILL BE SHARED BY ALL FILES NEEDING VISGENE
+//-RM
 
+define(["attributes","dataSource","genesGene","sungear", 'geneList', 'require'],
+function(Attribute,DataSource, genesGene,sungear, GeneList, require){
+ /**
+  * Use this constructor when instantiating as an application.
+  * @param u URL of directory where code is being run
+  * @param pn array of names of plugins to load
+  */
+  function VisGene(u, w, pn, dataDir) {
+      if(arguments.callee.instance){
+        return arguments.callee.instance;
+      }
+      arguments.callee.instance = this;
+      console.log("VisGene Singleton Instantiated!");
+        // this.showWarning = false;
       this.isApplet = false;
       this.base = u;
       this.context = null;
       this.showWarning = w;
       this.pluginName = pn;
       this.dataDir = dataDir;
-    }
 
-    VisGene.VERSION = "0.0.2";
-    VisGene.notice = "Copyright Chris Poultney 2004";
-    VisGene.DEFAULT_DATA_DIR = null;
+      this.VERSION = "0.0.2";
+      this.notice = "Copyright Chris Poultney 2004, ported by Radhika Mattoo and Dennis McDaid 2016";
+      this.DEFAULT_DATA_DIR = null;
 
-    VisGene.prototype = {
-      constructor : VisGene,
+      this.init = function(){
+        // Potentially implement.
 
-      init : function() {
-        // TODO: Potentially implement.
+        // console.log(this.extAttrib);
+        // if (this.dataDir === null) {
+        //   dataDir = this.DEFAULT_DATA_DIR;
+        // }
+        // if (!this.dataDir.endsWith("/")) {
+        //   this.dataDir += "/"
+        // }
 
-        console.log(this.extAttrib);
-        if (this.dataDir === null) {
-          dataDir = this.DEFAULT_DATA_DIR;
-        }
-        if (!this.dataDir.endsWith("/")) {
-          this.dataDir += "/"
-        }
-        // TODO: Remove this, pretty much our config file.
-        this.dataU = DataReader.makeURL(this.base, this.dataDir);
+        //TODO: Not sure what form set up will be like, will def have to parseData
+        //more than one form element for dataU property
+        // this.dataU = document.getElementById(/*TODO: Something Here. */).value;
+        this.dataU = "./";
 
         // prepare data source.
-        var statsF = document.getElementById("stats"); //TODO: See if this works.
+        var statsF = null; //TODO: See if this works.
         this.src = new DataSource(this.dataU);
         this.geneList = new GeneList();
 
         // buildGUI
-        this.desk = null; // Should be new JDesktopPane
-        this.setContentpoane(this.desk);
+        // this.desk = null; // Should be new JDesktopPane
+        // this.setContentpoane(this.desk);
+        var sungearObj = (function(){
+          return require('sungear');
+        }());
 
-        this.gear = new SunGear(this.geneList, statsF);
-      },
+        this.gear = new sungearObj.Sungear(this.geneList, statsF);
 
-      run : function() {
+        console.log("Inside visGene singleton, about to begin main for canvas construction and program start ");
+        require(['main']);
+      };
+
+      this.run = function(){
         // Load the passed data file, if there is one.
-        if (this.extAttrib != null && this.exAttrb.get("sungearU") !== null) {
+        if (this.extAttrib !== null && this.exAttrb.get("sungearU") !== null) {
           this.src.setAttributes(this.extAttrib, this.dataU);
         }
-      },
-
-      destroyAll : function(p) {
+      };
+      this.destroyAll = function (){
         var c = p.getComponents();
         for (var i = 0; i < c.length; i++) {
           if (c[i] instanceof Container) {
@@ -82,9 +85,9 @@ define([
           p.dispose();
         }
         // TODO: JInternalFrame MAYBE
-      },
+      };
 
-      destroy : function() {
+      this.destroy = function(){
         console.log("destory enter");
         // this.super.destroy();
         this.topFrame = null;
@@ -115,35 +118,9 @@ define([
         this.geneList.cleanup();
         this.geneList = null;
         console.log("CSPgenes done");
-      },
+      };
 
-      toggleFullScreen : function() {
-        // TODO: Probably not gonna implement this.
-      },
-      /**
-       * Sets all desktop window sizes and positions to their defaults.
-       */
-      positionWindows : function() {
-        // TODO: Probably don't need to implement this.
-      },
-
-      makeFrame : function(title) {
-        return new WaitFrame(title, true, false, true, true);
-      },
-      /**
-       * Makes a check box menu item with JInternalFrame iconify control.
-       * @param f the internal frame to control
-       * @return the check box item
-       */
-      makeItem : function() {
-        // TODO: Probably not gonna implement this either.
-      },
-      /**
-       * Opens an experiment file.
-       * @throws IOException
-       * @throws ParseException
-       */
-      openFile : function(attrib) {
+      this.openFile = function(attrib){
         console.log("data file: " + attrib.get("sungearU"));
         var f = null; // should be JOptionPane ???
         var status = new StatusDialog(f, this);
@@ -170,9 +147,9 @@ define([
             console.log(msg); // TODO: Display this somewhere relevant.s
           }
         }
-      },
+      };
 
-      capFirst : function(s) {
+      this.capFirst = function(s){
         if (s.length > 1) {
           return s[0].toUpperCase() + s.substring(1);
         } else if (s.length == 1) {
@@ -180,20 +157,20 @@ define([
         } else {
           return s;
         }
-      },
+      };
 
-      showAbout : function() {
-        var f = document.getElementById(/*TODO: Something Here. */);
+      this.showAbout = function(){
+        var f = "";// document.getElementById(/*TODO: Something Here. */);
         try {
           var aboutU; // TODO: Fix this.
-          var text = DataReader.readURL(aboutU);
+          var text = "";//document.getElementById(/*TODO: Something Here. */).value;
           var vs = "[VERSION]";
           var pl = "[PLUGINLIST]";
           var l = text.indexOf(vs);
           if (l != -1) {
             text.replace(vs, VisGene.VERSION);
           }
-          var ps "";
+          var ps = "";
           for (var it = this.plugin.iterator(); it.hasNext(); ) {
             var p = it.next();
             // TODO: Make sure this works.
@@ -210,126 +187,8 @@ define([
         } catch (e) {
           console.log("Error reading about pane text:");
         }
-      },
+      };
+  }//end Singleton
 
-      formatComment : function(a, commentName) {
-        var comment = a.get(commentName, "(none)\n");
-        return comment.substring(0, Math.max(0, comment.length - 1));
-      },
-
-      showInfo : function() {
-        // TODO: Implement this??
-      }
-    }
-    /**
-     * Generic status dialog class that tries to position itself in the
-     * center of the parent window and automatically size itself to its
-     * message (which can be changed dynamically).
-     * @author crispy
-     */
-    // HEY! LISTEN! I Don't think we need to implement any of this. -DM
-    class StatusDialog extends VisGene {
-      constructor(f, parent) {
-        // HEY! LISTEN! I think this is the loading bar at the start of the app.
-        // TODO: Clean up what this does.
-        VisGene(f, "Progress", true); // This doesn't make any sense.
-        this.parent = parent;
-        this.progress = null; // Should be JProgressBar
-        this.progress.setStringPainted(true);
-        // more shit we don't need on the 780s lines.
-      }
-
-      updateStatus(msg, prog) {
-        this.progress.setString(msg);
-        this.progress.setValue(prog);
-      }
-    }
-
-    /**
-     * Loads an experiment and, if necessary, master data, giving
-     * load status updates.
-     * @param u URL of the experiment file to load
-     * @param status dialog for status updates
-     */
-    class LoadThread extends VisGene {
-      /**
-       * Experiment and master data load thread to separate the load
-       * operation from the main GUI thread.
-       * @author crispy
-       */
-      constructor(attrib, status) {
-        this.attrib = attrib;
-        this.status = status;
-        this.ex = null;
-      }
-
-      run() {
-        try {
-          super.src.set(this.attrib, this.status);
-          this.status.updateStatus("Preparing Sungear Display", 4);
-          super.geneList.setSource(super.src);
-          super.geneList.update();
-          this.status.updateStatus("Done", 5);
-        } catch (e) {
-          this.ex = e;
-          console.log(e);
-        }
-      }
-
-      getException() {
-        return ex;
-      }
-    }
-
-    class WaitFrame extends VisGene {
-      constructor(s, b1, b2, b3, b4) {
-        super(s, b1, b2, b3, b4);
-      }
-
-      printMem(s) {
-        // TODO: Implement?
-      }
-
-      usage() {
-        // TODO: Implement?
-      }
-
-      main(args) {
-        var i = 0;
-        var warn = true;
-        var plugin = [];
-        var dataDir = null;
-        while(i < args.length && (args[i].startsWith("-") || args[i] === "demo")) {
-          if(args[i].toLowerCase() === "--version") {
-            console.log(VisGene.VERSION);
-          } else if (args[i] === "--usage" || args[i] === "--help") {
-            usage();
-          } else if (args[i] === "demo" || args[i] == "-nowarn") {
-            warn = false;
-            i++;
-          } else if (args[i] === "-plugin") {
-            var f = args[i+1].split(",");
-            for (var s in f) {
-              super.plugin.add(s);
-            }
-            i += 2;
-          } else if (args[i] === "-data_dir") {
-            dataDir = args[i+1];
-            i += 2;
-          } else {
-            console.log("unknown argument, aborting.");
-            usage();
-          }
-        }
-
-        for (var j = i; j < args.length; j++) {
-          super.plugin.add(args[j]);
-        }
-
-        var f = null // new JFrame("Sungear") TODO: Not this.
-        // TODO: More lines of code here.
-        var vis = new VisGene(new URL("file:./", warn, super.plugin, dataDir);
-        vis.init();
-      }
-    }
+  return VisGene;
 });

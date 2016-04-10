@@ -14,6 +14,9 @@
   * @param source the object that generated the event
   * @param type the type of event
   */
+
+define(function(){
+
 function GeneEvent(list, source, type){
   /** The {@link GeneList} this event pertains to. */
   this.list = list;
@@ -64,4 +67,5 @@ GeneEvent.prototype = {
     return this.type;
   }
 };
-//module.exports = GeneEvent;
+return GeneEvent; 
+});

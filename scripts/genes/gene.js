@@ -14,6 +14,8 @@
   * @param name the gene name
   * @param desc the gene description
   */
+define(function(){
+
 function Gene(name, desc){
   /** Gene PUB name */
   this.name = name;
@@ -59,3 +61,5 @@ Gene.prototype = {
   }
 };
 
+return Gene; 
+});

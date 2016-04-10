@@ -13,8 +13,8 @@
  *
  * @author crispy
  */
-define(['TreeSet', 'Gene', 'GeneListener', 'GeneEvent', 'MultiSelectable'],
-function(TreeSet, Gene, GeneListener, GeneEvent, MultiSelectable) {
+define(['TreeSet', 'genesGene',  'geneEvent', 'MultiSelectable'],
+function(TreeSet, Gene, GeneEvent, MultiSelectable) {
   /**
    * Constructs a new gene list.  The list is useless until
    * {@link #setSource(data.DataSource)} is called.
@@ -71,7 +71,7 @@ function(TreeSet, Gene, GeneListener, GeneEvent, MultiSelectable) {
      */
     setSource : function(src) {
       this.source = src;
-      this.master = src.getReader().allGenes;
+      this.master = src.getReader().allGenes; //FIXME! We're not using DataReader, so instead do src.
       console.log("total items: " + this.master.length);
       var ge = new GeneEvent(this, this, GeneEvent.NEW_SOURCE);
       this.notifyGeneListeners(ge);
@@ -83,7 +83,7 @@ function(TreeSet, Gene, GeneListener, GeneEvent, MultiSelectable) {
      * @lol no it doesn't.
      */
     update : function() {
-      if (this.source == null) {
+      if (this.source === null) {
         console.log("Data Source is not initialized!");
         return;
       }
@@ -321,7 +321,7 @@ function(TreeSet, Gene, GeneListener, GeneEvent, MultiSelectable) {
         this.setSelection(src, s, true, false);
       }
     }
-  }
+  };
 
   /**
    * Provides a web-browser-like &quot;history&quot; of
@@ -330,7 +330,7 @@ function(TreeSet, Gene, GeneListener, GeneEvent, MultiSelectable) {
    */
   function History() {
     /** The list of sets in the history */
-    this.past = [];
+    this.past = new TreeSet();
     /** Index of the current set */
     this.curr = 0;
     this.clear();
@@ -344,7 +344,7 @@ function(TreeSet, Gene, GeneListener, GeneEvent, MultiSelectable) {
      * Clears the browsing history.
      */
     clear : function() {
-      this.past.clear();
+      this.past = null;
       this.curr = -1;
     },
     /**
@@ -403,5 +403,6 @@ function(TreeSet, Gene, GeneListener, GeneEvent, MultiSelectable) {
       this.curr++;
       this.past[this.curr] = t;
     }
-  }
+  };
+  return GeneList;
 });

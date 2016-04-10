@@ -45,6 +45,7 @@
 */
 
 // var HypergeometricDistribution = require('../../hyperGeo/distribution/HypergeometricDistribution');
+define(function(){
 
 function Term(id, name){
  /** GO term ID */
@@ -347,3 +348,5 @@ Term.prototype = {
   }
 };
 //module.exports = Term;
+return Term;
+});

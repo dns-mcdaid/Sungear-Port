@@ -3,6 +3,7 @@
  * Copyright Chris Poultney 2004.
  * Updated by Dennis McDaid.
  */
+define(function(){
 
 function Vessel(anchor){
   this.anchor = anchor.sort();
@@ -33,3 +34,6 @@ Vessel.prototype = {
   }
 };
 // module.exports = Vessel;
+return Vessel;
+
+});

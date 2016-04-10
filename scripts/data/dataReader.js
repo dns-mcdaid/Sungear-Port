@@ -37,6 +37,6 @@ DataReader.prototype = {
    */
   readGenes:function(geneU) {
     this.allGenes = [];
-    var inn =
+    // var inn =
   }
-}
+};

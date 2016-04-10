@@ -32,19 +32,23 @@ requirejs.config({
       // From the sungear folder
     anchorDisplay: 'gui/sungear/anchorDisplay',
     vesselDisplay: 'gui/sungear/vesselDisplay',
+
     // From the Genes folder
     anchor: 'genes/anchor',
     genesGene: 'genes/gene',
     geneEvent: 'genes/geneEvent',
     term: 'genes/term',
     vessel: 'genes/vessel',
+    geneList : 'genes/geneList',
+    MultiSelectable : 'genes/multiSelectable',
 
     // From the GeneLights folder
     anchorList: 'geneLights/anchorList',
     geneLightsGene: 'geneLights/gene',
     geneLoc: 'geneLights/geneLoc',
     label: 'geneLights/label',
-    parseData: 'geneLights/parseData',
+    // parseData: 'geneLights/parseData',
+
 
     //hyperGeo folder
     hyperGeo: 'hyperGeo/distribution/HypergeometricDistribution',
@@ -68,11 +72,17 @@ requirejs.config({
     Collection: 'structs/javascript/util/Collection',
     NoSuchElementException: 'structs/javascript/util/NoSuchElementException',
     OperationNotSupported: 'structs/javascript/util/OperationNotSupported',
+    IndexOutOfBoundsException: 'structs/javascript/util/IndexOutOfBoundsException',
+    ArrayList: 'structs/javascript/util/ArrayList',
+    HashMap: 'structs/javascript/util/HashMap',
     Set: 'structs/javascript/util/Set',
     SortedSet : 'structs/javascript/util/SortedSet',
 
-    Container : 'Container'
+    Container : 'Container',
 
+    visGene : 'app/visGene',
+    dataSource : 'data/dataSource',
+    attributes : 'data/attributes'
   }
 });
 
@@ -84,4 +94,13 @@ require(['test'], function(Y){
 });
 
 // // Call the main.js file to load the canvas and get rolling.
-require(['main']);
+// require(['main']);
+require(['visGene'], function(VisGene){
+    var i = 0;
+    var warn = true;
+    var plugin = [];
+    var dataDir = null;
+
+    var vis = new VisGene(new URL("file:./"), warn, "Sungear", null);
+    vis.init();
+});
