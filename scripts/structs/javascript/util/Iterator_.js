@@ -60,4 +60,5 @@ function(NoSuchElementException,OperationNotSupported){
   Iterator_.prototype.remove = function() {
     throw new OperationNotSupported();
   };
+  return Iterator_;
 });

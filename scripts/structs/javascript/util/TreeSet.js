@@ -65,15 +65,37 @@ function(SortedSet, Iterator_, Collection, NoSuchElementException, OperationNotS
     return true;
   };
 
+  TreeSet.prototype.retainAll = function(c){
+    var changed = false;
+    for (var i = c.iterator(); i.hasNext();) {
+      if(this.contains(i.next())){
+        this.remove(i.next());
+      }
+    }
+  };
+
+  TreeSet.prototype.clear = function(){
+    return null;
+  };
+
 
   /**
    * @override
    * @export
    */
-  TreeSet.prototype.remove = function(e) {
-    throw new OperationNotSupported();
-  };
+  TreeSet.prototype.remove = function(o) {
+    var found = false;
 
+    for (var i = 0, len = this.array_.length; i < len; i++) {
+      if (this.array_[i] === o) {
+        this.array_.splice(i, 1);
+        found = true;
+        break;
+      }
+    }
+
+    return found;
+  };
 
   /**
    * @override

@@ -21,7 +21,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
    */
   function GeneList() {
     /** Master table of all genes in this species */
-    this.master = [];
+    this.master = new TreeSet();
     /** List of all genes in the current experiment */
     this.genesS = new TreeSet();
     /** List of genes in the current active set */
@@ -109,7 +109,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * Gets the current data source.
      * @return the data source
      */
-    getSource : function() { return source; },
+    getSource : function() { return this.source; },
     /**
      * Gets the set of genes recognized by the gene list (generally
      * all genes for the current species).  This list is not limited
@@ -330,7 +330,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
    */
   function History() {
     /** The list of sets in the history */
-    this.past = new TreeSet();
+    this.past = [];
     /** Index of the current set */
     this.curr = 0;
     this.clear();
@@ -363,7 +363,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * @return the previous set
      */
     back : function() {
-      if (!this.hasPrev) {
+      if (!this.hasPrev()) {
         return null;
       } else {
         this.curr--;
@@ -377,7 +377,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * @return the next set
      */
     forward : function() {
-      if (!this.hasNext) {
+      if (!this.hasNext()) {
         return null;
       } else {
         this.curr++;

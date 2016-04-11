@@ -1,5 +1,5 @@
-define(['p5', 'sungear', 'jquery', 'vesselDisplay'],
-function(p5, sungear, $, vesselDisplay){
+define(['p5', 'sungear', 'jquery', 'vesselDisplay', 'geneList', 'visGene'],
+function(p5, sungear, $, vesselDisplay, geneList, visGene){
 
   var masterFileArray = [];
   var canvas;
@@ -74,7 +74,7 @@ function(p5, sungear, $, vesselDisplay){
         }
         p5.stroke(0);
         p5.strokeWeight(1);
-      }
+      };
 
     }, 'sunGui');
   }
@@ -123,47 +123,64 @@ function(p5, sungear, $, vesselDisplay){
   // Sungear Direct Control Panel options.
   document.getElementById("restart").addEventListener("click", function(){
     console.log("Restarting Sungear...");
-    console.log(masterFileArray[0].name);
+    var answer = confirm("Are you sure you want to restart? ");
+    if(answer){
+      location.reload(true); //FIXME; not what it's supposed to do. meant to reload data, see below
+    }
+    //visGene.geneList.restart(src); //calls geneList method
+
   });
 
+  //select all groupings
   document.getElementById("all").addEventListener("click", function(){
     console.log("Selecting all genes...");
+    //TODO: get selected groupings from HTML
+    //loop... and add gene groups from
+    var selectedGenes;
+    //add these to geneList's selected treeset
 
   });
-
+  //select no groupings
   document.getElementById("none").addEventListener("click", function(){
     console.log("Deselecting all gene sets...");
 
   });
 
+  //go backward to a previous selection
   document.getElementById("left").addEventListener("click", function(){
     console.log("Loading previous gene...");
 
   });
 
+  //go forward to a selection
   document.getElementById("right").addEventListener("click", function(){
     console.log("Loading next gene...");
 
   });
 
+  //create a new group based on selected elements and clear selection history
   document.getElementById("narrow").addEventListener("click", function(){
     console.log("Narrowing down gene options...");
 
   });
 
+  //union 2 or more selected elements
   document.getElementById("union").addEventListener("click", function(){
     console.log("Displaying all unions...");
 
   });
-
+  //intersect 2 or more selected elements
   document.getElementById("intersect").addEventListener("click", function(){
     console.log("Displaying all intersections...");
 
   });
-
+  //Find the vessel consisting of the most overrepresented set.
+  //The results are saved after the first click.
+  //If saved results are available, the button will read "Show Cool".
   document.getElementById("findCool").addEventListener("click", function(){
     console.log("Locating cool genes...");
   });
+
 
   document.getElementById("remove").addEventListener("click", function(){
     console.log("Removing genes...");
@@ -212,5 +229,8 @@ function(p5, sungear, $, vesselDisplay){
 
   document.getElementById("sort").addEventListener("click", function(){
     console.log("Sorting Genes by z-Score");
+    //collect array of z scores of all genes in list
+    //array.sort()
+    //display array 
   });
 });

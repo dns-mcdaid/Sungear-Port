@@ -70,12 +70,12 @@ function(anchor, gene, vessel, sungear ,anchorDisplay, TreeSet, require){
     },
     selectAllGenes:function(){
       this.selectedGenes.clear();
-      this.selectedGenes.addAll(activeGenes);
+      this.selectedGenes.addAll(this.activeGenes);
       return this.updateSize();
     },
     setSelectedGenes:function(sel){
       this.selectedGenes.clear();
-      this.selectedGenes.addAll(activeGenes);
+      this.selectedGenes.addAll(this.activeGenes);
       this.selectedGenes.retainAll(sel);
       return this.updateSize();
     },
@@ -103,7 +103,6 @@ function(anchor, gene, vessel, sungear ,anchorDisplay, TreeSet, require){
             return require('sungear').R_CIRCLE + 0.15;
           }());
         } else {
-          console.log("OVER THERE");
           for(var i = 0; i < this.anchor.length; i++) {
             var theta = this.anchor[i].angle;
             p.x += rad_inner * Math.cos(theta) / anchor.length;
@@ -111,20 +110,20 @@ function(anchor, gene, vessel, sungear ,anchorDisplay, TreeSet, require){
           }
         }
         this.start = p;
-        //this.setCenter(p, this.rad_inner);
-        //this.selectAllGenes();
+        this.setCenter(p, this.rad_inner);
+        this.selectAllGenes();
         this.shape.x = p.x*10; // SHOULD NOT BE MULTIPLIED BY 10
         this.shape.y = p.y*10;
       }
       // area 0 - vMax ==> 0 - 0.1
-      //this.radOuter = this.getShapeRad(this.getActiveCount, this.vMax);
-      //this.shape.x = this.center.x-this.radOuter;
+      this.radOuter = this.getShapeRad(this.getActiveCount, this.vMax);
+      this.shape.x = this.center.x-this.radOuter;
       this.shape.height = (this.radOuter+10)*2; // SHOULD NOT ADD 10
       this.shape.width = (this.radOuter+10)*2;
       return this.shape;
     },
     updateSize:function(){
-      this.radInner = this.getShapeRad(this.getSelectedCount(), vMax);
+      this.radInner = this.getShapeRad(this.getSelectedCount(), this.vMax);
       this.selectedShape.x = this.center.x - this.radInner;
       this.selectedShape.y = this.center.y - this. radInner;
       this.selectedShape.height = this.radInner*2;

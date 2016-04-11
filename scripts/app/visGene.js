@@ -64,7 +64,6 @@ function(Attribute,DataSource, genesGene,sungear, GeneList, require){
         this.gear = new sungearObj.Sungear(this.geneList, statsF);
 
         console.log("Inside visGene singleton, about to begin main for canvas construction and program start ");
-        require(['main']);
       };
 
       this.run = function(){

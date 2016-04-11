@@ -103,4 +103,7 @@ require(['visGene'], function(VisGene){
 
     var vis = new VisGene(new URL("file:./"), warn, "Sungear", null);
     vis.init();
+
+    //call main here
+    require(['main']);
 });
