@@ -82,16 +82,22 @@ requirejs.config({
 
     visGene : 'app/visGene',
     dataSource : 'data/dataSource',
-    attributes : 'data/attributes'
+    attributes : 'data/attributes',
+
+    CoolVessel: 'structs/Comp/CoolVessel',
+    VesselACount: 'structs/Comp/VesselACount',
+    VesselActSize: 'structs/Comp/VesselActSize',
+    VesselSelSize: 'structs/Comp/VesselSelSize',
+
   }
 });
 
 // See 'test.js' for more info on how this function works.
-require(['test'], function(Y){
-  document.getElementById("geneQuery").addEventListener("click", Y.populateGenes);
-  document.getElementById("expand").addEventListener("click", Y.populateGoTerms);
-  document.getElementById("collapse").addEventListener("click", Y.removeGoTerms);
-});
+// require(['test'], function(Y){
+//   document.getElementById("geneQuery").addEventListener("click", Y.populateGenes);
+//   document.getElementById("expand").addEventListener("click", Y.populateGoTerms);
+//   document.getElementById("collapse").addEventListener("click", Y.removeGoTerms);
+// });
 
 // // Call the main.js file to load the canvas and get rolling.
 // require(['main']);

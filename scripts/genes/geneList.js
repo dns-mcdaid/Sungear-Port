@@ -53,7 +53,6 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
       this.activeS.clear();
       this.selectionS.clear();
       this.highlightS.clear();
-      this.listeners.clear();
       this.multiSelectable.clear();
       this.hist.clear();
       this.genesS = null;
@@ -146,12 +145,8 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * @param addHist true to update browsing history, otherwise false
      */
     setSelection : function(src, sel, sendEvent, addHist) {
-      if (setSelection.length < 4) {
-        sendEvent = true;
-        addHist = true;
-      }
       this.selectionS.clear();
-      this.selectionS.addAlll(sel);
+      this.selectionS.addAll(sel);
       this.selectionS.retainAll(this.activeS);
       if (addHist) {
         this.hist.add(this.selectionS);
@@ -185,9 +180,6 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * @param sendEvent true to generate a {@link GeneEvent} on set change, otherwise false
      */
     setActive : function(src, s, sendEvent) {
-      if (setActive.length < 3) {
-        sendEvent = true;
-      }
       this.activeS.clear();
       this.activeS.addAll(s);
       this.hist.clear();
@@ -218,7 +210,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * @param source the object generating the state switch request
      */
     setMulti : function(b, source) {
-      if (this.multi != b) {
+      if (this.multi !== b) {
         var e;
         if (b) {
           e = new GeneEvent(this, source, GeneEvent.MULTI_START);
@@ -242,7 +234,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      */
     finishMultiSelect : function(source, operation) {
       var s = new TreeSet();
-      if (operation == MultiSelectable.INTERSECT) {
+      if (operation === MultiSelectable.INTERSECT) {
         s.addAll(this.selectionS);
       }
       // TODO: Ask @radhikamattoo about iterators.
@@ -266,25 +258,34 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * Registers a regular {@link GeneEvent} listener.
      * @param l the object to register
      */
-    addGeneListener : function (l) {
-      if(!this.listeners.contains(l)) {
-        this.listeners.add(l);
+    addGeneListener : function (l) { //FIXME
+      if(!this.listeners.includes(l)) {
+        this.listeners.push(l);
       }
     },
     /**
      * Removes an object from the list of {@link GeneEvent} listeners.
      * @param l the object to remove
      */
-    removeGeneListener : function(l) { this.listeners.remove(l); },
+    removeGeneListener : function(l) {
+      var index = this.listeners.indexOf(l);
+      if(index === -1){ return false; }
+      else{
+        this.listeners.splice(index,1);
+      }
+    },
     /**
      * Notifies all registered {@link GeneListener}s of a new gene event.
      * @param e the gene event
      */
     notifyGeneListeners : function(e) {
-      var it = this.listeners.iterator();
-      while(it.hasNext()) {
-        it.next().listUpdated(e);
-      }
+      //TODO: don't have gene listeners really...
+      console.log("Notify registered gene listeners that GeneEvent e has occured");
+      // var it = this.listeners.iterator();
+      // for(var i = 0; i < this.listeners.length; i++){
+      //   var item = this.listeners[i];
+      //   item.listUpdated(e);
+      // }
     },
 
     ///// BROWSING HISTORY

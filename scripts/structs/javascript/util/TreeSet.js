@@ -75,7 +75,7 @@ function(SortedSet, Iterator_, Collection, NoSuchElementException, OperationNotS
   };
 
   TreeSet.prototype.clear = function(){
-    return null;
+    this.array_ =  null;
   };
 
 
