@@ -33,7 +33,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
     /** {@link GeneEvent} listeners */
     this.listeners = [];
     /** Components that participate in multiple selection */
-    this.multiSelectable = [];
+    this.multiSelectable =  new TreeSet();
     /** Gene list browsing history */
     this.hist = new History();
     /** Data source for this gene list */
@@ -70,8 +70,9 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      */
     setSource : function(src) {
       this.source = src;
-      this.master = src.getReader().allGenes; //FIXME! We're not using DataReader, so instead do src.
-      console.log("total items: " + this.master.length);
+      console.log('FIXME - geneList setSource func for file parsing - manually inserting right now');
+      // this.master = src.getReader().allGenes; //FIXME! We're not using DataReader, so instead do src.
+      // console.log("total items: " + this.master.length);
       var ge = new GeneEvent(this, this, GeneEvent.NEW_SOURCE);
       this.notifyGeneListeners(ge);
     },
@@ -81,25 +82,26 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * @throws ParseException if the data source has not yet been set, if there are no active genes, or if there is a parsing error
      * @lol no it doesn't.
      */
-    update : function() {
+    update : function(arrayLikeGeneList) {
       if (this.source === null) {
         console.log("Data Source is not initialized!");
         return;
       }
       this.genesS.clear();
-      this.genesS.addAll(source.getReader().expGenes);
-      var iL = this.source.getAttributes().get("itemsLabel", "items");
-      if (this.genesS.isEmpty()) {
-        console.log("no " + iL + " in data set.");
-        return;
-      }
+      // this.genesS.addAll(source.getReader().expGenes);
+      this.genesS.addAll(arrayLikeGeneList);
+      // var iL = this.source.getAttributes().get("itemsLabel", "items");
+      // if (this.genesS.isEmpty()) {
+      //   console.log("no " + iL + " in data set.");
+      //   return;
+      // }
       this.activeS.clear();
       this.activeS.addAll(this.genesS);
-      this.slectionS.clear();
+      this.selectionS.clear();
       this.selectionS.addAll(this.genesS);
       this.hist.clear();
       this.hist.add(this.selectionS);
-      console.log("working items: " + genesS.size());
+      console.log("working items: " + this.genesS.size());
       var ge = new GeneEvent(this, this, GeneEvent.NEW_LIST);
       this.notifyGeneListeners(ge);
       this.setMulti(false, this);
@@ -120,7 +122,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * Gets the full set of genes for this experiment.
      * @return the gene set, as a set
      */
-    getGenesSet : function() { return this.geneS; },
+    getGenesSet : function() { return this.genesS; },
     /**
      * Gets the current active gene set.
      * @return the active set
@@ -168,7 +170,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * @param src the source of the Restart operation
      */
     restart : function(src) {
-      this.setActive(src, this.geneS, false);
+      this.setActive(src, this.genesS, false);
       var e = new GeneEvent(this, src, GeneEvent.RESTART);
       this.notifyGeneListeners(e);
       this.setMulti(false, src);
@@ -237,9 +239,8 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
       if (operation === MultiSelectable.INTERSECT) {
         s.addAll(this.selectionS);
       }
-      // TODO: Ask @radhikamattoo about iterators.
-      for (var it = this.multiSelectable.iterator(); it.hasNext(); ) {
-        var g = it.next().getMultiSelection(operation);
+      for (var i = this.multiSelectable.iterator(); i.hasNext();) {
+        var g = i.next().getMultiSelection(operation);
         if (g !== null) {
           if (operation == MultiSelectable.UNION) {
             s.addAll(g);
@@ -258,8 +259,8 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * Registers a regular {@link GeneEvent} listener.
      * @param l the object to register
      */
-    addGeneListener : function (l) { //FIXME
-      if(!this.listeners.includes(l)) {
+    addGeneListener : function (l) { 
+      if(this.listeners.indexOf(l) === -1) {
         this.listeners.push(l);
       }
     },
@@ -280,8 +281,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      */
     notifyGeneListeners : function(e) {
       //TODO: don't have gene listeners really...
-      console.log("Notify registered gene listeners that GeneEvent e has occured");
-      // var it = this.listeners.iterator();
+      console.log("Notify registered gene listeners that GeneEvent", e ,"has occured");
       // for(var i = 0; i < this.listeners.length; i++){
       //   var item = this.listeners[i];
       //   item.listUpdated(e);
@@ -345,7 +345,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * Clears the browsing history.
      */
     clear : function() {
-      this.past = null;
+      this.past = [];
       this.curr = -1;
     },
     /**
@@ -357,7 +357,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * Indicates whether or not a next set exists.
      * @return true if there is a next set, otherwise false
      */
-    hasNext : function() { return this.curr < past.length - 1; },
+    hasNext : function() { return this.curr < this.past.length - 1; },
     /**
      * Returns the previous set in this history, and updates
      * the current set index.
@@ -391,7 +391,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * @param s the set to add
      */
     add : function(s) {
-      if (this.curr == MAX-1) {
+      if (this.curr == this.MAX-1) {
         this.past[0] = null;
         this.curr--;
       } else {

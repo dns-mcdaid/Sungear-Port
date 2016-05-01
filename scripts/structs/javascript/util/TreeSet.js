@@ -23,7 +23,7 @@ function(SortedSet, Iterator_, Collection, NoSuchElementException, OperationNotS
   TreeSet.prototype.contains = function(o) {
     for (var i = 0, len = this.array_.length; i < len; i++) {
       var e = this.array_[i];
-      if (e['compareTo'](o) === 0) {
+      if (e === o) {
         return true;
       }
     }
@@ -42,7 +42,7 @@ function(SortedSet, Iterator_, Collection, NoSuchElementException, OperationNotS
 
     for (var i = 0, len = this.array_.length; i < len; i++) {
       var e = this.array_[i];
-      if (e['compareTo'](o) === 1) {
+      if (e === o) {
         this.array_.splice(i, 0, o);
         return true;
       }
@@ -59,23 +59,36 @@ function(SortedSet, Iterator_, Collection, NoSuchElementException, OperationNotS
    * @export
    */
   TreeSet.prototype.addAll = function(c) {
-    for (var i = c.iterator(); i.hasNext();) {
-      this.add(i.next());
+    if(c.constructor === Array){
+      for(var i = 0; i < c.length; i++){
+        this.add(c[i]);
+      }
+    }else{
+      for (var i = c.iterator(); i.hasNext();) {
+        this.add(i.next());
+      }
     }
     return true;
   };
 
   TreeSet.prototype.retainAll = function(c){
-    var changed = false;
-    for (var i = c.iterator(); i.hasNext();) {
-      if(this.contains(i.next())){
-        this.remove(i.next());
+    if(c.constructor === Array){
+      for(var i = 0; i < c.length; i++){
+        if(this.contains(c[i])){
+          this.remove(c[i]);
+        }
+      }
+    }else{
+      for (var i = c.iterator(); i.hasNext();) {
+        if(this.contains(i.next())){
+          this.remove(i.next());
+        }
       }
     }
   };
 
   TreeSet.prototype.clear = function(){
-    this.array_ =  null;
+    this.array_ =  [];
   };
 
 

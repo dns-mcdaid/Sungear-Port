@@ -84,8 +84,8 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
     // add event listeners from 200 - 255
       // Think it's done. 2016.03.29
     // this.setFocusable(true);
-    // this.genes.addGeneListener(this);
-    // this.genes.addMultiSelect(this);
+    this.genes.addGeneListener(this);
+    this.genes.addMultiSelect(this);
     this.anchors = null;
     this.vessels = null;
     this.multi = false;
@@ -192,8 +192,8 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
 
     getTerms:function(c) { //c is a Collection of Gene objects
       var t = new TreeSet(); //new TreeSet of Term objects
-      for(var it = c.iterator(); it.hasNext();) {
-        t.addAll(getGeneTerms(it.next()));
+      for(var i = 0; i < c.length; i++){
+        t.addAll(this.getGeneTerms(c[i]));
       }
       return t;
     },
@@ -691,13 +691,13 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
               cnt++;
               // find all of anchor's selected genes
               var ag = new TreeSet();
-              var it; //iterator for for loop
-              for(it = this.anchors[i].vessels.iterator(); it.hasNext();)
-                  ag.addAll(it.next().selectedGenes);
-              if(operation == MultiSelectable.UNION)
-                  s.addAll(ag);
-              else
-                  s.retainAll(ag);
+              for(var j = 0; j < this.anchors[i].vessels.length; j++){
+                ad.addAll(this.anchors[i].vessels[j].selectedGenes);
+                if(operation == MultiSelectable.UNION)
+                    s.addAll(ag);
+                else
+                    s.retainAll(ag);
+              }
           }
       }
       return (cnt > 0) ? s : null;

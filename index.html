@@ -133,7 +133,12 @@
           <input type="text" name="zSearch" id="zSearch"> <a class="btn btn-primary" id="zFind" role="button">Find</a>
           <p id="goCount">GO Terms: 2427</p>
           <a class="btn btn-primary" id="goCopy" role="button">Copy</a>
-          <a class="btn btn-primary" id="sort" role="button">Sort by z-score</a>
+          <select id="sort" class="btn btn-primary">
+              <option disabled selected value> -- select a sort option -- </option>
+              <option value="zscore">Sort by z-score</option>
+              <option value="name"> Sort by name</option>
+              <option value="count"> Sort by count</option>
+          </select>
         </div>
       </div>
     </div>

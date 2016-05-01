@@ -1,5 +1,5 @@
-define(['p5', 'sungear', 'jquery', 'vesselDisplay', 'geneList', 'visGene', 'geneList', 'TreeSet', 'MultiSelectable', 'CoolVessel'],
-function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, MultiSelectable, CoolVessel){
+define(['p5', 'sungear', 'jquery', 'vesselDisplay', 'geneList', 'visGene', 'geneList', 'TreeSet', 'MultiSelectable', 'CoolVessel', 'genesGene'],
+function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, MultiSelectable, CoolVessel, Gene){
 
   var masterFileArray = [];
   var canvas;
@@ -13,7 +13,8 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
   var HEIGHT;
   var WIDTH;
 
-  //DEV VARIABLES
+  //DEV VARIABLES - these should all be taken care of/filled by user's file input
+  //---------------------------------------------------------------
   var devGeneList = new GeneList();
   var cool = new CoolVessel();
   var genesPopulated = false;
@@ -39,28 +40,36 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
   goStraight["4;304"] = "lipid metabolism";
   goStraight["4;235"] = "nitrogen compound metabolism";
 
-  var geneDictionary = {};
-  geneDictionary['At1g01040'] = "DEAD/DEAH";
-  geneDictionary["At1g01050"] = "inorganic";
-  geneDictionary["At1g01060"] = "myb family traits";
-  geneDictionary["At1g01090"] = "pyruvate dehydration";
-  geneDictionary["At1g01100"] = "60S acidic";
-  geneDictionary["At1g01120"] = "fatty acid elongated";
-  geneDictionary["At1g01130"] = "CBL-interactivity";
-  geneDictionary["At1g01150"] = "expressed protein";
-  geneDictionary["At1g01160"] = "SSXT protein-rich";
-  geneDictionary["At1g01170"] = "ozone-responsive";
-  geneDictionary["At1g01220"] = "GHMP kinasede";
-  geneDictionary["At1g01250"] = "encodes a metosis";
-  geneDictionary["At1g01630"] = "SEC14 cytososis";
-  geneDictionary["At1g01640"] = "speckle type";
+  var geneDictionary = [];
+
+  //WRAP AS GENE OBJECTS!
+  geneDictionary[0] = new Gene('At1g01040', "DEAD/DEAH");
+  geneDictionary[1] = new Gene('At1g01050', "inorganic");
+  geneDictionary[2] = new Gene('At1g01060', "myb family traits");
+  geneDictionary[3] = new Gene('At1g01090', "pyruvate dehydration");
+  geneDictionary[4] = new Gene('At1g01100', "60S acidic");
+  geneDictionary[5] = new Gene('At1g01120', "fatty acid elongated");
+  geneDictionary[6] = new Gene('At1g01130',  "CBL-interactivity");
+  geneDictionary[7] = new Gene('At1g01150', "expressed protein");
+  geneDictionary[8] = new Gene('At1g01160', "SSXT protein-rich");
+  geneDictionary[9] = new Gene('At1g01170', "ozone-responsive");
+  geneDictionary[10] = new Gene('At1g01220', "GHMP kinasede");
+  geneDictionary[11] = new Gene('At1g01250', "encodes a metosis");
+  geneDictionary[12] = new Gene('At1g01630', "SEC14 cytososis");
+  geneDictionary[13] = new Gene('At1g01640',"speckle type");
+
 
   var currentGoHierarchy = goHierarchy;
   var currentGoStraight = goStraight;
   var currentGeneDictionary = geneDictionary;
 
+  devGeneList.setSource(this);
 
+  //now all the values of geneDictionary are in the master genelist treeset
+  devGeneList.update(geneDictionary); //sets genesS and activeS lists
+  devGeneList.master = geneDictionary;  //set as master too
 
+  //---------------------------------------------------------------
 
   function main(side) {
     if(arguments.length > 0) {sides = side;}
@@ -175,28 +184,21 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
   document.getElementById("restart").addEventListener("click", function(){
     console.log("Restarting Sungear...");
     var answer = confirm("Are you sure you want to restart? ");
-    devGeneList.restart(this);
     if(answer){
-      location.reload(true); //FIXME; not what it's supposed to do. meant to reload data, see below
+      devGeneList.restart(this);
     }
-    //visGene.geneList.restart(src); //calls geneList method
-
   });
 
   //select all groupings
   document.getElementById("all").addEventListener("click", function(){
     console.log("Selecting all genes...");
     devGeneList.setSelection(this, devGeneList.getActiveSet());
-    //TODO: get selected groupings from HTML
-    //loop... and add gene groups from
-    //add these to geneList's selected treeset
 
   });
   //select no groupings
   document.getElementById("none").addEventListener("click", function(){
     console.log("Deselecting all gene sets...");
     devGeneList.setSelection(this, new TreeSet());
-
 
   });
 
@@ -237,17 +239,18 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
   //The results are saved after the first click.
   //If saved results are available, the button will read "Show Cool".
   document.getElementById("findCool").addEventListener("click", function(){
-    console.log("Locating cool genes...");
-    if(cool === null){
-       updateCool(true);
-       if(cool.length === 0){
-         alert("No cool vessels found - try narrowing or restarting");
-       }
-    }
-    if(cool.length > 0){
-      //TODO: show option menu on cool button (frontend)
-    }
-    devGeneList.addGeneListener(this);
+    //TODO: IMPLEMENT UPDATECOOL()
+    // console.log("Locating cool genes...");
+    // if(cool === null){
+    //    updateCool(true);
+    //    if(cool.length === 0){
+    //      alert("No cool vessels found - try narrowing or restarting");
+    //    }
+    // }
+    // if(cool.length > 0){
+    //   //TODO: show option menu on cool button (frontend)
+    // }
+    // devGeneList.addGeneListener(this);
 
   });
 
@@ -270,7 +273,9 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
  */
   document.getElementById("geneQuery").addEventListener("click", function(){
     console.log("Querying the genes...");
-    //get query value
+    // get query value
+    //TODO: PROMPT USER!!!
+
     // var query = document.getElementById("geneQuery").value;
     //
     // //parse value and loop through genes list to see which match
@@ -282,9 +287,10 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
     //       s.add(gene[i]);
     //     }
     //   }
-    //   //FIXME: front end display of matching genes
     //   devGeneList.setSelection(this, s);
     // }
+
+    //
     if(genesPopulated){
       return;
     }
@@ -348,7 +354,6 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
   //matches by name OR description
   document.getElementById("geneFind").addEventListener("click", function(){
     var toFind = document.getElementById("geneSearch").value;
-    console.log("Locating " + toFind);
 
     var found = new TreeSet();
     var list = devGeneList.getActiveSet();
@@ -420,27 +425,87 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
       goList.removeChild(goList.firstChild);
     }
   });
-  //TODO: SEARCHING BY GO TERM NAME OR ZSCORE?
+
+  //can search by name (value) or ZScore (first half of key/index)
   document.getElementById("zFind").addEventListener("click", function() {
+
     var toFind = document.getElementById("zSearch").value;
     var count = 0;
     var list = devGeneList.getSelectedSet();
-
-
-    document.getElementById("goCount").innerHTML = "GO Terms: " + count;
     var goStraightFound = {};
     var goHierarchyFound = {};
-    for(var key in currentGoHierarchy){
-      if(currentGoHierarchy.hasOwnProperty(key) && currentGoHierarchy[key] === toFind){
-        goHierarchyFound[key] = currentGoHierarchy[key];
+
+    //STRING SEARCH?
+    if(!isNaN(toFind) && toFind !== ""){
+      toFind = Number(toFind);
+      document.getElementById("goCount").innerHTML = "GO Terms: " + count;
+      console.log("numerical search");
+
+      for(var key in currentGoHierarchy){
+         var searchKey = Number(key.split(';')[0]);
+        if(searchKey === toFind){
+          goHierarchyFound[key] = currentGoHierarchy[key];
+        }
+      }
+
+      for(var key in currentGoStraight){
+        var searchKey = Number(key.split(';')[0]);
+        if(searchKey === toFind){
+          goStraightFound[key] = currentGoStraight[key];
+        }
+      }
+      currentGoStraight = goStraightFound;
+      currentGoHierarchy = goHierarchyFound;
+    }else if(typeof(toFind) === 'string'){ //NUMERICAL SEARCH
+      if(toFind !== ""){
+        document.getElementById("goCount").innerHTML = "GO Terms: " + count;
+
+        for(var key in currentGoHierarchy){
+          //get first val
+          if(currentGoHierarchy.hasOwnProperty(key) && currentGoHierarchy[key].includes(toFind)){
+            goHierarchyFound[key] = currentGoHierarchy[key];
+          }
+        }
+
+        for(var key in currentGoStraight){
+          if(currentGoStraight.hasOwnProperty(key)  && currentGoStraight[key].includes(toFind)){
+            console.log(key + " : " + currentGoStraight[key]);
+            goStraightFound[key] = currentGoStraight[key];
+          }
+        }
+        currentGoStraight = goStraightFound;
+        currentGoHierarchy = goHierarchyFound;
+      }else{ //empty search string? reset search results
+        currentGoStraight = goStraight;
+        currentGoHierarchy = goHierarchy;
       }
     }
+    goPopulated = false;
+    document.getElementById("expand").click();
 
-    for(var key in currentGoStraight){
-      if(currentGoStraight.hasOwnProperty(key)  && currentGoStraight[key] === toFind){
-        console.log(key + " : " + currentGoStraight[key]);
-        goHierarchyFound[key] = currentGoStraight[key];
-      }
+  });
+
+  //TODO: implement - same issue as Gene copy button, so once that's figured out
+  //implement the same way but with GO Terms
+  document.getElementById("goCopy").addEventListener("click", function(){
+    console.log("Copying GO Terms...");
+  });
+
+
+  //TODO: Finish implementing - shouldn't make a complicated sorting function
+  //until I know exactly how we're storing GO Terms (rather than a hardcoded object, like it is now)
+  document.getElementById("sort").addEventListener("change", function(){
+    var value = document.getElementById("sort").value;
+
+    var goStraightFound = {};
+    var goHierarchyFound = {};
+
+    if(value === 'zscore'){ //sort by zscore
+
+    }else if(value === 'name'){ //sort by name
+
+    }else{ //sort by count!
+
     }
 
     currentGoStraight = goStraightFound;
@@ -450,16 +515,4 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
 
   });
 
-  //TODO: implement
-  document.getElementById("goCopy").addEventListener("click", function(){
-    console.log("Copying GO Terms...");
-  });
-
-
-  document.getElementById("sort").addEventListener("click", function(){
-    console.log("Sorting Genes by z-Score");
-    //collect array of z scores of all genes in list
-    //array.sort()
-    //display array
-  });
 });

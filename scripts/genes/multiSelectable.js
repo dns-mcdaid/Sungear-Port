@@ -17,10 +17,7 @@ MultiSelectable.prototype = {
    * @return the list of selected genes in this component that are part of the multi-select
    */
 
-  // TODO: Something for the love of God.
-  getMultiSelection : function(operation) {
-
-  }
+  getMultiSelection : function(operation) {}
 
 };
 
