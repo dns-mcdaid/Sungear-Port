@@ -6,12 +6,15 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
   var DrawStack = [];
   var added = false;
   var pressed = false;
-  var makePolygon = false;
   var toDraw;
   var currentColor = sungear.C_HIGHLIGHT;
   var sides = 1;
   var HEIGHT;
   var WIDTH;
+
+  // FIXME Testing main p5 shit.
+  var sets = [];
+  // STILL TESTING
 
   //DEV VARIABLES - these should all be taken care of/filled by user's file input
   //---------------------------------------------------------------
@@ -73,49 +76,59 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
 
   function main(side) {
     if(arguments.length > 0) {sides = side;}
-    makePolygon = true;
     var setupCanvas = new p5(function(p5){
       p5.setup = function() {
         WIDTH = document.getElementById('sunGui').clientWidth;
         HEIGHT = document.getElementById('sunGui').clientHeight;
         canvas = p5.createCanvas(WIDTH,HEIGHT);
-
-        var testDis = new vesselDisplay("testAnc");
-        var testShape = testDis.makeShape(4);
-        console.log(testShape);
-        DrawStack.push(testShape);
+        p5.textSize(18);
 
       },
 
       p5.draw = function() {
         p5.background(16,16,16);
         p5.fill(0);
+        var edges = p5.polygon(WIDTH/2, HEIGHT/2, HEIGHT/2-10, sides);
+        p5.labels(edges);
+        p5.testVessels(edges);
+      },
 
-        if(!added){
-          toDraw = DrawStack.pop();
-          console.log(toDraw);
-          added = true;
+      p5.testVessels = function(vertecies) {
+        for (var i = 0; i < vertecies.length; i++) {
+          p5.fill(16,16,16);
+          p5.strokeWeight(2);
+          p5.stroke(sungear.C_PLAIN);
+          var size = sets[i].genes.length;
+          var x = vertecies[i].x;
+          var y = vertecies[i].y;
+          var vesX;
+          var vesY;
+
+          if (x < WIDTH/2) {
+            vesX = x + size;
+          } else {
+            vesX = x - size*2;
+          }
+
+          if (y < HEIGHT/2) {
+            vesY = y + size*1.5;
+          } else {
+            vesY = y - size*1.5;
+          }
+          var d = p5.dist(p5.mouseX,p5.mouseY,vesX,vesY);
+          if (d < size*2) {
+            p5.fill(sungear.C_PLAIN);
+            p5.stroke(16,16,16);
+          }
+          p5.ellipse(vesX,vesY,size*2,size*2);
         }
-
-        if(makePolygon) {
-          p5.polygon(WIDTH/2, HEIGHT/2, HEIGHT/2-5, sides);
-        }
-
-        if (p5.mouseIsPressed) {
-          p5.fill(0);
-        } else {
-          p5.fill(currentColor);
-        }
-        p5.ellipse(p5.mouseX, p5.mouseY, 80, 80);
-
-        p5.fill(sungear.C_PLAIN);
-        p5.ellipse(toDraw.p5, toDraw.y, toDraw.width, toDraw.height);
       },
 
       p5.polygon = function(x, y, radius, npoints) {
         p5.fill(16,16,16);
         p5.stroke(sungear.C_PLAIN);
         p5.strokeWeight(4);
+        var vertecies = [];
         if (npoints > 2) {
           var angle = p5.TWO_PI / npoints;
           p5.beginShape();
@@ -123,25 +136,60 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
             var sx = x + p5.cos(a) * radius;
             var sy = y + p5.sin(a) * radius;
             p5.vertex(sx, sy);
-            p5.textSize(18);
-            p5.text("Hello!", sx, sy);
+            var combined = {
+              x: sx,
+              y: sy
+            };
+            vertecies.push(combined);
           }
           p5.endShape(p5.CLOSE);
         } else {
-          p5.ellipse(x,y,HEIGHT-5,HEIGHT-5);
+          p5.ellipse(x,y,HEIGHT-10,HEIGHT-10);
+          var combined1 = {
+            x: x,
+            y: HEIGHT-10
+          }
+          var combined2 = {
+            x: x,
+            y: 10
+          }
+          vertecies.push(combined1);
+          vertecies.push(combined2);
         }
-        p5.stroke(0);
-        p5.strokeWeight(1);
-      };
+        return vertecies;
+      },
+
+      p5.labels = function(vertecies) {
+        for (var i = 0; i < vertecies.length; i++) {
+          var x = vertecies[i].x;
+          var y = vertecies[i].y;
+          var labX;
+          var labY;
+
+          if (x < WIDTH/2) {
+            labX = x - 40;
+          } else {
+            labX = x + 10;
+          }
+
+          if (y < HEIGHT/2) {
+            labY = y - 10;
+          } else {
+            labY = y + 10;
+          }
+          p5.stroke(0);
+          p5.strokeWeight(0);
+          p5.fill(sungear.C_PLAIN);
+          p5.text(sets[i].name, labX, labY);
+        }
+      }
 
     }, 'sunGui');
   }
 
   function populateGenes(contents) {
-
     for (var j = 0; j < contents.length; j++) {
       var separated = contents[i].split("\n");
-
     }
   }
 
@@ -172,12 +220,34 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
     return files.length;
   }
 
+  // TODO: REMOVE THIS.
+  function DataSet(name, genes) {
+    this.name = name;
+    this.genes = genes;
+  }
 
  //TODO: READ CONTROLS.JAVA
   document.getElementById("upload").addEventListener('click', function() {
-    var inside = loadData();
-    sides = inside;
-    main(inside);
+    //var inside = loadData();
+    //sides = inside;
+    var inText = document.getElementById("infield").value
+    var separated = inText.split("\n");
+    var currentGenes = [];
+    var currentName;
+    $('#setupload').remove();
+    for (var i = 0; i < separated.length; i++) {
+      if (separated[i][0] == ">") {
+        if (currentGenes.length > 0) {
+          sets.push(new DataSet(currentName, currentGenes));
+        }
+        currentName = separated[i].substring(1);
+        currentGenes = [];
+      } else {
+        currentGenes.push(separated[i]);
+      }
+    }
+    sets.push(new DataSet(currentName, currentGenes));
+    main(sets.length);
   });
 
   // Sungear Direct Control Panel options.
