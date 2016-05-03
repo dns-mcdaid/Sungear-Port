@@ -24,5 +24,5 @@ Anchor.prototype = {
     return str1.localeCompare(str2);
   }
 };
-return Anchor; 
+return Anchor;
 });

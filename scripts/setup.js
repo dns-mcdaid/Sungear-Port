@@ -24,7 +24,6 @@ requirejs.config({
       'lib/bootstrap.min'
     ],
     p5: 'lib/p5',
-    keypress: 'lib/keypress-2.1.3.min',
     // With the external libraries out of the way, we can move onto grabbing real Sungear files.
 
     // From the gui folder

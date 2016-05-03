@@ -82,5 +82,5 @@ In order to run on a modern web browser, Sungear requires the following dependen
 
 * [jQuery](https://jquery.com/): Necessary for Bootstrap and fluid controllers.
 * [Bootstrap](http://getbootstrap.com/): Grid System allowing clean formatting of Sungear Interface.
-* [d3](https://d3js.org/): Data visualizer for Sungear GUI and GeneLights description.
+* [p5](http://p5js.org/): Data visualizer for Sungear GUI and GeneLights description.
 * [RequireJS](http://requirejs.org/): Simplify Javascript dependencies.

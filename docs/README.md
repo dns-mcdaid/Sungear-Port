@@ -55,17 +55,17 @@ Once the basics of selecting have been mastered there are two additional types o
 #### What you are seeing
 
 The general management tool for sungear data.
-* Restart: reloads data set
-* All: select all groupings
-* None: select no groupings
-* << : Go backward to a previous selection
-* >> : Go forward to a selection
-* Narrow: Create a new group based on selected elements and clears selection history.
-* Union ![Union](images/sungear_union.png) : Union two or more selected elements. Select multiple elements using `ctrl-alt left-click`, then click _Union_.
-* Intersect ![Intersect](images/sungear_intersection.png) : Intersect two or more selected elements. Select multiple elements using `ctrl-alt left-click`, then click _Intersect_.
-* Find Cool: Find the vessel consisting of the most overrepresented set. The results are saved after the first click. If saved results are available, the button will read "Show Cool".
-* Export: Export data set
-* View Group ![View Group](images/sungear_view_group.png) : View this group
+* `Restart`: reloads data set
+* `All`: select all groupings
+* `None`: select no groupings
+* `<<` : Go backward to a previous selection
+* `>>` : Go forward to a selection
+* `Narrow`: Create a new group based on selected elements and clears selection history.
+* `Union` ![Union](images/sungear_union.png) : Union two or more selected elements. Select multiple elements using `ctrl-alt left-click`, then click _Union_.
+* `Intersect` ![Intersect](images/sungear_intersection.png) : Intersect two or more selected elements. Select multiple elements using `ctrl-alt left-click`, then click _Intersect_.
+* `Find Cool`: Find the vessel consisting of the most overrepresented set. The results are saved after the first click. If saved results are available, the button will read "Show Cool".
+* `Export`: Export data set
+* `View Group` ![View Group](images/sungear_view_group.png) : View this group
 
 ## Genes Dialog
 
