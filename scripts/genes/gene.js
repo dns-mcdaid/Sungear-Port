@@ -1,4 +1,4 @@
-/*
+/**
  * Created on Nov 9, 2004
  * Copyright Chris Poultney 2004.
  * Updated by Dennis McDaid 2016.
@@ -61,5 +61,5 @@ Gene.prototype = {
   }
 };
 
-return Gene; 
+return Gene;
 });

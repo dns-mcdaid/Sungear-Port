@@ -4,40 +4,40 @@
   * @author Rajah_Bimmy
   */
 
-define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay', 'TreeSet', 'require', 'p5'],
-function(anchor, gene, vessel, sungear ,anchorDisplay, TreeSet, require, p5){
+define(['anchor', 'genesGene', 'vessel', 'sungear', 'anchorDisplay', 'TreeSet', 'require'],
+function(anchor, gene, vessel, sungear ,anchorDisplay, TreeSet, require){
   var ARROW_LINE = 0.7;
   var ARROW_END = 0.2;
 
   function vesselDisplay(vessel){
-    this.vessel = vessel;               // 1-to-1 mapping. Vessel display is the visualized vessel.
-    this.highlight = false;             // Highlighted depending on user interaction.
-    this.select = false;                // Also dependant on user interaction.
-    this.start = null;                  // TODO: Find out what this is.
+    this.vessel = vessel;               // Type: Vessel. 1-to-1 mapping. Vessel display is the visualized vessel.
+    this.highlight = false;             // Type: Boolean. Highlighted depending on user interaction.
+    this.select = false;                // Type: Boolean. Also dependant on user interaction.
+    this.start = null;                  // Type: Point2D.Double
 
     this.center = {
       x: null, y: null
-    };                                  // The centerpoint from which an ellipse is drawn.
+    };                                  // Type: Point2D.Double. The centerpoint from which an ellipse is drawn.
 
-    this.activeGenes = new TreeSet();   // Corresponds to highlight. A TreeSet of Genes.
-    this.selectedGenes = new TreeSet(); // Corresponds to select. A TreeSet of Genes.
-    this.radMax = 0.1;                  // TODO: Find out what this is.
-    this.radMin = 0;                    // TODO: Find out what this is.
-    this.showArrows = true;             // Determines whether anchors are displayed.
-    this.anchor = [];                   // An array of AnchorDisplays
+    this.activeGenes = new TreeSet();   // Type: TreeSet<Gene>. Corresponds to highlight. A TreeSet of Genes.
+    this.selectedGenes = new TreeSet(); // Type: TreeSet<Gene>. Corresponds to select. A TreeSet of Genes.
+    this.radMax = 0.1;                  // Type: double
+    this.radMin = 0;                    // Type: double
+    this.showArrows = true;             // Type: Boolean. Determines whether anchors are displayed.
+    this.anchor = [];                   // Type: AnchorDisplay[]. An array of AnchorDisplays
 
-    this.vMax = 0;                      // TODO: Find out what this is.
-    this.radOuter = 0;                  // TODO: Find out what this is.
-    this.radInner = 0;                  // TODO: Find out what this is.
+    this.vMax = 0;                      // Type: double
+    this.radOuter = 0;                  // Type: double
+    this.radInner = 0;                  // Type: double
 
     this.shape = {
       x: null, y: null,
       w: null, h: null
-    };                                  // The main shape which we know and love as the VessleDisplay.
+    };                                  // Type: Point2D.Double. The main shape which we know and love as the VessleDisplay.
     this.selectedShape = {
       x: null, y: null,
       w: null, h: null
-    };                                  // TODO: Find out what this is.
+    };                                  // Type: Point2D.Double
   }
 
   vesselDisplay.prototype = {
@@ -141,6 +141,7 @@ function(anchor, gene, vessel, sungear ,anchorDisplay, TreeSet, require, p5){
       this.shape.y = this.center.y - this.radOuter;
       this.shape.h = (this.radOuter)*2;
       this.shape.w = (this.radOuter)*2;
+      console.log(this.shape);
     },
     updateSize:function(){
       this.radInner = this.getShapeRad(this.getSelectedCount(), this.vMax);
@@ -175,7 +176,7 @@ function(anchor, gene, vessel, sungear ,anchorDisplay, TreeSet, require, p5){
     /** @return Point2D.Double */
     getCenter:function(){ return center; },
     /** @return Point2D.Double */
-    getStart:function(){ return start; },s
+    getStart:function(){ return start; },
     /** @return double */
     getShapeRad:function(count, vMax){
       return this.radMin + Math.sqrt(count/vMax)*(this.radMax-this.radMin);
@@ -200,13 +201,13 @@ function(anchor, gene, vessel, sungear ,anchorDisplay, TreeSet, require, p5){
       }
     },
 
-    draw:function(){
+    draw:function(p5){
       if(this.getActiveCount() === 0){ return; }
       p5.push();
       p5.strokeWeight(1); // FIXME: This should be .005f
       var color = this.select ? sungear.C_SELECT : (this.highlight ? sungear.C_HIGHLIGHT : sungear.C_PLAIN);
       p5.fill(color);
-      if (this.getSelectedCount() == 0 && color == sungear.C_PLAIN) {
+      if (this.getSelectedCount() === 0 && color == sungear.C_PLAIN) {
         p5.fill('#D1CDB8');
       }
       p5.ellipse(this.shape.x,this.shape.y,this.shape.h,this.shape.w);
@@ -220,7 +221,7 @@ function(anchor, gene, vessel, sungear ,anchorDisplay, TreeSet, require, p5){
       }
       p5.pop();
     },
-    drawArrow:function(theta){
+    drawArrow:function(theta,p5){
       p5.push();
       p5.translate(this.center.x, this.center.y);
       p5.scale(this.radOuter,this.radOuter);
@@ -229,7 +230,7 @@ function(anchor, gene, vessel, sungear ,anchorDisplay, TreeSet, require, p5){
       p5.strokeWeight(w);
       p5.line(1.0,0,1.0+ARROW_LINE,0);
       p5.line(1.0+ARROW_LINE,0,1.0 + ARROW_LINE - ARROW_END,ARROW_END);
-      p5.line(1.0+ARROW_LINE,0,,1.0 + ARROW_LINE - ARROW_END, -ARROW_END);
+      p5.line(1.0+ARROW_LINE,0,1.0 + ARROW_LINE - ARROW_END, -ARROW_END);
       p5.pop();
     }
   };

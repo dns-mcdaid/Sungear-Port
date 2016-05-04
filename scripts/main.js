@@ -16,6 +16,9 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
   var sets = [];
   // STILL TESTING
 
+  // FUCK YOUR COUCH WE GOT P5 TO WORK.
+  // ALL U GOTTA DO IS PASS IT TO THE FUNCTION THAT WANTS TO DRAW THEN BACK UP AND PRAY.
+
   //DEV VARIABLES - these should all be taken care of/filled by user's file input
   //---------------------------------------------------------------
   var devGeneList = new GeneList();
@@ -88,9 +91,14 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
       p5.draw = function() {
         p5.background(16,16,16);
         p5.fill(0);
+        /*
         var edges = p5.polygon(WIDTH/2, HEIGHT/2, HEIGHT/2-10, sides);
         p5.labels(edges);
         p5.testVessels(edges);
+        */
+        if (p5.mouseIsPressed) {
+          var myVessel = new vesselDisplay("homie");
+        }
       },
 
       p5.testVessels = function(vertecies) {
@@ -148,11 +156,11 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
           var combined1 = {
             x: x,
             y: HEIGHT-10
-          }
+          };
           var combined2 = {
             x: x,
             y: 10
-          }
+          };
           vertecies.push(combined1);
           vertecies.push(combined2);
         }
@@ -182,7 +190,7 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
           p5.fill(sungear.C_PLAIN);
           p5.text(sets[i].name, labX, labY);
         }
-      }
+      };
 
     }, 'sunGui');
   }
@@ -212,7 +220,7 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
               cell1.innerHTML = separated[i];
               cell2.innerHTML = "pls work";
             }
-          }
+          };
         })(f);
         reader.readAsText(f, "UTF-8");
     }
@@ -230,7 +238,7 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
   document.getElementById("upload").addEventListener('click', function() {
     //var inside = loadData();
     //sides = inside;
-    var inText = document.getElementById("infield").value
+    var inText = document.getElementById("infield").value;
     var separated = inText.split("\n");
     var currentGenes = [];
     var currentName;
@@ -528,7 +536,7 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
       currentGoHierarchy = goHierarchyFound;
     }else if(typeof(toFind) === 'string'){ //NUMERICAL SEARCH
       if(toFind !== ""){
-        document.getElementById("goCount").innerHTML = "GO Terms: " + count;
+        document.getElementById("goCount").innersHTML = "GO Terms: " + count;
 
         for(var key in currentGoHierarchy){
           //get first val
