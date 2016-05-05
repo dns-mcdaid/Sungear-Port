@@ -12,6 +12,7 @@
  * and kept alive throughout the existence of that class.
  *
  * @author crispy
+ * @author RajahBimmy
  */
 define(['TreeSet', 'genesGene',  'geneEvent', 'MultiSelectable'],
 function(TreeSet, Gene, GeneEvent, MultiSelectable) {
@@ -21,25 +22,29 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
    */
   function GeneList() {
     /** Master table of all genes in this species */
-    this.master = new TreeSet();
+    this.master = [];  // Hashtable<String, Gene>
     /** List of all genes in the current experiment */
-    this.genesS = new TreeSet();
+    // TODO: Make sure this works properly.
+    this.genesS = new TreeSet();      // SortedSet<Gene>
     /** List of genes in the current active set */
-    this.activeS = new TreeSet();
+    // TODO: Make sure this works properly.
+    this.activeS = new TreeSet();     // SortedSet<Gene>
     /** List of the current selected genes */
-    this.selectionS = new TreeSet();
+    // TODO: Make sure this works properly.
+    this.selectionS = new TreeSet();  // SortedSet<Gene>
     /** List of the currently highlighted genes */
-    this.highlightS = new TreeSet();
+    // TODO: Make sure this works properly.
+    this.highlightS = new TreeSet();  // SortedSet<Gene>
     /** {@link GeneEvent} listeners */
     this.listeners = [];
     /** Components that participate in multiple selection */
-    this.multiSelectable =  new TreeSet();
+    this.multiSelectable =  [];       // List<MultiSelectable>
     /** Gene list browsing history */
-    this.hist = new History();
+    this.hist = new History();        // History
     /** Data source for this gene list */
-    this.source = null;
+    this.source = null;               // TODO: Find out what this is.
     /** True if within a multi-select operation */
-    this.multi = false;
+    this.multi = false;               // Boolean
   }
 
   GeneList.prototype = {
@@ -66,7 +71,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
     },
     /**
      * Associates this gene list with a data source; called when the master data is (re)read.
-     * @param src the new data source
+     * @param src (DataSource) the new data source
      */
     setSource : function(src) {
       this.source = src;
@@ -259,7 +264,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * Registers a regular {@link GeneEvent} listener.
      * @param l the object to register
      */
-    addGeneListener : function (l) { 
+    addGeneListener : function (l) {
       if(this.listeners.indexOf(l) === -1) {
         this.listeners.push(l);
       }

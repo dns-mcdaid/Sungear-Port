@@ -182,7 +182,7 @@ function(anchor, gene, vessel, sungear ,anchorDisplay, TreeSet, require){
       return this.radMin + Math.sqrt(count/vMax)*(this.radMax-this.radMin);
     },
     /** Check if point falls within the bounds of this VesselDisplay. */
-    contains:function(p){
+    contains:function(p,p5){
       // TODO: Make Sure this works.
       return p5.dist(p.x,p.y,this.shape.x,this.shape.y) < (this.shape.width / 2);
     },

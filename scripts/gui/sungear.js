@@ -12,55 +12,35 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
     var relax;
     var polarPlot = false;                              //true for polar, false for default Cartesian
     var showArrows;                                     //boolean, self-explanatory
-    var minRad = [0.000, 0.005, 0.010, 0.015, 0.020 ];
-    var genes;                                          //GeneList object
+
     var goTerm;                                         //WeakReference to a GOTerm object
     var anchors = [];                                   //hold anchordisplay objs
     var vessels = [];                                   //hold vesseldisplay objs
     /** Total count of selected genes in highlighted items */
     var highCnt;
     var lastAnchor;                                     //anchordisplay obj
-    var lastVessel;                                     //vesseldisplay obj
-    var orderedVessels = [];                            //originally a vector, making it a JS array here
-    var vSort = [];
-    var orderIdx, firstIdx, minRadIdx;
+    var lastVessel;                                    //originally a vector, making it a JS array here
     /** The sungear circle */
     var exterior;
-    /** The anchor-less vessel receives special treatment */
-    var moon;
     var vsI, saI = []; //2D Icon arrays //TODO: NEEDED?
     /** Threshold for vessel membership for this plot, or NaN for default */
     var thresh, rad_inner, multi;
     /** display component for Sungear stats */
-    var statsF;
     var minSizeB;
     var showArrowB;
     var statsB;
     var stats;
 
-    var values = {
-      /** Sungear display outer radius */
-      R_OUTER : 1.2,
-      R_CIRCLE : 1.0,
-      /** Default text/graphics color */
-      C_PLAIN : '#F3EFE0',
-      /** Highlighted text/graphics color */
-      C_HIGHLIGHT : '#9A3334',
-      /** Selected text/graphics */
-      C_SELECT : '#217C7E',
-      Sungear : Sungear
-    };
-
-    function Sungear(genes,thresh,statsF) {
-      this.genes = genes;
-      this.thresh = thresh;
-      this.statsF = statsF;
-      this.moon = null;
-      this.orderedVessels = [];
-      this.vSort = [];
-      this.polarPlot = false;
-      this.showArrows = true;
-      this.minRadIdx = 0;
+    function Sungear(genes,statsF) {
+      this.genes = genes;                                 // GeneList
+      this.thresh = NaN;                                  // float
+      this.statsF = statsF;                               // TODO: JInternalFrame?
+      this.moon = null;                                   // VesselDisplay
+      this.orderedVessels = [];                           // Vector<VesselDisplay>
+      this.vSort = [];  // FIXME: Implement this. Comparator<VesselDisplay>
+      this.polarPlot = false;                             // boolean
+      this.showArrows = true;                             // boolean
+      this.minRadIdx = 0;                                 // int
       // var tempStats = new Stats(genes, this);
       // GET THIS.
       var statsPanel = document.getElementById("stats");
@@ -68,27 +48,38 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
       //   // Check out test.js for hows to populate rows.
       // }
       // Check out lines 138 - 192.
-      this.highCnt = 0;
-      this.lastAnchor = null;
-      this.lastVessel = null;
+      this.highCnt = 0;                                   // int
+      this.lastAnchor = null;                             // AnchorDisplay
+      this.lastVessel = null;                             // VesselDisplay
       this.exterior = {
-        x : -values.R_CIRCLE,
-        y : -values.R_CIRCLE,
+        x : -this.R_CIRCLE,
+        y : -this.R_CIRCLE,
         // unsure.
-        width : 2*values.R_CIRCLE,
-        height : 2*values.R_CIRCLE
-      };
+        width : 2*this.R_CIRCLE,
+        height : 2*this.R_CIRCLE
+      };                                                  // Shape
       // this.setPreferredSize();
       // add event listeners from 200 - 255
         // Think it's done. 2016.03.29
       // this.setFocusable(true);
       this.genes.addGeneListener(this);
       this.genes.addMultiSelect(this);
-      this.anchors = null;
-      this.vessels = null;
-      this.multi = false;
-      this.relax = true;
+      this.anchors = null;                                // AnchorDisplay[]
+      this.vessels = null;                                // VesselDisplay[]
+      this.multi = false;                                 // boolean
+      this.relax = true;                                  // boolean
     }
+    /** Sungear display outer radius */
+    Sungear.R_OUTER = 1.2;
+    Sungear.R_CIRCLE = 1.0;
+    /** Default text/graphics color */
+    Sungear.C_PLAIN = '#F3EFE0';
+    /** Highlighted text/graphics color */
+    Sungear.C_HIGHLIGHT = '#9A3334';
+    /** Selected text/graphics */
+    Sungear.C_SELECT = '#217C7E';
+    Sungear.minRad = [0.000, 0.005, 0.010, 0.015, 0.020];
+    Sungear.vRadMax = 0.1;
 
     Sungear.prototype = {
       constructor: Sungear,
