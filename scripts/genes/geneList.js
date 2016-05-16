@@ -58,7 +58,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
       this.activeS.clear();
       this.selectionS.clear();
       this.highlightS.clear();
-      this.multiSelectable.clear();
+      this.multiSelectable = [];
       this.hist.clear();
       this.genesS = null;
       this.activeS = null;
@@ -210,7 +210,7 @@ function(TreeSet, Gene, GeneEvent, MultiSelectable) {
      * Registers a multi-select event listener.
      * @param comp the object to register
      */
-    addMultiSelect : function(comp) { this.multiSelectable.add(comp); },
+    addMultiSelect : function(comp) { this.multiSelectable.push(comp); },
     /**
      * Sets the state of the multi-select indicator.
      * @param b true if performing a multiple select, otherwise false

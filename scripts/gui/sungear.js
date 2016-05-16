@@ -31,6 +31,16 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
     var statsB;
     var stats;
 
+
+    var values = {
+      R_OUTER: 1.2,
+      R_CIRCLE: 1.0,
+      C_PLAIN: '#F3FE0',
+      C_HIGHLIGHT: '#9A3334',
+      C_SELECT : '#217C7E',
+      Sungear : Sungear
+    };
+
     function Sungear(genes,statsF) {
       this.genes = genes;                                 // GeneList
       this.thresh = NaN;                                  // float
@@ -52,8 +62,8 @@ function(/*dataSource,*/anchorDisplay,/*comp,icons,stats,*/vesselDisplay,
       this.lastAnchor = null;                             // AnchorDisplay
       this.lastVessel = null;                             // VesselDisplay
       this.exterior = {
-        x : -this.R_CIRCLE,
-        y : -this.R_CIRCLE,
+        x : -values.R_CIRCLE,
+        y : -values.R_CIRCLE,
         // unsure.
         width : 2*this.R_CIRCLE,
         height : 2*this.R_CIRCLE
