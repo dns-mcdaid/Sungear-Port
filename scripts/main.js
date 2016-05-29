@@ -351,39 +351,86 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
  */
   document.getElementById("geneQuery").addEventListener("click", function(){
     console.log("Querying the genes...");
-    // get query value
-    //TODO: PROMPT USER!!!
 
-    // var query = document.getElementById("geneQuery").value;
+    //NOTE: This query is based off the gene list's SELECTED SET. Thus,when you first press 'Query' without any query, it brings up the entire selected set. However if you query for an ID then query an empty string, it won't do anything because the selected set has been changed by the query.
+    
+    // var tbody = document.getElementById("geneTbody");
     //
-    // //parse value and loop through genes list to see which match
-    // if(query !== null && query !== ""){
-    //   var s = new TreeSet();
-    //   var gene = query.split("/n");
-    //   for(var i = 0; i < gene.length; i++){
-    //     if(devGeneList.includes(gene[i])){
-    //       s.add(gene[i]);
-    //     }
+    // for(var key in currentGeneDictionary){
+    //   if(currentGeneDictionary.hasOwnProperty(key)){
+    //     var row = tbody.insertRow(0);
+    //     var cell1 = row.insertCell(0);
+    //     var cell2 = row.insertCell(1);
+    //     cell1.innerHTML = key;
+    //     cell2.innerHTML = currentGeneDictionary[key];
     //   }
-    //   devGeneList.setSelection(this, s);
     // }
+    // $('#geneTbody tr').on('click', function(event) {
+    //     $(this).addClass('highlight').siblings().removeClass('highlight');
+    // });
 
-    //
-    if(genesPopulated){
-      return;
+    //parse value and loop through genes list to see which match
+    var query = document.getElementById('geneQueryText').value;
+    console.log('query is:' + query);
+    if(query !== null && query !== ""){
+      var s = new TreeSet();
+      var gene = query;
+      var length = 1;
+      if(query.match(/\n/g)){
+          gene = query.split("/n");
+          length = gene.length;
+      }
+      console.log('query is:' + gene);
+      console.log('length is: ' + length);
+      if(length > 1){
+        for(var i = 0; i < length; i++){
+          //loop through master gene list array and compare
+          console.log(devGeneList.master.length);
+          for(var j = 0; j < devGeneList.master.length; j++){
+            var geneName = devGeneList.master[j].name;
+            console.log('comparing query' + gene[i]+' to ' + geneName);
+            if(geneName === gene[i]){
+              s.add(devGeneList.master[j]);
+              console.log('added gene');
+            }
+          }
+        }
+      }else{
+        console.log(devGeneList.master[0]);
+        for(var j = 0; j < devGeneList.master.length; j++){
+          console.log("J is: " + j);
+          var geneName = devGeneList.master[j].name;
+          if(geneName === gene){
+            s.add(devGeneList.master[j]);
+            console.log('added gene');
+          }
+        }
+      }
+      devGeneList.setSelection(this, s);
+      console.log("Selected set has changed to: " + devGeneList);
+    }else{
+      console.log('nothinggg');
     }
-    genesPopulated = true;
-
     var tbody = document.getElementById("geneTbody");
 
-    for(var key in currentGeneDictionary){
-      if(currentGeneDictionary.hasOwnProperty(key)){
-        var row = tbody.insertRow(0);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        cell1.innerHTML = key;
-        cell2.innerHTML = currentGeneDictionary[key];
-      }
+
+    //loop thru selected set
+    var list = devGeneList.getSelectedSet();
+
+    //iterate through and get gene info
+    var it = list.iterator();
+    tbody.innerHTML = "";
+    while(it.hasNext()){
+      var row = tbody.insertRow(0);
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+
+      var myGene = it.next();
+      var name = myGene.getName();
+      var description = myGene.getDesc();
+
+      cell1.innerHTML = name;
+      cell2.innerHTML = description;
     }
     $('#geneTbody tr').on('click', function(event) {
         $(this).addClass('highlight').siblings().removeClass('highlight');
@@ -582,7 +629,9 @@ function(p5, sungear, $, vesselDisplay, geneList, visGene, GeneList, TreeSet, Mu
 
     }else if(value === 'name'){ //sort by name
 
-    }else{ //sort by count!
+    }else if(value === 'count'){ //sort by count!
+
+    }else{ //reset
 
     }
 

@@ -34,6 +34,7 @@
           </table>
           <input type="text" name="geneSearch" id="geneSearch"><a class="btn btn-primary" id="geneFind" role="button">Find</a>
           <p id="geneCount">1188 / 16590</p>
+          <textarea name="geneQueryText" id="geneQueryText"></textarea>
           <a class="btn btn-primary" id="geneQuery" role="button">Query</a>
           <a class="btn btn-primary" id="geneCopy" role="button">Copy</a>
         </div>
@@ -139,7 +140,7 @@
           <p id="goCount">GO Terms: 2427</p>
           <a class="btn btn-primary" id="goCopy" role="button">Copy</a>
           <select id="sort" class="btn btn-primary">
-              <option disabled selected value> -- select a sort option -- </option>
+              <option disabled selected value='none'> -- select a sort option -- </option>
               <option value="zscore">Sort by z-score</option>
               <option value="name"> Sort by name</option>
               <option value="count"> Sort by count</option>
